@@ -125,3 +125,13 @@ window.addEventListener("DOMContentLoaded", setScrolls);
 window.addEventListener("load", setScrolls);
 
 window.addEventListener('resize', setScrolls);
+
+// Scroll to top button logic
+const scrollTopBtn = document.getElementById("scrollTopBtn");
+
+scrollTopBtn.addEventListener("click", () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+});

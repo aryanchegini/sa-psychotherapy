@@ -1,0 +1,46 @@
+
+.specialty-grid {
+  gap: 0; /* Remove default gap */
+  align-items: stretch; /* Ensure columns are same height for border */
+}
+
+.examples-div .examples-col-1 {
+  text-align: right;
+  padding-right: 3em;
+  border-right: 1px solid var(--highlight-color);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.examples-div .examples-col-2 {
+  text-align: left;
+  padding-left: 3em;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.examples-div .list-item {
+  list-style: none; /* Ensure no bullets */
+}
+
+/* Update Media Query for Mobile to reset these */
+@media screen and (max-width: 920px) {
+  .specialty-grid {
+    gap: 2em; /* Restore some gap on mobile */
+  }
+
+  .examples-div .examples-col-1 {
+    text-align: center;
+    padding-right: 0;
+    border-right: none;
+    border-bottom: 1px solid var(--highlight-color); /* Horizontal line on mobile? Or just none */
+    padding-bottom: 2em;
+  }
+
+  .examples-div .examples-col-2 {
+    text-align: center;
+    padding-left: 0;
+  }
+}
