@@ -1,3 +1,15 @@
+function elt(type, classNames, children) {
+  let node = document.createElement(type);
+  for (let className of classNames) {
+    node.classList.add(className);
+  }
+  for (let child of children) {
+    if (typeof child != "string") node.appendChild(child);
+    else node.appendChild(document.createTextNode(child));
+  }
+  return node;
+}
+
 const menuToggle = document.querySelector(".menu-toggle");
 const mobileNav = document.querySelector(".mobile-nav");
 
@@ -13,50 +25,43 @@ menuToggle.addEventListener("click", () => {
   }, 100);
 });
 
-function isPartiallyInViewport(element) {
-  const rect = element.getBoundingClientRect();
-  const windowHeight =
-    window.innerHeight || document.documentElement.clientHeight;
-  const windowWidth = window.innerWidth || document.documentElement.clientWidth;
-
-  const topVisible = rect.top <= windowHeight && rect.bottom >= 0;
-  const leftVisible = rect.left <= windowWidth && rect.right >= 0;
-
-  return topVisible && leftVisible;
-}
-
-function elt(type, classNames, children) {
-  let node = document.createElement(type);
-  for (let className of classNames) {
-    node.classList.add(className);
-  }
-  for (let child of children) {
-    if (typeof child != "string") node.appendChild(child);
-    else node.appendChild(document.createTextNode(child));
-  }
-  return node;
-}
-
 let nameDiv = elt(
   "h3",
   ["nav-name"],
   [
     elt("p", [], ["Soraya Chegini-Adams"]),
-    elt("div", ["subscript"], ["Psychotherapist"]),
+    elt("div", ["subscript-1", "quicksand"], ["Integrative Psychotherapy and Counselling for Adults"]),
+    elt("div", ["subscript-2", "quicksand"], ["UKCP Registered"]),
   ]
 );
+
+nameDiv.addEventListener("click", () => {
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth",
+  });
+});
+
 const innerNav = document.getElementById("inner-nav");
 const handDiv = document.getElementById("inner-home");
 
 let nameInNav = false;
 window.addEventListener("scroll", () => {
-  if (!isPartiallyInViewport(handDiv) && !nameInNav) {
+  const handRect = handDiv.getBoundingClientRect();
+  const navRect = document.querySelector("nav").getBoundingClientRect();
+  
+  // Check if the bottom of the Home section has scrolled up past the nav bar
+  // This means the Home section is no longer fully visible "under" the nav
+  const isHomeAboveNav = handRect.bottom < navRect.height;
+
+  if (isHomeAboveNav && !nameInNav) {
     innerNav.classList.remove("centered-div", "right-menu");
     innerNav.classList.add("row-aligned");
     innerNav.prepend(nameDiv);
     nameInNav = true;
   }
-  if (isPartiallyInViewport(handDiv) && nameInNav) {
+  
+  if (!isHomeAboveNav && nameInNav) {
     innerNav.classList.remove("row-aligned");
     innerNav.classList.add("centered-div", "right-menu");
     nameDiv.remove();
@@ -74,12 +79,11 @@ function calculateDivLocations() {
       handDiv.style.height = handHeight + diff + "px";
     }
 
-    let feesHeight = document.querySelector(".session-div").getBoundingClientRect().height;
-    if (feesHeight + 100 != window.innerHeight && (window.innerHeight - 100) > 500) {
-      let diff = window.innerHeight - (feesHeight + 100);
-      document.querySelector(".session-div").style.height = feesHeight + diff + "px";
+    let feesLocationHeight = document.querySelector(".fees-location-div").getBoundingClientRect().height;
+    if (feesLocationHeight + 100 != window.innerHeight && (window.innerHeight - 100) > 500) {
+      let diff = window.innerHeight - (feesLocationHeight + 100);
+      document.querySelector(".fees-location-div").style.height = feesLocationHeight + diff + "px";
     }
-
 
     resolve({
       home: 0,
@@ -87,15 +91,21 @@ function calculateDivLocations() {
       about:
         document.getElementById("home").getBoundingClientRect().height +
         document.getElementById("approach").getBoundingClientRect().height,
-      fees:
+      "fees-location":
         document.getElementById("home").getBoundingClientRect().height +
         document.getElementById("approach").getBoundingClientRect().height +
         document.getElementById("about").getBoundingClientRect().height,
+      faq:
+        document.getElementById("home").getBoundingClientRect().height +
+        document.getElementById("approach").getBoundingClientRect().height +
+        document.getElementById("about").getBoundingClientRect().height +
+        document.getElementById("fees-location").getBoundingClientRect().height,
       contact:
         document.getElementById("home").getBoundingClientRect().height +
         document.getElementById("approach").getBoundingClientRect().height +
         document.getElementById("about").getBoundingClientRect().height +
-        document.getElementById("fees").getBoundingClientRect().height,
+        document.getElementById("fees-location").getBoundingClientRect().height +
+        document.getElementById("faq").getBoundingClientRect().height,
     });
   });
 }
@@ -104,15 +114,20 @@ async function setScrolls() {
   try {
     const divLocations = await calculateDivLocations();
     // Now that divLocations are calculated, use them for scrolling
+    // IMPORTANT: This only works if the anchor hrefs match the keys in divLocations exactly (e.g., #fees-location maps to divLocations['fees-location'])
     document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
       anchor.addEventListener("click", function (event) {
-        event.preventDefault();
         let divName = this.getAttribute("href").substring(1);
-        window.scroll({
-          top: divLocations[divName],
-          left: 0,
-          behavior: "smooth",
-        });
+        
+        // Only override if we have a calculated location for this section
+        if (divLocations.hasOwnProperty(divName)) {
+          event.preventDefault();
+          window.scroll({
+            top: divLocations[divName],
+            left: 0,
+            behavior: "smooth",
+          });
+        }
       });
     });
   } catch (error) {
