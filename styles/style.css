@@ -5,10 +5,10 @@
   --secondary-color: #1c3e4a;
   --tertiary-color: white;
   --highlight-color: #b69a84;
+  --pink-color: rgb(227, 215, 215);
   --multiply-color: rgb(129, 129, 129);
   --hand-multiply-color: rgba(123, 123, 123, 0.89);
   --nav-box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
-
   box-sizing: border-box;
   color: var(--highlight-color);
 }
@@ -166,7 +166,7 @@ nav {
 }
 
 .menu-toggle-icon {
-  fill: white;
+  fill: var(--tertiary-color);
   width: 35px;
   height: auto;
 }
@@ -201,29 +201,26 @@ nav {
 }
 
 .intro-name {
-  font-size: 6rem;
+  font-size: 4rem;
 }
 
 .info,
 .flex-info,
 .home-info,
 .left-info,
+.right-info,
 .intro-info {
   font-size: 1.5rem;
   line-height: 1.3em;
 }
 
-.intro-info {
-  font-size: 1.3rem;
-}
-
+.intro-info,
 .intro-location {
   font-size: 1.3rem;
 }
 
 .info,
-.flex-info,
-.left-info {
+.flex-info {
   text-align: center;
 }
 
@@ -231,6 +228,10 @@ nav {
 .left-align-text,
 .home-info {
   text-align: left;
+}
+
+.right-info {
+  text-align: right;
 }
 
 .home-info {
@@ -245,7 +246,7 @@ nav {
 
 /* Default State: Title White, Text Faded */
 .intro-content.come-alive-text {
-  color: white;
+  color: var(--tertiary-color);
   opacity: 1;
 }
 
@@ -254,21 +255,6 @@ nav {
   opacity: 0.8;
 }
 
-/* Interaction: When hovering the Text paragraph */
-/* 1. The Text becomes White */
-.home-info.come-alive-text:hover {
-  color: white;
-  opacity: 1;
-  cursor: default;
-  /* Optional indicating text */
-}
-
-/* 2. The Title becomes Faded (using :has to detect hover on sibling's child ) */
-/* Note: Supporting browsers (Chrome/Edge 105+, Safari 15.4+, Firefox 121+) */
-.intro-grid:has(.home-info:hover) .intro-content {
-  color: rgba(255, 255, 255, 0.487);
-  opacity: 0.8;
-}
 
 .subscript {
   font-size: 1.1rem;
@@ -289,6 +275,10 @@ nav {
 .active {
   text-decoration: underline solid currentColor 0.5px;
   text-underline-offset: 0.3em;
+}
+
+.special-text {
+  color: var(--pink-color);
 }
 
 /* --- Images --- */
@@ -330,19 +320,19 @@ nav {
 .intro-div {
   background-image: url("../assets/images/Soraya-15.jpg");
   background-color: var(--hand-multiply-color);
+  background-blend-mode: multiply;
   padding: 8em 0;
   background-size: cover;
   background-position: right 75% bottom 80%;
   color: rgba(255, 255, 255, 0.487);
   background-repeat: no-repeat;
   background-repeat: no-repeat;
-  background-blend-mode: multiply;
 }
 
 .intro-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr auto;
+  grid-template-columns: 1fr 0.7fr;
+  grid-template-rows: 15vw 1fr;
   /* Row 1: spacer, Row 2: content */
   gap: 4em;
   align-items: center;
@@ -356,7 +346,7 @@ nav {
   /* Bottom row */
   display: flex;
   flex-direction: column;
-  align-self: end;
+  align-self: start;
   /* Align to bottom of the cell */
   text-align: left;
   /* padding-top: 5em; removed explicit padding as grid handles layout */
@@ -379,7 +369,7 @@ nav {
 
 /* Examples Section */
 .examples-div {
-  background-color: #E8ECE9;
+  background-color: var(--pink-color);
   color: var(--primary-color);
   padding: 4em 0;
 }
@@ -425,7 +415,7 @@ nav {
 
 /* Other Sections */
 .fees-location-div {
-  background-color: rgb(227, 215, 215);
+  background-color: var(--pink-color);
   padding: 4em 0;
   color: var(--primary-color);
 }
@@ -530,6 +520,7 @@ form input:not([type="submit"]),
 textarea {
   background-color: rgba(255, 252, 226, 0.5);
   width: 100%;
+  transition: background-color 0.3s ease;
 }
 
 form input:not([type="submit"]):focus,
@@ -545,11 +536,12 @@ textarea:hover {
   border: none;
   background-color: rgba(255, 252, 226, 0.9);
   color: var(--primary-color);
+  transition: background-color 0.3s ease;
 }
 
 #submit:hover {
   cursor: pointer;
-  background-color: rgba(66, 74, 63, 0.8);
+  background-color: rgba(255, 252, 226, 0.516);
 }
 
 /* --- Components --- */
@@ -589,16 +581,42 @@ textarea:hover {
 /* --- Media Queries --- */
 @media screen and (min-width: 920px) {
 
-  .intro-div,
-  .approach-div,
-  .session-div {
+  .intro-div {
+    /* parallax scrolling effect */
     background-attachment: fixed;
+  }
+
+  /* Interaction: When hovering the Text paragraph (Desktop Only) */
+  .home-info.come-alive-text:hover {
+    color: var(--tertiary-color);
+    opacity: 1;
+    cursor: default;
+  }
+
+  .intro-grid:has(.home-info:hover) .intro-content {
+    color: rgba(255, 255, 255, 0.487);
+    opacity: 0.8;
   }
 }
 
 @media screen and (max-width: 920px) {
   .map-iframe {
     height: 300px;
+  }
+
+  /* Mobile Scroll Reveal */
+  .home-info.come-alive-text.mobile-reveal {
+    color: var(--tertiary-color);
+    opacity: 1;
+  }
+
+  .intro-content.come-alive-text.mobile-dim {
+    color: rgba(255, 255, 255, 0.487);
+    opacity: 0.8;
+  }
+
+  .intro-info {
+    width: 50%;
   }
 
   .portrait-img {
@@ -653,8 +671,8 @@ textarea:hover {
   }
 
   .mobile-nav li {
-    font-size: 1.3rem;
-    color: white;
+    font-size: 1.7rem;
+    color: var(--tertiary-color);
   }
 
   .nav-list {
@@ -670,19 +688,17 @@ textarea:hover {
   .menu-toggle {
     display: block;
     cursor: pointer;
+    user-select: none;
   }
 
   /* Sections Mobile */
-  .session-div,
-  .intro-div {
-    padding: 2em 0;
-    height: auto !important;
-    /* Force container to grow */
-    min-height: 0;
+  .section-div {
+    padding: 5em 0;
   }
 
   .intro-div {
-    background-position: right 60% bottom 80%;
+    background-position: right 75% bottom 80%;
+    padding: 2em 0;
   }
 
   /* Reset Grid Layout on Mobile to Stack */
@@ -702,11 +718,6 @@ textarea:hover {
   .intro-text-col {
     grid-column: auto;
     grid-row: auto;
-  }
-
-  .intro-text-box {
-    margin-top: 2em;
-    padding: 1.5em;
   }
 
   .specialty-grid {

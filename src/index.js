@@ -43,11 +43,11 @@ nameDiv.addEventListener("click", () => {
 });
 
 const innerNav = document.getElementById("inner-nav");
-const handDiv = document.getElementById("inner-home");
+const innerHome = document.getElementById("inner-home");
 
 let nameInNav = false;
 window.addEventListener("scroll", () => {
-  const handRect = handDiv.getBoundingClientRect();
+  const handRect = innerHome.getBoundingClientRect();
   const navRect = document.querySelector("nav").getBoundingClientRect();
   
   // Check if the bottom of the Home section has scrolled up past the nav bar
@@ -72,17 +72,11 @@ window.addEventListener("scroll", () => {
 function calculateDivLocations() {
   return new Promise((resolve) => {
     // adjust hand page height
-    let handHeight = handDiv.getBoundingClientRect().height;
+    let innerHomeHeight = innerHome.getBoundingClientRect().height;
     let navHeight = document.querySelector("nav").getBoundingClientRect().height;
-    if (handHeight + navHeight < window.innerHeight) {
-      let diff = window.innerHeight - (handHeight + navHeight);
-      handDiv.style.height = handHeight + diff + "px";
-    }
-
-    let feesLocationHeight = document.querySelector(".fees-location-div").getBoundingClientRect().height;
-    if (feesLocationHeight + 100 != window.innerHeight && (window.innerHeight - 100) > 500) {
-      let diff = window.innerHeight - (feesLocationHeight + 100);
-      document.querySelector(".fees-location-div").style.height = feesLocationHeight + diff + "px";
+    if (innerHomeHeight + navHeight < window.innerHeight) {
+      let diff = window.innerHeight - (innerHomeHeight + navHeight);
+      innerHome.style.height = innerHomeHeight + diff + "px";
     }
 
     resolve({
@@ -150,3 +144,33 @@ scrollTopBtn.addEventListener("click", () => {
     behavior: "smooth"
   });
 });
+
+// Intro text reveal logic for mobile
+const observerOptions = {
+  root: null,
+  rootMargin: '0px',
+  threshold: 1
+};
+
+const observer = new IntersectionObserver((entries) => {
+  // Only apply on mobile/tablet (matching existing CSS breakpoint)
+  if (window.innerWidth > 920) return;
+
+  entries.forEach(entry => {
+    const homeInfo = entry.target;
+    const introContent = document.querySelector('.intro-content');
+    
+    if (!homeInfo || !introContent) return;
+
+    if (entry.isIntersecting) {
+      homeInfo.classList.add('mobile-reveal');
+      introContent.classList.add('mobile-dim');
+    } else {
+      homeInfo.classList.remove('mobile-reveal');
+      introContent.classList.remove('mobile-dim');
+    }
+  });
+}, observerOptions);
+
+const homeInfoText = document.querySelector('.home-info');
+if (homeInfoText) observer.observe(homeInfoText);
