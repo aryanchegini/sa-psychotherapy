@@ -49,32 +49,20 @@ ul {
 }
 
 /* --- Layout Utilities --- */
-.container,
-.narrow-container {
+.container {
   width: 80%;
   margin: 0 auto;
   max-width: 1200px;
 }
 
-.narrow-container {
-  width: 70%;
-}
-
-.w-100 {
-  width: 100%;
-}
-
-/* Flexbox Utilities */
 .col,
 .centered-div,
 .row,
-.row-aligned,
-.profile-div {
+.row-aligned {
   display: flex;
 }
 
-.col,
-.profile-div {
+.col {
   flex-direction: column;
   align-items: center;
 }
@@ -255,7 +243,6 @@ nav {
   opacity: 0.8;
 }
 
-
 .subscript {
   font-size: 1.1rem;
   margin-top: 0.5em;
@@ -333,34 +320,25 @@ nav {
   display: grid;
   grid-template-columns: 1fr 0.7fr;
   grid-template-rows: 15vw 1fr;
-  /* Row 1: spacer, Row 2: content */
   gap: 4em;
   align-items: center;
-  /* Center vertically in general */
 }
 
 .intro-content {
   grid-column: 1;
-  /* Left column */
   grid-row: 2;
-  /* Bottom row */
   display: flex;
   flex-direction: column;
   align-self: start;
-  /* Align to bottom of the cell */
   text-align: left;
-  /* padding-top: 5em; removed explicit padding as grid handles layout */
 }
 
 .intro-text-col {
   grid-column: 2;
-  /* Right column */
   grid-row: 1 / span 2;
-  /* Span both rows */
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* Center vertically */
 }
 
 .intro-content>*+* {
@@ -424,13 +402,6 @@ nav {
   background-color: var(--tertiary-color);
   /* Ensure white background */
   padding: 4em 0;
-}
-
-.about-text-div,
-.less-padding-div {
-  padding: 1.5em 1em;
-  background-color: var(--secondary-color);
-  color: var(--tertiary-color);
 }
 
 .contact-div {
@@ -586,7 +557,7 @@ textarea:hover {
     background-attachment: fixed;
   }
 
-  /* Interaction: When hovering the Text paragraph (Desktop Only) */
+  /* when hovering the Text paragraph (Desktop Only) */
   .home-info.come-alive-text:hover {
     color: var(--tertiary-color);
     opacity: 1;
@@ -746,13 +717,5 @@ textarea:hover {
 
   .right-menu {
     justify-content: flex-end;
-  }
-
-  .img-res {
-    width: 95%;
-  }
-
-  .img-res-footer {
-    width: 70%;
   }
 }
