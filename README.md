@@ -1,1 +1,1 @@
-Live at [sa-psychotherapy.com](https://sa-psychotherapy.com).
+Live at [sa-psychotherapy.com](https://sa-psychotherapy.com)
