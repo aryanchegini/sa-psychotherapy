@@ -44,13 +44,13 @@
   <main>
     <div id="home">
       <div class="section-div intro-div cormorant" id="inner-home">
-        <div class="container intro-grid">
+        <div class="wide-container intro-grid">
           <div class="intro-content come-alive-text">
             <h1 class="intro-name">Soraya Chegini-Adams <br> Psychotherapy</h1>
             <p class="intro-info">Integrative Psychotherapy and Counselling for Adults | UKCP Registered</p>
             <p class="intro-location">London E1 & W2 | Margate | Virtual</p>
           </div>
-          <div class="cormorant intro-text-col">
+          <div class="quicksand intro-text-col">
             <p class="home-info come-alive-text">
               In a world that's always on the move, it can feel like we're
               just about keeping up. The everyday grind pulls our attention
@@ -72,12 +72,12 @@
       </div>
     </div>
     <div id="approach">
-      <div class="section-div quicksand">
+      <div class="section-div">
         <div class="container two-col-grid">
           <div class="col-1">
-            <h2 class="section-title left-align-text">My Approach</h2>
+            <h2 class="section-title left-align-text cormorant">My Approach</h2>
             <div class="info-div">
-              <p class="left-info">
+              <p class="left-info quicksand">
                 As an integrative psychotherapist I have trained in different
                 approaches such as transpersonal, psychodynamic, humanistic and
                 existential methods. This allows me to work intuitively and
@@ -112,7 +112,8 @@
           </div>
           <div class="col-2">
             <div class="approach-img-col">
-              <img src="./assets/images/Soraya-47.jpg" alt="Portrait of Soraya" class="content-img" />
+              <img src="./assets/images/leaf-portrait.jpg" alt="Portrait of Soraya" class="content-img"
+                style="height: 90vh" />
             </div>
           </div>
         </div>
@@ -187,11 +188,13 @@
       </div>
 
     </div>
-    <div id="fees-location">
-      <div class="section-div fees-location-div">
+    <div id="fees">
+      <div class="section-div fees-div">
         <div class="container two-col-grid">
           <div class="col-1">
             <img src="./assets/images/Soraya-29.jpg" alt="Portrait of Soraya" class="portrait-img" />
+          </div>
+          <div class="col-2">
             <h2 class="sub-section-title cormorant left-align-text">Fees & availability</h2>
             <p class="left-info quicksand dark-text">
               Session fee is £85 for face to face in all locations and
@@ -201,16 +204,37 @@
               amount of low cost slots are available.
             </p>
           </div>
-          <div class="col-2">
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3485.4593922152866!2d-0.17726436152917395!3d51.51656402484055!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48761aad7170132b%3A0x74659f71c9df689e!2sPaddington%2C%20London!5e0!3m2!1sen!2suk!4v1707865231234!5m2!1sen!2suk"
-              class="map-iframe" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+        </div>
+      </div>
+    </div>
+    <div id="location">
+      <div class="section-div location-div">
+        <div class="container two-col-grid">
+          <div class="col-1 location-text-col">
             <h2 class="sub-section-title cormorant left-align-text">My location</h2>
-            <p class="left-info quicksand dark-text">
-              My in person practice locations include Margate (CT9) and Paddington, London (E1 & W2). For those
-              preferring online therapy, sessions are conducted securely through Zoom.
-            </p>
+            <div class="left-info quicksand dark-text">
+              <p>In addition to virtual sessions, my in person practice locations include:</p>
+              <ul class="location-list">
+                <li class="location-item active-location" data-index="0">Margate</li>
+                <li class="location-item" data-index="1">London, Paddington W2</li>
+                <li class="location-item" data-index="2">London, Brick Lane E1</li>
+              </ul>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="location-imgs-wrapper">
+              <img src="./assets/images/margs-loc.jpg" alt="Portrait of Soraya"
+                class="portrait-img location-img active-img" data-index="0" />
+              <img src="./assets/images/paddington-loc.jpg" alt="Portrait of Soraya" class="portrait-img location-img"
+                data-index="1" />
+              <img src="./assets/images/brick-lane-loc.jpeg" alt="Portrait of Soraya" class="portrait-img location-img"
+                data-index="2" />
+              <div class="location-markers">
+                <div class="location-marker" data-index="0"></div>
+                <div class="location-marker" data-index="1"></div>
+                <div class="location-marker" data-index="2"></div>
+              </div>
+            </div>
           </div>
         </div>
       </div>

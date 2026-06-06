@@ -93,12 +93,14 @@ function calculateDivLocations() {
         document.getElementById("home").getBoundingClientRect().height +
         document.getElementById("approach").getBoundingClientRect().height +
         document.getElementById("about").getBoundingClientRect().height +
-        document.getElementById("fees-location").getBoundingClientRect().height,
+        document.getElementById("fees").getBoundingClientRect().height+
+        document.getElementById("location").getBoundingClientRect().height,
       contact:
         document.getElementById("home").getBoundingClientRect().height +
         document.getElementById("approach").getBoundingClientRect().height +
         document.getElementById("about").getBoundingClientRect().height +
-        document.getElementById("fees-location").getBoundingClientRect().height +
+        document.getElementById("fees").getBoundingClientRect().height +
+        document.getElementById("location").getBoundingClientRect().height +
         document.getElementById("faq").getBoundingClientRect().height,
     });
   });
@@ -108,7 +110,7 @@ async function setScrolls() {
   try {
     const divLocations = await calculateDivLocations();
     // Now that divLocations are calculated, use them for scrolling
-    // IMPORTANT: This only works if the anchor hrefs match the keys in divLocations exactly (e.g., #fees-location maps to divLocations['fees-location'])
+    // IMPORTANT: This only works if the anchor hrefs match the keys in divLocations exactly (e.g., #fees maps to divLocations['fees'])
     document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
       anchor.addEventListener("click", function (event) {
         let divName = this.getAttribute("href").substring(1);
@@ -174,3 +176,73 @@ const observer = new IntersectionObserver((entries) => {
 
 const homeInfoText = document.querySelector('.home-info');
 if (homeInfoText) observer.observe(homeInfoText);
+
+// Location observer for sticky scroll highlight
+let locationObserverInstance = null;
+
+function setupLocationObserver() {
+  if (locationObserverInstance) {
+    locationObserverInstance.disconnect();
+  }
+
+  const isDesktop = window.innerWidth > 920;
+  
+  locationObserverInstance = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const index = entry.target.getAttribute('data-index');
+        
+        // Update text highlight
+        document.querySelectorAll('.location-item').forEach(item => {
+          item.classList.remove('active-location');
+        });
+        const activeText = document.querySelector(`.location-item[data-index="${index}"]`);
+        if (activeText) activeText.classList.add('active-location');
+
+        // Update image crossfade
+        document.querySelectorAll('.location-img').forEach(item => {
+          item.classList.remove('active-img');
+        });
+        const activeImg = document.querySelector(`.location-img[data-index="${index}"]`);
+        if (activeImg) activeImg.classList.add('active-img');
+      }
+    });
+  }, {
+    root: null,
+    rootMargin: '-40% 0px -40% 0px',
+    threshold: 0
+  });
+
+  const targets = isDesktop ? document.querySelectorAll('.location-marker') : document.querySelectorAll('.location-img');
+  targets.forEach(target => locationObserverInstance.observe(target));
+}
+
+// Ensure the observer refreshes on resize to accommodate mobile breakpoints
+window.addEventListener('resize', setupLocationObserver);
+window.addEventListener('DOMContentLoaded', setupLocationObserver);
+setupLocationObserver(); // Trigger initially
+
+// Allow clicking on the location item to smoothly scroll to corresponding point
+document.querySelectorAll('.location-item').forEach(item => {
+  item.addEventListener('click', () => {
+    const index = item.getAttribute('data-index');
+    const isDesktop = window.innerWidth > 920;
+    
+    if (isDesktop) {
+      const targetMarker = document.querySelector(`.location-marker[data-index="${index}"]`);
+      if (targetMarker) {
+        // Scroll to where the marker is securely centrally crossing the scroll viewport
+        const rect = targetMarker.getBoundingClientRect();
+        const y = rect.top + window.scrollY - window.innerHeight / 2 + rect.height / 2;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    } else {
+      const targetImg = document.querySelector(`.location-img[data-index="${index}"]`);
+      if (targetImg) {
+        // Get exact position considering sticky nav padding
+        const y = targetImg.getBoundingClientRect().top + window.scrollY - 120;
+        window.scrollTo({ top: y, behavior: 'smooth' });
+      }
+    }
+  });
+});

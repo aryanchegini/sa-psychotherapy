@@ -27,7 +27,7 @@ body {
 /* --- Typography & Global Inputs --- */
 .cormorant {
   font-family: "Cormorant", serif;
-  font-weight: 500;
+  font-weight: 300;
 }
 
 .quicksand,
@@ -46,6 +46,10 @@ li a {
 
 ul {
   width: 100%;
+}
+
+img {
+  border-radius: 8px !important;
 }
 
 /* --- Layout Utilities --- */
@@ -74,6 +78,7 @@ ul {
 .centered-div {
   align-items: center;
   justify-content: center;
+  gap: 1em;
 }
 
 .row,
@@ -83,6 +88,7 @@ ul {
 
 .row-aligned {
   justify-content: space-between;
+  gap: 2em;
 }
 
 .two-col-grid {
@@ -105,7 +111,7 @@ nav {
 .nav-list {
   list-style-type: none;
   display: flex;
-  font-size: 1.5em;
+  font-size: 1.2em;
   color: var(--tertiary-color);
 }
 
@@ -115,6 +121,7 @@ nav {
 
 .nav-item {
   user-select: none;
+  text-align: center;
 }
 
 .nav-item:hover {
@@ -136,7 +143,7 @@ nav {
 }
 
 .nav-name {
-  font-size: 3rem;
+  font-size: 2.4rem;
   color: var(--tertiary-color);
   transition: opacity 0.3s ease;
   /* Add transition for smoothness */
@@ -177,19 +184,19 @@ nav {
 }
 
 .section-title {
-  font-size: 4rem;
+  font-size: 3.2rem;
 }
 
 .sub-section-title {
-  font-size: 2.8rem;
+  font-size: 2.2rem;
 }
 
 .mini-section-title {
-  font-size: 1.8rem;
+  font-size: 1.5rem;
 }
 
 .intro-name {
-  font-size: 4rem;
+  font-size: 3.2rem;
 }
 
 .info,
@@ -198,13 +205,13 @@ nav {
 .left-info,
 .right-info,
 .intro-info {
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   line-height: 1.3em;
 }
 
 .intro-info,
 .intro-location {
-  font-size: 1.3rem;
+  font-size: 1.05rem;
 }
 
 .info,
@@ -244,17 +251,17 @@ nav {
 }
 
 .subscript {
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   margin-top: 0.5em;
 }
 
 .subscript-1 {
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-top: 0.2em;
 }
 
 .subscript-2 {
-  font-size: 1.0rem;
+  font-size: 0.85rem;
   margin-top: 0.2em;
 }
 
@@ -282,6 +289,7 @@ nav {
 .content-img {
   width: 100%;
   object-fit: cover;
+  border-radius: 1px;
 }
 
 .portrait-img {
@@ -331,6 +339,7 @@ nav {
   flex-direction: column;
   align-self: start;
   text-align: left;
+  padding-left: 6em;
 }
 
 .intro-text-col {
@@ -387,12 +396,13 @@ nav {
 }
 
 .examples {
-  font-size: 1.2rem;
+  font-size: 1rem;
   line-height: 2em;
 }
 
 /* Other Sections */
-.fees-location-div {
+.fees-div,
+.location-div {
   background-color: var(--pink-color);
   padding: 4em 0;
   color: var(--primary-color);
@@ -421,8 +431,8 @@ nav {
 }
 
 .approach-img-col {
-  background-color: #b69a847e;
-  padding: 4em;
+  /* background-color: #b69a847e; */
+  padding: 1em;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -474,14 +484,14 @@ nav {
 form label {
   display: block;
   width: 100%;
-  font-size: 1.25rem;
+  font-size: 1rem;
   margin: 0.5em 0;
 }
 
 input,
 textarea {
   display: block;
-  font-size: 1.25rem;
+  font-size: 1rem;
   border-radius: 0;
   border: none;
   outline: none;
@@ -503,7 +513,7 @@ textarea:hover {
 
 #submit {
   padding: 1em 1.5em;
-  font-size: 1.1rem;
+  font-size: 0.9rem;
   border: none;
   background-color: rgba(255, 252, 226, 0.9);
   color: var(--primary-color);
@@ -607,6 +617,10 @@ textarea:hover {
     width: 85%;
   }
 
+  .wide-container {
+    width: 90%;
+  }
+
   .row {
     flex-direction: column;
     align-items: center;
@@ -642,7 +656,7 @@ textarea:hover {
   }
 
   .mobile-nav li {
-    font-size: 1.7rem;
+    font-size: 1.4rem;
     color: var(--tertiary-color);
   }
 
@@ -717,5 +731,95 @@ textarea:hover {
 
   .right-menu {
     justify-content: flex-end;
+  }
+}
+
+/* Location Sticky Scroll */
+@media screen and (min-width: 920px) {
+  .location-div .two-col-grid {
+    align-items: start;
+    position: relative;
+  }
+
+  .location-text-col {
+    padding-bottom: 0;
+  }
+
+  .location-imgs-wrapper {
+    position: relative;
+    height: 450px;
+    width: 100%;
+  }
+
+  .location-markers {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    pointer-events: none;
+    z-index: 10;
+  }
+
+  .location-marker {
+    flex: 1;
+    width: 100%;
+  }
+
+  .location-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    margin-bottom: 0 !important;
+  }
+
+  .location-img.active-img {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+.location-list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 2em;
+}
+
+.location-item {
+  font-size: 1.2rem;
+  opacity: 0.5;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+  font-family: cormorant;
+}
+
+.location-item:hover {
+  opacity: 0.8;
+}
+
+.location-item.active-location {
+  opacity: 1;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 920px) {
+  .location-imgs-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2em;
+    margin-top: 2em;
+  }
+
+  .location-img {
+    opacity: 1;
+    visibility: visible;
+    position: static;
   }
 }
