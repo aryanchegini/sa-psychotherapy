@@ -141,10 +141,14 @@ window.addEventListener('resize', setScrolls);
 const scrollTopBtn = document.getElementById("scrollTopBtn");
 
 scrollTopBtn.addEventListener("click", () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
+  isScrollingToTop = true;
+  unlockDirection = 0;
+  if (isLocationLocked) {
+    isLocationLocked = false;
+    unlockPageScroll();
+  }
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  setTimeout(() => { isScrollingToTop = false; }, 1500);
 });
 
 // Intro text reveal logic for mobile
@@ -177,71 +181,166 @@ const observer = new IntersectionObserver((entries) => {
 const homeInfoText = document.querySelector('.home-info');
 if (homeInfoText) observer.observe(homeInfoText);
 
-// Location observer for sticky scroll highlight
+// Location scroll hijacking
+let isScrollingToTop = false;
+let isLocationLocked = false;
+let currentLocationIndex = 0;
+let locationLockY = 0;
+let unlockDirection = 0; // -1 = exited upward, 1 = exited downward, 0 = never exited
+let locationImageCooldown = false;
+let locationActivationCooldown = false;
+let pendingLocationIndex = -1;
+let previousScrollY = window.scrollY;
 let locationObserverInstance = null;
+
+function switchLocationTo(index) {
+  document.querySelectorAll('.location-item').forEach(i => i.classList.remove('active-location'));
+  document.querySelectorAll('.location-img').forEach(i => i.classList.remove('active-img'));
+  document.querySelector(`.location-item[data-index="${index}"]`)?.classList.add('active-location');
+  document.querySelector(`.location-img[data-index="${index}"]`)?.classList.add('active-img');
+  currentLocationIndex = index;
+}
+
+function getLocationLockY() {
+  const wrapper = document.querySelector('.location-imgs-wrapper');
+  if (!wrapper) return Infinity;
+  const navHeight = document.querySelector('nav').offsetHeight;
+  const wrapperDocTop = wrapper.getBoundingClientRect().top + window.scrollY;
+  const viewportCenter = navHeight + (window.innerHeight - navHeight) / 2;
+  return wrapperDocTop + wrapper.offsetHeight / 2 - viewportCenter;
+}
+
+function lockPageScroll() {
+  document.documentElement.style.overflow = 'hidden';
+}
+
+function unlockPageScroll() {
+  document.documentElement.style.overflow = '';
+}
+
+const APPROACH_ZONE = 500;
+const APPROACH_SPEED_THRESHOLD = 15; // deltaY per event below this skips decay — tune empirically
+
+function activateLock(startIndex) {
+  isLocationLocked = true;
+  locationLockY = getLocationLockY();
+  window.scrollTo(0, locationLockY);
+  lockPageScroll();
+  const idx = pendingLocationIndex >= 0 ? pendingLocationIndex : startIndex;
+  pendingLocationIndex = -1;
+  switchLocationTo(idx);
+  locationActivationCooldown = true;
+  setTimeout(() => { locationActivationCooldown = false; }, 500);
+}
+
+function deactivateLock(direction) {
+  isLocationLocked = false;
+  unlockDirection = direction;
+  unlockPageScroll();
+}
+
+window.addEventListener('scroll', () => {
+  if (window.innerWidth <= 920 || isScrollingToTop) {
+    previousScrollY = window.scrollY;
+    return;
+  }
+  if (isLocationLocked) return;
+
+  const lockY = getLocationLockY();
+  const cur = window.scrollY;
+
+  if (cur >= lockY && previousScrollY < lockY && unlockDirection !== 1) {
+    unlockDirection = 0;
+    activateLock(0);
+  } else if (cur <= lockY && previousScrollY > lockY && unlockDirection !== -1) {
+    unlockDirection = 0;
+    activateLock(2);
+  }
+
+  previousScrollY = cur;
+});
+
+window.addEventListener('wheel', (e) => {
+  if (window.innerWidth <= 920) return;
+
+  if (isLocationLocked) {
+    e.preventDefault();
+    if (locationImageCooldown || locationActivationCooldown) return;
+    const direction = e.deltaY > 0 ? 1 : -1;
+    const next = currentLocationIndex + direction;
+    if (next < 0 || next >= 3) {
+      deactivateLock(direction);
+      return;
+    }
+    locationImageCooldown = true;
+    setTimeout(() => { locationImageCooldown = false; }, 500);
+    switchLocationTo(next);
+    return;
+  }
+
+  // Exponential deceleration in the approach zone
+  const lockY = getLocationLockY();
+  const cur = window.scrollY;
+  const approachingDown = e.deltaY > 0 && unlockDirection !== 1 && (lockY - cur) > 0 && (lockY - cur) < APPROACH_ZONE;
+  const approachingUp   = e.deltaY < 0 && unlockDirection !== -1 && (cur - lockY) > 0 && (cur - lockY) < APPROACH_ZONE;
+
+  if (approachingDown || approachingUp) {
+    e.preventDefault();
+    const distance = approachingDown ? lockY - cur : cur - lockY;
+    const factor = Math.abs(e.deltaY) >= APPROACH_SPEED_THRESHOLD
+      ? Math.exp(-3 * (1 - distance / APPROACH_ZONE))
+      : 1;
+    const newScrollY = cur + e.deltaY * factor;
+
+    if ((approachingDown && newScrollY >= lockY) || (approachingUp && newScrollY <= lockY)) {
+      unlockDirection = 0;
+      activateLock(approachingDown ? 0 : 2);
+    } else {
+      window.scrollTo(0, newScrollY);
+    }
+  }
+}, { passive: false });
 
 function setupLocationObserver() {
   if (locationObserverInstance) {
     locationObserverInstance.disconnect();
+    locationObserverInstance = null;
   }
+  if (window.innerWidth <= 920 && isLocationLocked) {
+    isLocationLocked = false;
+    unlockPageScroll();
+  }
+  if (window.innerWidth > 920) return;
 
-  const isDesktop = window.innerWidth > 920;
-  
   locationObserverInstance = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        const index = entry.target.getAttribute('data-index');
-        
-        // Update text highlight
-        document.querySelectorAll('.location-item').forEach(item => {
-          item.classList.remove('active-location');
-        });
-        const activeText = document.querySelector(`.location-item[data-index="${index}"]`);
-        if (activeText) activeText.classList.add('active-location');
-
-        // Update image crossfade
-        document.querySelectorAll('.location-img').forEach(item => {
-          item.classList.remove('active-img');
-        });
-        const activeImg = document.querySelector(`.location-img[data-index="${index}"]`);
-        if (activeImg) activeImg.classList.add('active-img');
+        switchLocationTo(parseInt(entry.target.getAttribute('data-index')));
       }
     });
-  }, {
-    root: null,
-    rootMargin: '-40% 0px -40% 0px',
-    threshold: 0
-  });
+  }, { root: null, rootMargin: '-40% 0px -40% 0px', threshold: 0 });
 
-  const targets = isDesktop ? document.querySelectorAll('.location-marker') : document.querySelectorAll('.location-img');
-  targets.forEach(target => locationObserverInstance.observe(target));
+  document.querySelectorAll('.location-img').forEach(img => locationObserverInstance.observe(img));
 }
 
-// Ensure the observer refreshes on resize to accommodate mobile breakpoints
 window.addEventListener('resize', setupLocationObserver);
 window.addEventListener('DOMContentLoaded', setupLocationObserver);
-setupLocationObserver(); // Trigger initially
+setupLocationObserver();
 
-// Allow clicking on the location item to smoothly scroll to corresponding point
 document.querySelectorAll('.location-item').forEach(item => {
   item.addEventListener('click', () => {
-    const index = item.getAttribute('data-index');
-    const isDesktop = window.innerWidth > 920;
-    
-    if (isDesktop) {
-      const targetMarker = document.querySelector(`.location-marker[data-index="${index}"]`);
-      if (targetMarker) {
-        // Scroll to where the marker is securely centrally crossing the scroll viewport
-        const rect = targetMarker.getBoundingClientRect();
-        const y = rect.top + window.scrollY - window.innerHeight / 2 + rect.height / 2;
-        window.scrollTo({ top: y, behavior: 'smooth' });
+    const index = parseInt(item.getAttribute('data-index'));
+    if (window.innerWidth > 920) {
+      if (isLocationLocked) {
+        switchLocationTo(index);
+      } else {
+        pendingLocationIndex = index;
+        window.scrollTo({ top: getLocationLockY(), behavior: 'smooth' });
       }
     } else {
       const targetImg = document.querySelector(`.location-img[data-index="${index}"]`);
       if (targetImg) {
-        // Get exact position considering sticky nav padding
-        const y = targetImg.getBoundingClientRect().top + window.scrollY - 120;
-        window.scrollTo({ top: y, behavior: 'smooth' });
+        window.scrollTo({ top: targetImg.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
       }
     }
   });
