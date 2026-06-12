@@ -46,12 +46,13 @@ const innerNav = document.getElementById("inner-nav");
 const innerHome = document.getElementById("inner-home");
 
 let nameInNav = false;
+const introContentEl = document.querySelector('.intro-content');
+const homeInfoEl = document.querySelector('.home-info');
+
 window.addEventListener("scroll", () => {
   const handRect = innerHome.getBoundingClientRect();
   const navRect = document.querySelector("nav").getBoundingClientRect();
-  
-  // Check if the bottom of the Home section has scrolled up past the nav bar
-  // This means the Home section is no longer fully visible "under" the nav
+
   const isHomeAboveNav = handRect.bottom < navRect.height;
 
   if (isHomeAboveNav && !nameInNav) {
@@ -60,12 +61,20 @@ window.addEventListener("scroll", () => {
     innerNav.prepend(nameDiv);
     nameInNav = true;
   }
-  
+
   if (!isHomeAboveNav && nameInNav) {
     innerNav.classList.remove("row-aligned");
     innerNav.classList.add("centered-div", "right-menu");
     nameDiv.remove();
     nameInNav = false;
+  }
+
+  // Mobile: highlight paragraph once title starts disappearing behind nav
+  if (window.innerWidth <= 920 && introContentEl && homeInfoEl) {
+    const titleRect = introContentEl.getBoundingClientRect();
+    const titleBehindNav = titleRect.top < navRect.height;
+    homeInfoEl.classList.toggle('mobile-reveal', titleBehindNav);
+    introContentEl.classList.toggle('mobile-dim', titleBehindNav);
   }
 });
 
@@ -151,35 +160,7 @@ scrollTopBtn.addEventListener("click", () => {
   setTimeout(() => { isScrollingToTop = false; }, 1500);
 });
 
-// Intro text reveal logic for mobile
-const observerOptions = {
-  root: null,
-  rootMargin: '0px',
-  threshold: 1
-};
-
-const observer = new IntersectionObserver((entries) => {
-  // Only apply on mobile/tablet (matching existing CSS breakpoint)
-  if (window.innerWidth > 920) return;
-
-  entries.forEach(entry => {
-    const homeInfo = entry.target;
-    const introContent = document.querySelector('.intro-content');
-    
-    if (!homeInfo || !introContent) return;
-
-    if (entry.isIntersecting) {
-      homeInfo.classList.add('mobile-reveal');
-      introContent.classList.add('mobile-dim');
-    } else {
-      homeInfo.classList.remove('mobile-reveal');
-      introContent.classList.remove('mobile-dim');
-    }
-  });
-}, observerOptions);
-
-const homeInfoText = document.querySelector('.home-info');
-if (homeInfoText) observer.observe(homeInfoText);
+// Mobile intro highlight handled in scroll listener below
 
 // Location scroll hijacking
 let isScrollingToTop = false;
@@ -237,10 +218,15 @@ function deactivateLock(direction) {
   isLocationLocked = false;
   unlockDirection = direction;
   unlockPageScroll();
+  if (window.innerWidth <= 920) {
+    const nudge = locationLockY + direction * 120;
+    previousScrollY = nudge;
+    window.scrollTo(0, nudge);
+  }
 }
 
 window.addEventListener('scroll', () => {
-  if (window.innerWidth <= 920 || isScrollingToTop) {
+  if (isScrollingToTop) {
     previousScrollY = window.scrollY;
     return;
   }
@@ -301,6 +287,35 @@ window.addEventListener('wheel', (e) => {
   }
 }, { passive: false });
 
+// Mobile touch handling for location cycling
+let touchStartY = 0;
+
+window.addEventListener('touchstart', (e) => {
+  if (!isLocationLocked) return;
+  touchStartY = e.touches[0].clientY;
+}, { passive: true });
+
+window.addEventListener('touchmove', (e) => {
+  if (!isLocationLocked) return;
+  e.preventDefault();
+}, { passive: false });
+
+window.addEventListener('touchend', (e) => {
+  if (!isLocationLocked) return;
+  if (locationImageCooldown || locationActivationCooldown) return;
+  const deltaY = touchStartY - e.changedTouches[0].clientY;
+  if (Math.abs(deltaY) < 30) return;
+  const direction = deltaY > 0 ? 1 : -1;
+  const next = currentLocationIndex + direction;
+  if (next < 0 || next >= 3) {
+    deactivateLock(direction);
+    return;
+  }
+  locationImageCooldown = true;
+  setTimeout(() => { locationImageCooldown = false; }, 500);
+  switchLocationTo(next);
+}, { passive: true });
+
 function setupLocationObserver() {
   if (locationObserverInstance) {
     locationObserverInstance.disconnect();
@@ -310,17 +325,7 @@ function setupLocationObserver() {
     isLocationLocked = false;
     unlockPageScroll();
   }
-  if (window.innerWidth > 920) return;
-
-  locationObserverInstance = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        switchLocationTo(parseInt(entry.target.getAttribute('data-index')));
-      }
-    });
-  }, { root: null, rootMargin: '-40% 0px -40% 0px', threshold: 0 });
-
-  document.querySelectorAll('.location-img').forEach(img => locationObserverInstance.observe(img));
+  // Mobile uses click-to-switch; no observer needed
 }
 
 window.addEventListener('resize', setupLocationObserver);
@@ -338,10 +343,7 @@ document.querySelectorAll('.location-item').forEach(item => {
         window.scrollTo({ top: getLocationLockY(), behavior: 'smooth' });
       }
     } else {
-      const targetImg = document.querySelector(`.location-img[data-index="${index}"]`);
-      if (targetImg) {
-        window.scrollTo({ top: targetImg.getBoundingClientRect().top + window.scrollY - 120, behavior: 'smooth' });
-      }
+      switchLocationTo(index);
     }
   });
 });
