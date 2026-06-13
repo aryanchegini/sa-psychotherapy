@@ -298,7 +298,6 @@ nav {
 .content-img {
   width: 100%;
   object-fit: cover;
-  border-radius: 1px;
 }
 
 .portrait-img {
@@ -574,6 +573,10 @@ textarea:hover {
     background-attachment: fixed;
   }
 
+  .approach-img-col .content-img {
+    height: 90vh;
+  }
+
   /* when hovering the Text paragraph (Desktop Only) */
   .home-info.come-alive-text:hover {
     color: var(--tertiary-color);
@@ -608,11 +611,19 @@ textarea:hover {
   }
 
   .portrait-img {
+    width: 75%;
+    aspect-ratio: 5 / 4;
     height: auto;
-    max-height: 400px;
-    width: 100%;
     object-fit: cover;
-    margin-bottom: 2em;
+    margin: 0 auto 2em;
+    display: block;
+  }
+
+  .content-img {
+    width: 60%;
+    height: auto;
+    margin: 0 auto 2em;
+    display: block;
   }
 
   .col-2 {
@@ -718,7 +729,7 @@ textarea:hover {
   }
 
   .approach-img-col {
-    padding: 2em;
+    padding: 0;
     margin-top: 2em;
   }
 
@@ -757,10 +768,6 @@ textarea:hover {
     position: relative;
     height: 450px;
     width: 100%;
-  }
-
-  .location-markers {
-    display: none;
   }
 
   .location-img {
@@ -807,9 +814,9 @@ textarea:hover {
 @media screen and (max-width: 920px) {
   .location-imgs-wrapper {
     position: relative;
-    width: 100%;
-    aspect-ratio: 1 / 1;
-    margin-top: 2em;
+    width: 75%;
+    aspect-ratio: 5 / 4;
+    margin: 2em auto 0;
   }
 
   .location-img {

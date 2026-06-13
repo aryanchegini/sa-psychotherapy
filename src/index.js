@@ -44,6 +44,7 @@ nameDiv.addEventListener("click", () => {
 
 const innerNav = document.getElementById("inner-nav");
 const innerHome = document.getElementById("inner-home");
+const navEl = document.querySelector("nav");
 
 let nameInNav = false;
 const introContentEl = document.querySelector('.intro-content');
@@ -51,7 +52,7 @@ const homeInfoEl = document.querySelector('.home-info');
 
 window.addEventListener("scroll", () => {
   const handRect = innerHome.getBoundingClientRect();
-  const navRect = document.querySelector("nav").getBoundingClientRect();
+  const navRect = navEl.getBoundingClientRect();
 
   const isHomeAboveNav = handRect.bottom < navRect.height;
 
@@ -78,73 +79,67 @@ window.addEventListener("scroll", () => {
   }
 });
 
-function calculateDivLocations() {
-  return new Promise((resolve) => {
-    // adjust hand page height
-    let innerHomeHeight = innerHome.getBoundingClientRect().height;
-    let navHeight = document.querySelector("nav").getBoundingClientRect().height;
-    if (innerHomeHeight + navHeight < window.innerHeight) {
-      let diff = window.innerHeight - (innerHomeHeight + navHeight);
-      innerHome.style.height = innerHomeHeight + diff + "px";
-    }
+// Document offsets for each nav target. Anchor hrefs must match these keys
+// exactly (e.g. #fees-location maps to divLocations['fees-location']).
+let divLocations = {};
 
-    resolve({
-      home: 0,
-      approach: document.getElementById("home").getBoundingClientRect().height,
-      about:
-        document.getElementById("home").getBoundingClientRect().height +
-        document.getElementById("approach").getBoundingClientRect().height,
-      "fees-location":
-        document.getElementById("home").getBoundingClientRect().height +
-        document.getElementById("approach").getBoundingClientRect().height +
-        document.getElementById("about").getBoundingClientRect().height,
-      faq:
-        document.getElementById("home").getBoundingClientRect().height +
-        document.getElementById("approach").getBoundingClientRect().height +
-        document.getElementById("about").getBoundingClientRect().height +
-        document.getElementById("fees").getBoundingClientRect().height+
-        document.getElementById("location").getBoundingClientRect().height,
-      contact:
-        document.getElementById("home").getBoundingClientRect().height +
-        document.getElementById("approach").getBoundingClientRect().height +
-        document.getElementById("about").getBoundingClientRect().height +
-        document.getElementById("fees").getBoundingClientRect().height +
-        document.getElementById("location").getBoundingClientRect().height +
-        document.getElementById("faq").getBoundingClientRect().height,
+function calculateDivLocations() {
+  // adjust hand page height so the intro fills the viewport
+  const innerHomeHeight = innerHome.getBoundingClientRect().height;
+  const navHeight = navEl.getBoundingClientRect().height;
+  if (innerHomeHeight + navHeight < window.innerHeight) {
+    const diff = window.innerHeight - (innerHomeHeight + navHeight);
+    innerHome.style.height = innerHomeHeight + diff + "px";
+  }
+
+  const h = (id) => document.getElementById(id).getBoundingClientRect().height;
+  const home = h("home"),
+    approach = h("approach"),
+    about = h("about"),
+    fees = h("fees"),
+    location = h("location"),
+    faq = h("faq");
+
+  return {
+    home: 0,
+    approach: home,
+    about: home + approach,
+    "fees-location": home + approach + about,
+    faq: home + approach + about + fees + location,
+    contact: home + approach + about + fees + location + faq,
+  };
+}
+
+function refreshDivLocations() {
+  divLocations = calculateDivLocations();
+}
+
+// Bind anchor handlers once; only the offset table is recomputed on resize.
+document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+  anchor.addEventListener("click", function (event) {
+    const divName = this.getAttribute("href").substring(1);
+    if (!divLocations.hasOwnProperty(divName)) return;
+    event.preventDefault();
+    if (isLocationLocked) {
+      isLocationLocked = false;
+      unlockPageScroll();
+    }
+    isScrollingToSection = true;
+    unlockDirection = 0;
+    clearTimeout(scrollingToSectionTimeout);
+    scrollingToSectionTimeout = setTimeout(() => { isScrollingToSection = false; }, 3000);
+    window.scroll({
+      top: divLocations[divName],
+      left: 0,
+      behavior: "smooth",
     });
   });
-}
+});
 
-async function setScrolls() {
-  try {
-    const divLocations = await calculateDivLocations();
-    // Now that divLocations are calculated, use them for scrolling
-    // IMPORTANT: This only works if the anchor hrefs match the keys in divLocations exactly (e.g., #fees maps to divLocations['fees'])
-    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
-      anchor.addEventListener("click", function (event) {
-        let divName = this.getAttribute("href").substring(1);
-        
-        // Only override if we have a calculated location for this section
-        if (divLocations.hasOwnProperty(divName)) {
-          event.preventDefault();
-          window.scroll({
-            top: divLocations[divName],
-            left: 0,
-            behavior: "smooth",
-          });
-        }
-      });
-    });
-  } catch (error) {
-    console.error(error);
-  }
-}
-
-window.addEventListener("DOMContentLoaded", setScrolls);
-
-window.addEventListener("load", setScrolls);
-
-window.addEventListener('resize', setScrolls);
+window.addEventListener("DOMContentLoaded", refreshDivLocations);
+window.addEventListener("load", refreshDivLocations);
+window.addEventListener("resize", refreshDivLocations);
+refreshDivLocations();
 
 // Scroll to top button logic
 const scrollTopBtn = document.getElementById("scrollTopBtn");
@@ -164,6 +159,8 @@ scrollTopBtn.addEventListener("click", () => {
 
 // Location scroll hijacking
 let isScrollingToTop = false;
+let isScrollingToSection = false;
+let scrollingToSectionTimeout = null;
 let isLocationLocked = false;
 let currentLocationIndex = 0;
 let locationLockY = 0;
@@ -183,11 +180,17 @@ function switchLocationTo(index) {
 }
 
 function getLocationLockY() {
+  const navHeight = navEl.offsetHeight;
+  const viewportCenter = navHeight + (window.innerHeight - navHeight) / 2;
+  if (window.innerWidth <= 920) {
+    const grid = document.querySelector('.location-div .two-col-grid');
+    if (!grid) return Infinity;
+    const gridDocTop = grid.getBoundingClientRect().top + window.scrollY;
+    return gridDocTop + grid.offsetHeight / 2 - viewportCenter;
+  }
   const wrapper = document.querySelector('.location-imgs-wrapper');
   if (!wrapper) return Infinity;
-  const navHeight = document.querySelector('nav').offsetHeight;
   const wrapperDocTop = wrapper.getBoundingClientRect().top + window.scrollY;
-  const viewportCenter = navHeight + (window.innerHeight - navHeight) / 2;
   return wrapperDocTop + wrapper.offsetHeight / 2 - viewportCenter;
 }
 
@@ -226,7 +229,7 @@ function deactivateLock(direction) {
 }
 
 window.addEventListener('scroll', () => {
-  if (isScrollingToTop) {
+  if (isScrollingToTop || isScrollingToSection) {
     previousScrollY = window.scrollY;
     return;
   }
@@ -246,8 +249,16 @@ window.addEventListener('scroll', () => {
   previousScrollY = cur;
 });
 
+window.addEventListener('scrollend', () => {
+  if (isScrollingToSection) {
+    isScrollingToSection = false;
+    clearTimeout(scrollingToSectionTimeout);
+    previousScrollY = window.scrollY;
+  }
+});
+
 window.addEventListener('wheel', (e) => {
-  if (window.innerWidth <= 920) return;
+  if (isScrollingToSection) return;
 
   if (isLocationLocked) {
     e.preventDefault();
