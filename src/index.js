@@ -120,14 +120,6 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     const divName = this.getAttribute("href").substring(1);
     if (!divLocations.hasOwnProperty(divName)) return;
     event.preventDefault();
-    if (isLocationLocked) {
-      isLocationLocked = false;
-      unlockPageScroll();
-    }
-    isScrollingToSection = true;
-    unlockDirection = 0;
-    clearTimeout(scrollingToSectionTimeout);
-    scrollingToSectionTimeout = setTimeout(() => { isScrollingToSection = false; }, 3000);
     window.scroll({
       top: divLocations[divName],
       left: 0,
@@ -145,216 +137,69 @@ refreshDivLocations();
 const scrollTopBtn = document.getElementById("scrollTopBtn");
 
 scrollTopBtn.addEventListener("click", () => {
-  isScrollingToTop = true;
-  unlockDirection = 0;
-  if (isLocationLocked) {
-    isLocationLocked = false;
-    unlockPageScroll();
-  }
   window.scrollTo({ top: 0, behavior: "smooth" });
-  setTimeout(() => { isScrollingToTop = false; }, 1500);
 });
 
-// Mobile intro highlight handled in scroll listener below
+// --- Location section: native sticky scrollytelling ---
+// A tall .location-track pins .location-sticky below the nav; the active image
+// (and matching list item) is driven by how far we've scrolled through the track.
+const locImgs = document.querySelectorAll('.location-img');
+const locImgCount = locImgs.length;
+const locTrack = document.querySelector('.location-track');
+const locSticky = document.querySelector('.location-sticky');
+let currentLocationIndex = -1;
 
-// Location scroll hijacking
-let isScrollingToTop = false;
-let isScrollingToSection = false;
-let scrollingToSectionTimeout = null;
-let isLocationLocked = false;
-let currentLocationIndex = 0;
-let locationLockY = 0;
-let unlockDirection = 0; // -1 = exited upward, 1 = exited downward, 0 = never exited
-let locationImageCooldown = false;
-let locationActivationCooldown = false;
-let pendingLocationIndex = -1;
-let previousScrollY = window.scrollY;
-let locationObserverInstance = null;
+document.documentElement.style.setProperty('--loc-count', locImgCount);
 
 function switchLocationTo(index) {
+  if (index === currentLocationIndex) return;
   document.querySelectorAll('.location-item').forEach(i => i.classList.remove('active-location'));
-  document.querySelectorAll('.location-img').forEach(i => i.classList.remove('active-img'));
+  locImgs.forEach(i => i.classList.remove('active-img'));
   document.querySelector(`.location-item[data-index="${index}"]`)?.classList.add('active-location');
   document.querySelector(`.location-img[data-index="${index}"]`)?.classList.add('active-img');
   currentLocationIndex = index;
 }
 
-function getLocationLockY() {
-  const navHeight = navEl.offsetHeight;
-  const viewportCenter = navHeight + (window.innerHeight - navHeight) / 2;
-  if (window.innerWidth <= 920) {
-    const grid = document.querySelector('.location-div .two-col-grid');
-    if (!grid) return Infinity;
-    const gridDocTop = grid.getBoundingClientRect().top + window.scrollY;
-    return gridDocTop + grid.offsetHeight / 2 - viewportCenter;
-  }
-  const wrapper = document.querySelector('.location-imgs-wrapper');
-  if (!wrapper) return Infinity;
-  const wrapperDocTop = wrapper.getBoundingClientRect().top + window.scrollY;
-  return wrapperDocTop + wrapper.offsetHeight / 2 - viewportCenter;
+function setNavHeightVar() {
+  document.documentElement.style.setProperty('--nav-height', navEl.offsetHeight + 'px');
 }
 
-function lockPageScroll() {
-  document.documentElement.style.overflow = 'hidden';
+// Scroll range (document coords) over which the track stays pinned.
+function locationScrollRange() {
+  const trackTop = locTrack.getBoundingClientRect().top + window.scrollY;
+  const startY = trackTop - navEl.offsetHeight;
+  const scrollable = locTrack.offsetHeight - locSticky.offsetHeight;
+  return { startY, scrollable };
 }
 
-function unlockPageScroll() {
-  document.documentElement.style.overflow = '';
+function updateLocationScroll() {
+  if (!locTrack || !locSticky) return;
+  const { startY, scrollable } = locationScrollRange();
+  const progress = scrollable > 0
+    ? Math.min(1, Math.max(0, (window.scrollY - startY) / scrollable))
+    : 0;
+  const index = Math.min(locImgCount - 1, Math.floor(progress * locImgCount));
+  switchLocationTo(index);
 }
 
-const APPROACH_ZONE = 500;
-const APPROACH_SPEED_THRESHOLD = 15; // deltaY per event below this skips decay — tune empirically
-
-function activateLock(startIndex) {
-  isLocationLocked = true;
-  locationLockY = getLocationLockY();
-  window.scrollTo(0, locationLockY);
-  lockPageScroll();
-  const idx = pendingLocationIndex >= 0 ? pendingLocationIndex : startIndex;
-  pendingLocationIndex = -1;
-  switchLocationTo(idx);
-  locationActivationCooldown = true;
-  setTimeout(() => { locationActivationCooldown = false; }, 500);
-}
-
-function deactivateLock(direction) {
-  isLocationLocked = false;
-  unlockDirection = direction;
-  unlockPageScroll();
-  if (window.innerWidth <= 920) {
-    const nudge = locationLockY + direction * 120;
-    previousScrollY = nudge;
-    window.scrollTo(0, nudge);
-  }
-}
-
+let locTicking = false;
 window.addEventListener('scroll', () => {
-  if (isScrollingToTop || isScrollingToSection) {
-    previousScrollY = window.scrollY;
-    return;
-  }
-  if (isLocationLocked) return;
-
-  const lockY = getLocationLockY();
-  const cur = window.scrollY;
-
-  if (cur >= lockY && previousScrollY < lockY && unlockDirection !== 1) {
-    unlockDirection = 0;
-    activateLock(0);
-  } else if (cur <= lockY && previousScrollY > lockY && unlockDirection !== -1) {
-    unlockDirection = 0;
-    activateLock(2);
-  }
-
-  previousScrollY = cur;
-});
-
-window.addEventListener('scrollend', () => {
-  if (isScrollingToSection) {
-    isScrollingToSection = false;
-    clearTimeout(scrollingToSectionTimeout);
-    previousScrollY = window.scrollY;
-  }
-});
-
-window.addEventListener('wheel', (e) => {
-  if (isScrollingToSection) return;
-
-  if (isLocationLocked) {
-    e.preventDefault();
-    if (locationImageCooldown || locationActivationCooldown) return;
-    const direction = e.deltaY > 0 ? 1 : -1;
-    const next = currentLocationIndex + direction;
-    if (next < 0 || next >= 3) {
-      deactivateLock(direction);
-      return;
-    }
-    locationImageCooldown = true;
-    setTimeout(() => { locationImageCooldown = false; }, 500);
-    switchLocationTo(next);
-    return;
-  }
-
-  // Exponential deceleration in the approach zone
-  const lockY = getLocationLockY();
-  const cur = window.scrollY;
-  const approachingDown = e.deltaY > 0 && unlockDirection !== 1 && (lockY - cur) > 0 && (lockY - cur) < APPROACH_ZONE;
-  const approachingUp   = e.deltaY < 0 && unlockDirection !== -1 && (cur - lockY) > 0 && (cur - lockY) < APPROACH_ZONE;
-
-  if (approachingDown || approachingUp) {
-    e.preventDefault();
-    const distance = approachingDown ? lockY - cur : cur - lockY;
-    const factor = Math.abs(e.deltaY) >= APPROACH_SPEED_THRESHOLD
-      ? Math.exp(-3 * (1 - distance / APPROACH_ZONE))
-      : 1;
-    const newScrollY = cur + e.deltaY * factor;
-
-    if ((approachingDown && newScrollY >= lockY) || (approachingUp && newScrollY <= lockY)) {
-      unlockDirection = 0;
-      activateLock(approachingDown ? 0 : 2);
-    } else {
-      window.scrollTo(0, newScrollY);
-    }
-  }
-}, { passive: false });
-
-// Mobile touch handling for location cycling
-let touchStartY = 0;
-
-window.addEventListener('touchstart', (e) => {
-  if (!isLocationLocked) return;
-  touchStartY = e.touches[0].clientY;
+  if (locTicking) return;
+  locTicking = true;
+  requestAnimationFrame(() => { updateLocationScroll(); locTicking = false; });
 }, { passive: true });
 
-window.addEventListener('touchmove', (e) => {
-  if (!isLocationLocked) return;
-  e.preventDefault();
-}, { passive: false });
+window.addEventListener('resize', () => { setNavHeightVar(); updateLocationScroll(); });
+window.addEventListener('load', () => { setNavHeightVar(); updateLocationScroll(); });
+setNavHeightVar();
+updateLocationScroll();
 
-window.addEventListener('touchend', (e) => {
-  if (!isLocationLocked) return;
-  if (locationImageCooldown || locationActivationCooldown) return;
-  const deltaY = touchStartY - e.changedTouches[0].clientY;
-  if (Math.abs(deltaY) < 30) return;
-  const direction = deltaY > 0 ? 1 : -1;
-  const next = currentLocationIndex + direction;
-  if (next < 0 || next >= 3) {
-    deactivateLock(direction);
-    return;
-  }
-  locationImageCooldown = true;
-  setTimeout(() => { locationImageCooldown = false; }, 500);
-  switchLocationTo(next);
-}, { passive: true });
-
-function setupLocationObserver() {
-  if (locationObserverInstance) {
-    locationObserverInstance.disconnect();
-    locationObserverInstance = null;
-  }
-  if (window.innerWidth <= 920 && isLocationLocked) {
-    isLocationLocked = false;
-    unlockPageScroll();
-  }
-  // Mobile uses click-to-switch; no observer needed
-}
-
-window.addEventListener('resize', setupLocationObserver);
-window.addEventListener('DOMContentLoaded', setupLocationObserver);
-setupLocationObserver();
-
+// Click a location to jump to the centre of that image's scroll segment.
 document.querySelectorAll('.location-item').forEach(item => {
   item.addEventListener('click', () => {
+    if (!locTrack || !locSticky) return;
     const index = parseInt(item.getAttribute('data-index'));
-    if (window.innerWidth > 920) {
-      if (isLocationLocked) {
-        switchLocationTo(index);
-      } else {
-        pendingLocationIndex = index;
-        window.scrollTo({ top: getLocationLockY(), behavior: 'smooth' });
-      }
-    } else {
-      switchLocationTo(index);
-    }
+    const { startY, scrollable } = locationScrollRange();
+    window.scrollTo({ top: startY + scrollable * ((index + 0.5) / locImgCount), behavior: 'smooth' });
   });
 });

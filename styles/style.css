@@ -8,6 +8,7 @@
   --pink-color: rgb(227, 215, 215);
   --multiply-color: rgb(129, 129, 129);
   --hand-multiply-color: rgba(123, 123, 123, 0.89);
+  --faded-white: rgba(255, 255, 255, 0.487);
   --nav-box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   box-sizing: border-box;
   color: var(--highlight-color);
@@ -137,19 +138,6 @@ nav {
   cursor: pointer;
 }
 
-.logo-container {
-  display: flex;
-  align-items: center;
-  gap: 2em;
-  margin-top: 2em;
-}
-
-.logo-img,
-.img-in-link {
-  height: 60px;
-  width: auto;
-}
-
 .nav-name {
   font-size: 2.4rem;
   color: var(--tertiary-color);
@@ -207,11 +195,8 @@ nav {
   font-size: 3.2rem;
 }
 
-.info,
-.flex-info,
 .home-info,
 .left-info,
-.right-info,
 .intro-info {
   font-size: 1.2rem;
   line-height: 1.3em;
@@ -223,24 +208,25 @@ nav {
   font-weight: 100;
 }
 
-.info,
-.flex-info {
-  text-align: center;
-}
-
 .left-info,
 .left-align-text,
 .home-info {
   text-align: left;
 }
 
-.right-info {
-  text-align: right;
-}
-
 .home-info {
   width: 90%;
   margin-top: 3em;
+}
+
+/* Vertical rhythm between stacked paragraphs / FAQ items */
+.left-info p + p,
+.home-info p + p {
+  margin-top: 1em;
+}
+
+.faq-item + .faq-item {
+  margin-top: 2em;
 }
 
 /* Transition settings */
@@ -255,7 +241,7 @@ nav {
 }
 
 .home-info.come-alive-text {
-  color: rgba(255, 255, 255, 0.487);
+  color: var(--faded-white);
   opacity: 0.8;
 }
 
@@ -274,26 +260,12 @@ nav {
   margin-top: 0.2em;
 }
 
-.underline,
-.active {
+.underline {
   text-decoration: underline solid currentColor 0.5px;
   text-underline-offset: 0.3em;
 }
 
-.special-text {
-  color: var(--pink-color);
-}
-
 /* --- Images --- */
-.img-res {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 3em;
-  gap: 2em;
-}
-
 .portrait-img,
 .content-img {
   width: 100%;
@@ -302,16 +274,6 @@ nav {
 
 .portrait-img {
   height: 450px;
-}
-
-.img-res-footer {
-  width: 35%;
-}
-
-.img-res-div {
-  width: 100%;
-  margin: 0 auto;
-  gap: 5em;
 }
 
 /* --- Sections --- */
@@ -327,7 +289,7 @@ nav {
   padding: 8em 0;
   background-size: cover;
   background-position: right 75% bottom 80%;
-  color: rgba(255, 255, 255, 0.487);
+  color: var(--faded-white);
   background-repeat: no-repeat;
 }
 
@@ -430,6 +392,31 @@ nav {
 .footer-div {
   background-color: var(--primary-color);
   padding: 2em 1em;
+}
+
+.footer-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 1.5em;
+  margin-top: 2em;
+}
+
+.footer-logos img {
+  height: 100px;
+  width: auto;
+  background-color: var(--tertiary-color);
+  padding: 8px 12px;
+}
+
+.footer-logo-link {
+  display: inline-flex;
+  transition: opacity 0.3s ease;
+}
+
+.footer-logo-link:hover {
+  opacity: 0.8;
 }
 
 .footer-text {
@@ -560,12 +547,6 @@ textarea:hover {
   height: 24px;
 }
 
-.map-iframe {
-  border: 0;
-  width: 100%;
-  height: 450px;
-}
-
 /* --- Media Queries --- */
 @media screen and (min-width: 920px) {
 
@@ -585,16 +566,12 @@ textarea:hover {
   }
 
   .intro-grid:has(.home-info:hover) .intro-content {
-    color: rgba(255, 255, 255, 0.487);
+    color: var(--faded-white);
     opacity: 0.8;
   }
 }
 
 @media screen and (max-width: 920px) {
-  .map-iframe {
-    height: 300px;
-  }
-
   /* Mobile Scroll Reveal */
   .home-info.come-alive-text.mobile-reveal {
     color: var(--tertiary-color);
@@ -602,12 +579,8 @@ textarea:hover {
   }
 
   .intro-content.come-alive-text.mobile-dim {
-    color: rgba(255, 255, 255, 0.487);
+    color: var(--faded-white);
     opacity: 0.8;
-  }
-
-  .intro-info {
-    width: 50%;
   }
 
   .portrait-img {
@@ -647,12 +620,6 @@ textarea:hover {
 
   .row>*+* {
     margin-top: 4em;
-  }
-
-  .info,
-  .flex-info {
-    width: 100%;
-    margin-top: 1em;
   }
 
   /* Switch Grid to Flex Column for better vertical flow on mobile */
@@ -754,10 +721,22 @@ textarea:hover {
 }
 
 /* Location Sticky Scroll */
+.location-track {
+  position: relative;
+  height: calc(var(--loc-count, 3) * 100vh);
+}
+
+.location-sticky {
+  position: sticky;
+  top: var(--nav-height, 0px);
+  min-height: calc(100vh - var(--nav-height, 0px));
+  display: flex;
+  align-items: center;
+}
+
 @media screen and (min-width: 920px) {
   .location-div .two-col-grid {
     align-items: start;
-    position: relative;
   }
 
   .location-text-col {
@@ -799,7 +778,6 @@ textarea:hover {
   opacity: 0.5;
   transition: opacity 0.2s ease;
   cursor: pointer;
-  font-family: cormorant;
 }
 
 .location-item:hover {
