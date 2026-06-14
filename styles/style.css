@@ -1,17 +1,16 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=Quicksand:wght@300..700&display=swap');
 
 :root {
-  --primary-color: #424a3fe0;
-  --secondary-color: #1c3e4a;
-  --tertiary-color: white;
-  --highlight-color: #b69a84;
-  --pink-color: rgb(227, 215, 215);
-  --multiply-color: rgb(129, 129, 129);
-  --hand-multiply-color: rgba(123, 123, 123, 0.89);
+  --dark-green: #004644;
+  --deep-blue: #00222e;
+  --white: white;
+  --accent: #b69a84;
+  --blush-pink: rgb(227, 215, 215);
+  --intro-overlay: rgba(123, 123, 123, 0.89);
   --faded-white: rgba(255, 255, 255, 0.487);
   --nav-box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
   box-sizing: border-box;
-  color: var(--highlight-color);
+  color: var(--accent);
 }
 
 *,
@@ -108,7 +107,7 @@ img {
 
 /* --- Navigation --- */
 nav {
-  background-color: var(--secondary-color);
+  background-color: var(--deep-blue);
   padding: 1.8em 0;
   box-shadow: var(--nav-box-shadow);
   position: sticky;
@@ -120,17 +119,21 @@ nav {
 .nav-list {
   list-style-type: none;
   display: flex;
+  gap: 0.7em;
   font-size: 1.2em;
-  color: var(--tertiary-color);
-}
-
-.nav-list>*+* {
-  margin-left: 0.7em;
+  color: var(--white);
 }
 
 .nav-item {
   user-select: none;
-  text-align: center;
+  flex: 0 0 auto;
+}
+
+/* Desktop nav: JS adds .nav-cramped to the nav only when the name + buttons
+   actually overflow the row at the current width. Then each item hugs its text
+   and wraps its label to two lines (keeps gaps even). Otherwise single-line. */
+.nav-cramped .desktop-nav .nav-item {
+  width: min-content;
 }
 
 .nav-item:hover {
@@ -140,7 +143,7 @@ nav {
 
 .nav-name {
   font-size: 2.4rem;
-  color: var(--tertiary-color);
+  color: var(--white);
   transition: opacity 0.3s ease;
   /* Add transition for smoothness */
 }
@@ -157,7 +160,7 @@ nav {
 }
 
 .menu-toggle-icon {
-  fill: var(--tertiary-color);
+  fill: var(--white);
   width: 35px;
   height: auto;
 }
@@ -236,7 +239,7 @@ nav {
 
 /* Default State: Title White, Text Faded */
 .intro-content.come-alive-text {
-  color: var(--tertiary-color);
+  color: var(--white);
   opacity: 1;
 }
 
@@ -279,12 +282,12 @@ nav {
 /* --- Sections --- */
 .section-div {
   padding: 4em 1em;
-  color: var(--primary-color);
+  color: var(--dark-green);
 }
 
 .intro-div {
   background-image: url("../assets/images/Soraya-15.jpg");
-  background-color: var(--hand-multiply-color);
+  background-color: var(--intro-overlay);
   background-blend-mode: multiply;
   padding: 8em 0;
   background-size: cover;
@@ -325,15 +328,15 @@ nav {
 
 /* Examples Section */
 .examples-div {
-  background-color: var(--pink-color);
-  color: var(--primary-color);
+  background-color: var(--blush-pink);
+  color: var(--dark-green);
   padding: 4em 0;
 }
 
 .examples-div .section-title,
 .examples-div .sub-section-title {
   text-align: center;
-  color: var(--primary-color);
+  color: var(--dark-green);
   margin-bottom: 2em;
 }
 
@@ -352,7 +355,7 @@ nav {
 .examples-div .examples-col-1 {
   text-align: right;
   padding-right: 3em;
-  border-right: 1px solid var(--highlight-color);
+  border-right: 1px solid var(--accent);
 }
 
 .examples-div .examples-col-2 {
@@ -372,25 +375,24 @@ nav {
 /* Other Sections */
 .fees-div,
 .location-div {
-  background-color: var(--pink-color);
+  background-color: var(--blush-pink);
   padding: 4em 0;
-  color: var(--primary-color);
+  color: var(--dark-green);
 }
 
 .faq-div {
-  background-color: var(--tertiary-color);
+  background-color: var(--white);
   /* Ensure white background */
   padding: 4em 0;
 }
 
 .contact-div {
-  background-color: var(--primary-color);
-  color: var(--highlight-color);
-  background-blend-mode: multiply;
+  background-color: var(--dark-green);
+  color: var(--accent);
 }
 
 .footer-div {
-  background-color: var(--primary-color);
+  background-color: var(--dark-green);
   padding: 2em 1em;
 }
 
@@ -406,7 +408,7 @@ nav {
 .footer-logos img {
   height: 100px;
   width: auto;
-  background-color: var(--tertiary-color);
+  background-color: var(--white);
   padding: 8px 12px;
 }
 
@@ -421,7 +423,7 @@ nav {
 
 .footer-text {
   margin-top: 2em;
-  color: var(--tertiary-color);
+  color: var(--white);
 }
 
 .approach-img-col {
@@ -438,7 +440,7 @@ nav {
 }
 
 .dark-text {
-  color: var(--primary-color);
+  color: var(--dark-green);
 }
 
 /* --- Forms --- */
@@ -510,7 +512,7 @@ textarea:hover {
   font-size: 0.9rem;
   border: none;
   background-color: rgba(255, 252, 226, 0.9);
-  color: var(--primary-color);
+  color: var(--dark-green);
   transition: background-color 0.3s ease;
 }
 
@@ -523,8 +525,8 @@ textarea:hover {
 #scrollTopBtn {
   display: flex;
   background-color: transparent;
-  color: var(--highlight-color);
-  border: 1px solid var(--highlight-color);
+  color: var(--accent);
+  border: 1px solid var(--accent);
   cursor: pointer;
   padding: 10px;
   border-radius: 50%;
@@ -537,8 +539,8 @@ textarea:hover {
 }
 
 #scrollTopBtn:hover {
-  background-color: var(--highlight-color);
-  color: var(--primary-color);
+  background-color: var(--accent);
+  color: var(--dark-green);
 }
 
 #scrollTopBtn svg {
@@ -558,23 +560,53 @@ textarea:hover {
     height: 90vh;
   }
 
+  /* Keep the name from squishing so the nav-overflow measurement is accurate. */
+  .nav-name {
+    flex-shrink: 0;
+  }
+
+  /* Affordance: signal the paragraph is interactive, and play a one-time
+     "breathing" hint on load that demonstrates the hover reveal. */
+  .intro-grid .home-info.come-alive-text {
+    cursor: pointer;
+    animation: home-info-hint 1.3s ease 0.6s 2;
+  }
+
   /* when hovering the Text paragraph (Desktop Only) */
   .home-info.come-alive-text:hover {
-    color: var(--tertiary-color);
+    color: var(--white);
     opacity: 1;
-    cursor: default;
   }
 
   .intro-grid:has(.home-info:hover) .intro-content {
     color: var(--faded-white);
     opacity: 0.8;
   }
+
+  @keyframes home-info-hint {
+    0%, 100% {
+      color: var(--faded-white);
+      opacity: 0.8;
+      text-shadow: none;
+    }
+    50% {
+      color: var(--white);
+      opacity: 1;
+      text-shadow: 0 0 14px rgba(255, 255, 255, 0.65);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .intro-grid .home-info.come-alive-text {
+      animation: none;
+    }
+  }
 }
 
 @media screen and (max-width: 920px) {
   /* Mobile Scroll Reveal */
   .home-info.come-alive-text.mobile-reveal {
-    color: var(--tertiary-color);
+    color: var(--white);
     opacity: 1;
   }
 
@@ -643,17 +675,12 @@ textarea:hover {
 
   .mobile-nav li {
     font-size: 1.4rem;
-    color: var(--tertiary-color);
+    color: var(--white);
   }
 
   .nav-list {
     flex-direction: column;
     text-align: center;
-  }
-
-  .nav-list>*+* {
-    margin-left: 0;
-    margin-top: 0.7em;
   }
 
   .menu-toggle {
@@ -705,7 +732,7 @@ textarea:hover {
     text-align: center;
     padding-right: 0;
     border-right: none;
-    border-bottom: 1px solid var(--highlight-color);
+    border-bottom: 1px solid var(--accent);
     padding-bottom: 2em;
   }
 

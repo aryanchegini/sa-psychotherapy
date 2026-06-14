@@ -50,6 +50,20 @@ let nameInNav = false;
 const introContentEl = document.querySelector('.intro-content');
 const homeInfoEl = document.querySelector('.home-info');
 
+// Let nav buttons wrap their labels (.nav-cramped) only when the name + buttons
+// actually overflow the row. Measured live, so it adapts to any screen width.
+function updateNavCramped() {
+  // Only relevant on desktop (mobile uses the hamburger menu).
+  if (!nameInNav || window.innerWidth <= 920) {
+    innerNav.classList.remove("nav-cramped");
+    return;
+  }
+  innerNav.classList.remove("nav-cramped"); // measure with buttons single-line
+  if (innerNav.scrollWidth > innerNav.clientWidth) {
+    innerNav.classList.add("nav-cramped");
+  }
+}
+
 window.addEventListener("scroll", () => {
   const handRect = innerHome.getBoundingClientRect();
   const navRect = navEl.getBoundingClientRect();
@@ -61,6 +75,7 @@ window.addEventListener("scroll", () => {
     innerNav.classList.add("row-aligned");
     innerNav.prepend(nameDiv);
     nameInNav = true;
+    updateNavCramped();
   }
 
   if (!isHomeAboveNav && nameInNav) {
@@ -68,6 +83,7 @@ window.addEventListener("scroll", () => {
     innerNav.classList.add("centered-div", "right-menu");
     nameDiv.remove();
     nameInNav = false;
+    updateNavCramped();
   }
 
   // Mobile: highlight paragraph once title starts disappearing behind nav
@@ -131,6 +147,7 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
 window.addEventListener("DOMContentLoaded", refreshDivLocations);
 window.addEventListener("load", refreshDivLocations);
 window.addEventListener("resize", refreshDivLocations);
+window.addEventListener("resize", updateNavCramped);
 refreshDivLocations();
 
 // Scroll to top button logic
@@ -198,7 +215,7 @@ updateLocationScroll();
 document.querySelectorAll('.location-item').forEach(item => {
   item.addEventListener('click', () => {
     if (!locTrack || !locSticky) return;
-    const index = parseInt(item.getAttribute('data-index'));
+    const index = parseInt(item.getAttribute('data-index'), 10);
     const { startY, scrollable } = locationScrollRange();
     window.scrollTo({ top: startY + scrollable * ((index + 0.5) / locImgCount), behavior: 'smooth' });
   });
