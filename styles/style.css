@@ -133,11 +133,21 @@ img {
   gap: 4em;
 }
 
-/* --- Navigation --- */
+/* --- Brand strip + navigation ---------------------------------------------
+   A thin descriptor band above a light nav, rather than one heavy dark bar.  */
+.brandbar {
+  background-color: var(--sand);
+  color: var(--teal-deep);
+  text-align: center;
+  font-size: 0.95rem;
+  letter-spacing: 0.14em;
+  padding: 0.9em 1em;
+}
+
 nav {
-  background-color: var(--teal-deep);
-  padding: 1.8em 0;
-  box-shadow: var(--nav-box-shadow);
+  background-color: var(--parchment);
+  border-bottom: 1px solid var(--line);
+  padding: 1.1em 0;
   position: sticky;
   top: 0;
   z-index: 100;
@@ -146,14 +156,14 @@ nav {
 .nav-list {
   list-style-type: none;
   display: flex;
-  gap: 1.4em;
-  font-size: 1.2em;
-  color: var(--cream);
+  gap: 1.6em;
+  font-size: 1.05em;
+  color: var(--ink);
 }
 
 .desktop-nav-list {
-  font-size: 1.35em;
-  font-weight: 100;
+  font-size: 1.15em;
+  font-weight: 300;
 }
 
 .nav-item {
@@ -180,8 +190,8 @@ nav {
 }
 
 .nav-name {
-  font-size: 2.2rem;
-  color: var(--cream);
+  font-size: 1.6rem;
+  color: var(--teal-deep);
   transition: opacity 0.3s ease;
 }
 
@@ -196,8 +206,8 @@ nav {
 }
 
 .menu-toggle-icon {
-  fill: var(--cream);
-  width: 35px;
+  fill: var(--ink);
+  width: 30px;
   height: auto;
 }
 
@@ -207,7 +217,7 @@ nav {
   left: 0;
   height: 100vh;
   width: 100vw;
-  background-color: rgba(20, 52, 61, 0.94);
+  background-color: rgba(244, 239, 229, 0.97);
   display: none;
 }
 
@@ -218,29 +228,11 @@ nav {
    which is what lets those widths vary without looking accidental.        */
 .section-title,
 .strip-title {
-  font-size: 3.2rem;
-  line-height: 1.1em;
+  font-size: 2.05rem;
+  line-height: 1.15em;
   color: var(--teal-deep);
   text-align: left;
   margin: 0 0 0.7em;
-}
-
-.section-title::after,
-.strip-title::after {
-  content: "";
-  display: block;
-  width: 60px;
-  height: 1px;
-  margin-top: 0.35em;
-  background-color: var(--accent);
-}
-
-.strip-deep .strip-title {
-  color: var(--cream);
-}
-
-.strip-deep .strip-title::after {
-  background-color: var(--accent-on-dark);
 }
 
 .sub-section-title,
@@ -249,17 +241,17 @@ nav {
 }
 
 .sub-section-title {
-  font-size: 2.2rem;
+  font-size: 1.6rem;
 }
 
 .mini-section-title {
-  font-size: 1.5rem;
+  font-size: 1.15rem;
   color: var(--teal-deep);
 }
 
 .left-info {
-  font-size: 1.15rem;
-  line-height: 1.6em;
+  font-size: 1.02rem;
+  line-height: 1.75em;
   color: var(--ink);
 }
 
@@ -296,86 +288,65 @@ nav {
 }
 
 /* --- Hero -----------------------------------------------------------------
-   Contained height, the portrait framed rather than filling the screen, and
-   the name held in a card on the right so nothing sits over her face.      */
+   A short band showing the consulting room itself, with nobody in it. Someone
+   arriving here is looking for help, not for a portrait - her photograph
+   belongs in About Me, and this also keeps her name clear of her face.    */
 .hero {
   position: relative;
-  background-image: url("../assets/images/Soraya-15.jpg");
+  background-image: url("../assets/images/Margate.jpg");
   background-size: cover;
-  background-position: 30% 12%;
+  background-position: center 62%;
   background-repeat: no-repeat;
-  min-height: min(78vh, 720px);
+  min-height: 380px;
   display: flex;
   align-items: center;
-  padding: 4em 0;
+  justify-content: center;
 }
 
-/* Gentle warm scrim, heavier on the right so the card text stays readable. */
 .hero::after {
   content: "";
   position: absolute;
   inset: 0;
-  background: linear-gradient(100deg,
-      rgba(20, 52, 61, 0.10) 0%,
-      rgba(20, 52, 61, 0.14) 42%,
-      rgba(20, 52, 61, 0.46) 72%,
-      rgba(20, 52, 61, 0.58) 100%);
-  pointer-events: none;
+  background: rgba(20, 52, 61, 0.58);
 }
 
-.hero-grid {
+.hero-inner {
   position: relative;
   z-index: 1;
-  display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
-}
-
-.hero-card {
-  grid-column: 2;
-  text-align: left;
+  text-align: center;
   color: var(--cream);
-  border-left: 1px solid var(--accent-on-dark);
-  padding-left: 2em;
+  padding: 3em 0;
 }
 
 .hero-name {
-  font-size: clamp(2.6rem, 4.6vw, 4rem);
-  line-height: 1.05em;
+  font-size: clamp(2rem, 3.6vw, 2.9rem);
+  line-height: 1.1em;
   font-weight: 300;
   margin: 0;
-  letter-spacing: 0.01em;
 }
 
 .hero-role {
-  font-size: 1.15rem;
-  line-height: 1.5em;
-  margin: 1em 0 0;
-  color: var(--cream);
-}
-
-.hero-meta {
-  font-size: 0.95rem;
-  margin: 0.5em 0 0;
-  color: rgba(251, 248, 242, 0.86);
-  letter-spacing: 0.02em;
+  font-size: 1rem;
+  line-height: 1.6em;
+  margin: 0.9em auto 0;
+  max-width: 30em;
+  color: rgba(251, 248, 242, 0.9);
 }
 
 .hero-cta {
   display: inline-block;
-  margin-top: 2em;
-  padding: 0.85em 1.9em;
+  margin-top: 1.8em;
+  padding: 0.7em 1.7em;
   font-size: 0.95rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
   text-decoration: none;
   color: var(--cream);
-  border: 1px solid var(--accent-on-dark);
-  border-radius: 2px;
+  border: 1px solid rgba(251, 248, 242, 0.7);
+  border-radius: 3px;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .hero-cta:hover {
-  background-color: var(--accent-on-dark);
+  background-color: var(--parchment);
   color: var(--teal-deep);
 }
 
@@ -384,25 +355,15 @@ nav {
   padding: var(--section-pad) 1em;
 }
 
-.strip-deep {
-  background-color: var(--teal-deep);
-  color: var(--cream);
-}
-
-.strip-sand {
-  background-color: var(--sand);
-  color: var(--ink);
-}
-
-.strip-sand .strip-body,
-.strip-sand .strip-note {
+.strip-body,
+.strip-note {
   color: var(--ink);
 }
 
 .strip-body {
-  font-size: 1.2rem;
-  line-height: 1.75em;
-  color: var(--cream-soft);
+  font-size: 1.05rem;
+  line-height: 1.8em;
+  color: var(--ink);
   text-align: left;
 }
 
@@ -417,7 +378,7 @@ nav {
   margin: 0;
   columns: 3;
   column-gap: 3em;
-  font-size: 1.05rem;
+  font-size: 0.95rem;
 }
 
 .areas-list .list-item {
@@ -444,24 +405,24 @@ nav {
   list-style: none;
   padding: 0;
   margin: 0;
-  font-size: 1.1rem;
+  font-size: 1rem;
 }
 
 .training-list li {
-  padding: 0.9em 0;
-  border-bottom: 1px solid rgba(251, 248, 242, 0.16);
-  color: var(--cream);
+  padding: 0.8em 0;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
 }
 
 .training-list li:first-child {
-  border-top: 1px solid rgba(251, 248, 242, 0.16);
+  border-top: 1px solid var(--line);
 }
 
 .strip-note {
   margin-top: 2em;
-  font-size: 1.05rem;
-  line-height: 1.7em;
-  color: var(--cream-soft);
+  font-size: 0.98rem;
+  line-height: 1.8em;
+  color: var(--ink-soft);
   font-style: italic;
 }
 
@@ -493,7 +454,7 @@ nav {
    void inside the fees section rather than as a section in its own right. */
 .location-track,
 .location-div {
-  background-color: var(--sand);
+  background-color: var(--parchment);
 }
 
 .location-div {
@@ -623,10 +584,8 @@ textarea:hover {
 }
 
 #submit {
-  padding: 1em 1.8em;
-  font-size: 0.9rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
+  padding: 0.85em 1.7em;
+  font-size: 0.95rem;
   border: none;
   background-color: var(--accent-on-dark);
   color: var(--teal-deep);
@@ -683,29 +642,13 @@ textarea:hover {
 
 @media screen and (max-width: 920px) {
   .hero {
-    background-position: 40% 10%;
-    min-height: 78vh;
-    align-items: flex-end;
-    padding: 3em 0 3em;
+    min-height: 300px;
+    background-position: center 62%;
   }
 
-  .hero::after {
-    background: linear-gradient(180deg,
-        rgba(20, 52, 61, 0.04) 0%,
-        rgba(20, 52, 61, 0.12) 38%,
-        rgba(20, 52, 61, 0.74) 68%,
-        rgba(20, 52, 61, 0.92) 100%);
-  }
-
-  .hero-grid {
-    display: block;
-  }
-
-  .hero-card {
-    border-left: none;
-    border-top: 1px solid var(--accent-on-dark);
-    padding-left: 0;
-    padding-top: 1.5em;
+  .brandbar {
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
   }
 
   .strip-title {
@@ -776,8 +719,8 @@ textarea:hover {
   }
 
   .mobile-nav li {
-    font-size: 1.4rem;
-    color: var(--cream);
+    font-size: 1.25rem;
+    color: var(--ink);
   }
 
   .nav-list {
@@ -864,7 +807,7 @@ textarea:hover {
 }
 
 .location-item {
-  font-size: 1.3rem;
+  font-size: 1.05rem;
   color: var(--teal-deep);
   opacity: 0.45;
   transition: opacity 0.2s ease;
