@@ -420,6 +420,18 @@ nav {
   height: 450px;
 }
 
+/* Soraya-27 is a 2:3 portrait, so at full column width it ran ~800px tall -
+   taller than the text beside it and than most viewports. Give the image
+   column less width and cap the height. */
+.about-grid {
+  grid-template-columns: 1.35fr 0.65fr;
+  align-items: start;
+}
+
+.about-grid .content-img {
+  height: 470px;
+}
+
 /* --- Sections --- */
 .section-div {
   padding: var(--section-pad) 1em;
