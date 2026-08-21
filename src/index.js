@@ -47,8 +47,6 @@ const innerHome = document.getElementById("inner-home");
 const navEl = document.querySelector("nav");
 
 let nameInNav = false;
-const introContentEl = document.querySelector('.intro-content');
-const homeInfoEl = document.querySelector('.home-info');
 
 // Let nav buttons wrap their labels (.nav-cramped) only when the name + buttons
 // actually overflow the row. Measured live, so it adapts to any screen width.
@@ -76,6 +74,7 @@ window.addEventListener("scroll", () => {
     innerNav.prepend(nameDiv);
     nameInNav = true;
     updateNavCramped();
+    setNavHeightVar();
   }
 
   if (!isHomeAboveNav && nameInNav) {
@@ -84,71 +83,23 @@ window.addEventListener("scroll", () => {
     nameDiv.remove();
     nameInNav = false;
     updateNavCramped();
-  }
-
-  // Mobile: highlight paragraph once title starts disappearing behind nav
-  if (window.innerWidth <= 920 && introContentEl && homeInfoEl) {
-    const titleRect = introContentEl.getBoundingClientRect();
-    const titleBehindNav = titleRect.top < navRect.height;
-    homeInfoEl.classList.toggle('mobile-reveal', titleBehindNav);
-    introContentEl.classList.toggle('mobile-dim', titleBehindNav);
+    setNavHeightVar();
   }
 });
 
-// Document offsets for each nav target. Anchor hrefs must match these keys
-// exactly (e.g. #fees-location maps to divLocations['fees-location']).
-let divLocations = {};
-
-function calculateDivLocations() {
-  // adjust hand page height so the intro fills the viewport
-  const innerHomeHeight = innerHome.getBoundingClientRect().height;
-  const navHeight = navEl.getBoundingClientRect().height;
-  if (innerHomeHeight + navHeight < window.innerHeight) {
-    const diff = window.innerHeight - (innerHomeHeight + navHeight);
-    innerHome.style.height = innerHomeHeight + diff + "px";
-  }
-
-  const h = (id) => document.getElementById(id).getBoundingClientRect().height;
-  const home = h("home"),
-    approach = h("approach"),
-    about = h("about"),
-    fees = h("fees"),
-    location = h("location"),
-    faq = h("faq");
-
-  return {
-    home: 0,
-    approach: home,
-    about: home + approach,
-    "fees-location": home + approach + about,
-    faq: home + approach + about + fees + location,
-    contact: home + approach + about + fees + location + faq,
-  };
-}
-
-function refreshDivLocations() {
-  divLocations = calculateDivLocations();
-}
-
-// Bind anchor handlers once; only the offset table is recomputed on resize.
+// Smooth-scroll nav anchors to the top of their section, clearing the sticky
+// nav. Measured at click time so it stays correct as sections resize.
 document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
   anchor.addEventListener("click", function (event) {
-    const divName = this.getAttribute("href").substring(1);
-    if (!divLocations.hasOwnProperty(divName)) return;
+    const target = document.getElementById(this.getAttribute("href").substring(1));
+    if (!target) return;
     event.preventDefault();
-    window.scroll({
-      top: divLocations[divName],
-      left: 0,
-      behavior: "smooth",
-    });
+    const top = target.getBoundingClientRect().top + window.scrollY - navEl.offsetHeight;
+    window.scroll({ top, left: 0, behavior: "smooth" });
   });
 });
 
-window.addEventListener("DOMContentLoaded", refreshDivLocations);
-window.addEventListener("load", refreshDivLocations);
-window.addEventListener("resize", refreshDivLocations);
 window.addEventListener("resize", updateNavCramped);
-refreshDivLocations();
 
 // Scroll to top button logic
 const scrollTopBtn = document.getElementById("scrollTopBtn");
@@ -177,6 +128,8 @@ function switchLocationTo(index) {
   currentLocationIndex = index;
 }
 
+// The nav grows when the name block slides in, so --nav-height (which parks the
+// sticky location panel clear of it) has to be re-measured on that swap too.
 function setNavHeightVar() {
   document.documentElement.style.setProperty('--nav-height', navEl.offsetHeight + 'px');
 }
