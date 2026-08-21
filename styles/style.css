@@ -333,23 +333,6 @@ nav {
   color: rgba(251, 248, 242, 0.9);
 }
 
-.hero-cta {
-  display: inline-block;
-  margin-top: 1.8em;
-  padding: 0.7em 1.7em;
-  font-size: 0.95rem;
-  text-decoration: none;
-  color: var(--cream);
-  border: 1px solid rgba(251, 248, 242, 0.7);
-  border-radius: 3px;
-  transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.hero-cta:hover {
-  background-color: var(--parchment);
-  color: var(--teal-deep);
-}
-
 /* --- Wide strips ---------------------------------------------------------- */
 .strip {
   padding: var(--section-pad) 1em;
