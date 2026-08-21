@@ -9,10 +9,10 @@
   --parchment: #f4efe5;   /* page ground - warm oat */
   --sand: #e5dccd;        /* wide strips, soft blocks */
   --accent: #03382e;      /* the pendant, sampled from its dark body */
-  --accent-lit: #7cb9a2;  /* the same stone lifted, for use on the dark teal -
+  --accent-on-dark: var(--parchment); /* the accent inverts on dark surfaces -
                              the dark emerald scores 1.01 contrast on teal, so
-                             it cannot be used there */
-  --accent-lit-hi: #a5d4c2;/* hover state for the lifted tint */
+                             it would vanish there */
+  --accent-on-dark-hover: var(--sand);
   --teal-deep: #14343d;   /* the curtain - the one dark hue */
   --teal-deepest: #0f272e;/* footer, so it seats under the contact block */
   --ink: #26302f;         /* body text on light */
@@ -240,7 +240,7 @@ nav {
 }
 
 .strip-deep .strip-title::after {
-  background-color: var(--accent-lit);
+  background-color: var(--accent-on-dark);
 }
 
 .sub-section-title,
@@ -334,7 +334,7 @@ nav {
   grid-column: 2;
   text-align: left;
   color: var(--cream);
-  border-left: 1px solid var(--accent-lit);
+  border-left: 1px solid var(--accent-on-dark);
   padding-left: 2em;
 }
 
@@ -369,13 +369,13 @@ nav {
   text-transform: uppercase;
   text-decoration: none;
   color: var(--cream);
-  border: 1px solid var(--accent-lit);
+  border: 1px solid var(--accent-on-dark);
   border-radius: 2px;
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .hero-cta:hover {
-  background-color: var(--accent-lit);
+  background-color: var(--accent-on-dark);
   color: var(--teal-deep);
 }
 
@@ -394,15 +394,8 @@ nav {
   color: var(--ink);
 }
 
-.strip-light {
-  background-color: var(--parchment);
-  color: var(--ink);
-}
-
 .strip-sand .strip-body,
-.strip-sand .strip-note,
-.strip-light .strip-body,
-.strip-light .strip-note {
+.strip-sand .strip-note {
   color: var(--ink);
 }
 
@@ -635,14 +628,14 @@ textarea:hover {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   border: none;
-  background-color: var(--accent-lit);
+  background-color: var(--accent-on-dark);
   color: var(--teal-deep);
   transition: background-color 0.3s ease;
 }
 
 #submit:hover {
   cursor: pointer;
-  background-color: var(--accent-lit-hi);
+  background-color: var(--accent-on-dark-hover);
   color: var(--teal-deep);
 }
 
@@ -650,8 +643,8 @@ textarea:hover {
 #scrollTopBtn {
   display: flex;
   background-color: transparent;
-  color: var(--accent-lit);
-  border: 1px solid var(--accent-lit);
+  color: var(--accent-on-dark);
+  border: 1px solid var(--accent-on-dark);
   cursor: pointer;
   padding: 10px;
   border-radius: 50%;
@@ -664,7 +657,7 @@ textarea:hover {
 }
 
 #scrollTopBtn:hover {
-  background-color: var(--accent-lit);
+  background-color: var(--accent-on-dark);
   color: var(--teal-deep);
 }
 
@@ -710,7 +703,7 @@ textarea:hover {
 
   .hero-card {
     border-left: none;
-    border-top: 1px solid var(--accent-lit);
+    border-top: 1px solid var(--accent-on-dark);
     padding-left: 0;
     padding-top: 1.5em;
   }
