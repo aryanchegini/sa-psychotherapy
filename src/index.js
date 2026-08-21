@@ -168,8 +168,10 @@ updateLocationScroll();
 document.querySelectorAll('.location-item').forEach(item => {
   item.addEventListener('click', () => {
     if (!locTrack || !locSticky) return;
-    const index = parseInt(item.getAttribute('data-index'), 10);
     const { startY, scrollable } = locationScrollRange();
+    // On mobile the track is not pinned, so there is no segment to jump to.
+    if (scrollable <= 0) return;
+    const index = parseInt(item.getAttribute('data-index'), 10);
     window.scrollTo({ top: startY + scrollable * ((index + 0.5) / locImgCount), behavior: 'smooth' });
   });
 });

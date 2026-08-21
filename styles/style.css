@@ -21,7 +21,8 @@
   --cream-soft: rgba(251, 248, 242, 0.78);
   --line: rgba(38, 50, 48, 0.16);
   --nav-box-shadow: rgba(20, 52, 61, 0.18) 0px 2px 12px;
-  --section-pad: 5em;     /* every band's vertical padding - keep it one value */
+  --section-pad: 5em;
+  --measure: 820px;      /* one column width for every band below the strip */     /* every band's vertical padding - keep it one value */
   box-sizing: border-box;
   color: var(--ink);
 }
@@ -78,21 +79,21 @@ img {
 
 /* --- Layout Utilities --- */
 .container {
-  width: 80%;
+  width: 86%;
   margin: 0 auto;
-  max-width: 1040px;
+  max-width: var(--measure);
 }
 
 .wide-container {
-  width: 88%;
+  width: 86%;
   margin: 0 auto;
-  max-width: 1400px;
+  max-width: var(--measure);
 }
 
 .narrow-container {
-  width: 80%;
+  width: 86%;
   margin: 0 auto;
-  max-width: 700px;
+  max-width: var(--measure);
 }
 
 .col,
@@ -130,7 +131,7 @@ img {
 .two-col-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 4em;
+  gap: 3em;
 }
 
 /* --- Brand strip + navigation ---------------------------------------------
@@ -359,7 +360,7 @@ nav {
   list-style: none;
   padding: 0;
   margin: 0;
-  columns: 3;
+  columns: 2;
   column-gap: 2.6em;
   font-size: 0.88rem;
 }
@@ -417,19 +418,19 @@ nav {
 }
 
 .portrait-img {
-  height: 390px;
+  height: 340px;
 }
 
 /* Soraya-27 is a 2:3 portrait, so at full column width it ran ~800px tall -
    taller than the text beside it and than most viewports. Give the image
    column less width and cap the height. */
 .about-grid {
-  grid-template-columns: 1.35fr 0.65fr;
+  grid-template-columns: 1fr 0.62fr;
   align-items: start;
 }
 
 .about-grid .content-img {
-  height: 420px;
+  height: 400px;
 }
 
 /* --- Sections --- */
@@ -514,8 +515,8 @@ nav {
 /* --- Forms --- */
 .contact-grid {
   display: grid;
-  grid-template-columns: 2fr 3fr;
-  grid-gap: 4em;
+  grid-template-columns: 1fr;
+  grid-gap: 2.5em;
 }
 
 .form-grid {
@@ -626,12 +627,6 @@ textarea:hover {
   /* Keep the name from squishing so the nav-overflow measurement is accurate. */
   .nav-name {
     flex-shrink: 0;
-  }
-}
-
-@media screen and (max-width: 1100px) {
-  .areas-list {
-    columns: 2;
   }
 }
 
@@ -773,7 +768,7 @@ textarea:hover {
 
   .location-imgs-wrapper {
     position: relative;
-    height: 390px;
+    height: 340px;
     width: 100%;
   }
 
@@ -819,28 +814,44 @@ textarea:hover {
 }
 
 @media screen and (max-width: 920px) {
+  /* No pinned scrollytelling on phones. A sticky panel offset from the top
+     fights the browser's address bar, which resizes the viewport as it hides
+     on scroll down and returns on scroll up - so on the way back up the
+     panel ended up underneath it. Here the three locations simply stack. */
+  .location-track {
+    height: auto;
+  }
+
+  .location-sticky {
+    position: static;
+  }
+
   .location-imgs-wrapper {
-    position: relative;
-    width: 75%;
-    aspect-ratio: 5 / 4;
+    position: static;
+    width: 100%;
+    aspect-ratio: auto;
     margin: 2em auto 0;
+    display: grid;
+    gap: 1.5em;
   }
 
   .location-img {
-    position: absolute;
-    top: 0;
-    left: 0;
+    position: static;
     width: 100%;
-    height: 100%;
+    height: auto;
+    aspect-ratio: 5 / 4;
     object-fit: cover;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    opacity: 1;
+    visibility: visible;
     margin-bottom: 0 !important;
   }
 
-  .location-img.active-img {
+  .location-item {
+    cursor: default;
     opacity: 1;
-    visibility: visible;
+  }
+
+  .location-item.active-location {
+    font-weight: 300;
   }
 }
