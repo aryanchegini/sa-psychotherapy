@@ -131,6 +131,11 @@ function switchLocationTo(index) {
 // sticky location panel clear of it) has to be re-measured on that swap too.
 function setNavHeightVar() {
   document.documentElement.style.setProperty('--nav-height', navEl.offsetHeight + 'px');
+  // The pinned location panel is centred in the space under the nav, and CSS
+  // cannot know its content height - it changes with width - so hand it over.
+  if (locSticky) {
+    document.documentElement.style.setProperty('--loc-sticky-h', locSticky.offsetHeight + 'px');
+  }
 }
 
 // Scroll range (document coords) over which the track stays pinned.

@@ -37,9 +37,10 @@
 }
 
 html {
-  /* Everything on the page is sized in rem, so the whole site steps down from
-     this one number. */
-  font-size: 15px;
+  /* THE SITE'S TYPE SCALE. Everything on the page is sized in rem, so every
+     word scales from this one number. 16px is the browser default; drop it to
+     15px for a quieter page, push it to 17px for a larger one. */
+  font-size: 16px;
   scrollbar-width: none;
   scroll-behavior: smooth;
 }
@@ -133,6 +134,15 @@ img {
   gap: 4em;
 }
 
+/* The nav band is wider than the 1040px text column: her name plus six links
+   need more room than a column of prose does, and held to --measure the
+   scrolled row overflowed as soon as the window came in. */
+#inner-nav {
+  width: 92%;
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
 /* --- Navigation --- */
 nav {
   background-color: var(--green-deep);
@@ -169,9 +179,43 @@ nav {
   white-space: nowrap;
 }
 
-.nav-cramped .desktop-nav-list {
-  font-size: 1.15em;
-  gap: 1em;
+/* Between the hamburger breakpoint and a roomy desktop, the name beside six
+   links is the tightest fit on the page. Everything steps down together rather
+   than the name wrapping and dragging the nav to twice its height. */
+@media screen and (min-width: 921px) and (max-width: 1250px) {
+  #inner-nav {
+    width: 95%;
+  }
+
+  .row-aligned {
+    gap: 1.2em;
+  }
+
+  .desktop-nav-list {
+    font-size: 1.05em;
+    gap: 1em;
+  }
+
+  .nav-name {
+    font-size: 1.7rem;
+  }
+
+  .subscript-1 {
+    font-size: 0.85rem;
+  }
+
+  .subscript-2 {
+    font-size: 0.75rem;
+  }
+}
+
+/* Tighter still: below ~1080px the subscript only wraps, which drags the nav
+   to half again its height. The name alone carries it there. */
+@media screen and (min-width: 921px) and (max-width: 1080px) {
+  .subscript-1,
+  .subscript-2 {
+    display: none;
+  }
 }
 
 .nav-item:hover {
@@ -332,7 +376,7 @@ nav {
   background-size: cover;
   background-position: 50% 45%;
   background-repeat: no-repeat;
-  opacity: 0.60;
+  opacity: 0.30;
   mix-blend-mode: multiply;
   pointer-events: none;
   z-index: -2;
@@ -346,9 +390,9 @@ nav {
   inset: 0;
   background: linear-gradient(90deg,
       rgba(244, 239, 229, 0) 0%,
-      rgba(244, 239, 229, 0.36) 22%,
-      rgba(244, 239, 229, 0.46) 50%,
-      rgba(244, 239, 229, 0.36) 78%,
+      rgba(244, 239, 229, 0.45) 22%,
+      rgba(244, 239, 229, 0.58) 50%,
+      rgba(244, 239, 229, 0.45) 78%,
       rgba(244, 239, 229, 0) 100%);
   pointer-events: none;
   z-index: -1;
@@ -363,7 +407,7 @@ nav {
   /* Narrower viewport, no clean margins left for the drawing - pull it back
      further and centre the veil so the copy keeps its contrast. */
   .approach::before {
-    opacity: 0.34;
+    opacity: 0.20;
   }
 
   .approach::after {
@@ -441,7 +485,7 @@ nav {
 }
 
 .brandbar {
-  background-color: var(--sand);
+  background-color: var(--parchment);
   color: var(--green-deep);
   text-align: center;
   font-size: 0.95rem;
@@ -461,6 +505,16 @@ nav {
 
 .strip-sand {
   background-color: var(--sand);
+  color: var(--ink);
+}
+
+.strip-parchment {
+  background-color: var(--parchment);
+  color: var(--ink);
+}
+
+.strip-parchment .strip-body,
+.strip-parchment .strip-note {
   color: var(--ink);
 }
 
@@ -496,6 +550,16 @@ nav {
   position: relative;
   line-height: 1.45em;
   border-bottom: 1px solid rgba(38, 50, 48, 0.10);
+}
+
+/* The bullet and the hairline are ink-dark by default, which disappears on the
+   dark strip - they invert with the text. */
+.strip-deep .areas-list .list-item::before {
+  background-color: var(--cream);
+}
+
+.strip-deep .areas-list .list-item {
+  border-bottom-color: rgba(251, 248, 242, 0.16);
 }
 
 .areas-list .list-item::before {
@@ -544,7 +608,7 @@ nav {
 }
 
 .about-grid .content-img {
-  height: 400px;
+  height: 600px;
 }
 
 /* --- Images --- */
@@ -740,10 +804,10 @@ textarea:hover {
   color: var(--accent-on-dark);
   border: 1px solid var(--accent-on-dark);
   cursor: pointer;
-  padding: 10px;
+  padding: 7px;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
+  width: 36px;
+  height: 36px;
   transition: background-color 0.3s, color 0.3s;
   justify-content: center;
   align-items: center;
@@ -757,15 +821,17 @@ textarea:hover {
 
 #scrollTopBtn svg {
   fill: currentColor;
-  width: 24px;
-  height: 24px;
+  width: 17px;
+  height: 17px;
 }
 
 /* --- Media Queries --- */
 @media screen and (min-width: 920px) {
-  /* Keep the name from squishing so the nav-overflow measurement is accurate. */
+  /* Last resort once the step-downs above have run: the name wraps rather than
+     pushing the row wider than the window. */
   .nav-name {
-    flex-shrink: 0;
+    flex-shrink: 1;
+    min-width: 0;
   }
 }
 
@@ -903,6 +969,18 @@ textarea:hover {
   }
 }
 
+/* Nothing this tall can pin without overflowing a short screen, so let it
+   scroll normally instead. */
+@media screen and (max-height: 620px) {
+  .location-track {
+    height: auto;
+  }
+
+  .location-sticky {
+    position: static;
+  }
+}
+
 /* Location Sticky Scroll */
 .location-track {
   position: relative;
@@ -915,7 +993,14 @@ textarea:hover {
    track behind it carries the same sand, so the panel still reads full-bleed. */
 .location-sticky {
   position: sticky;
-  top: var(--nav-height, 0px);
+  /* Locked in the middle of the space below the nav, not flush against it, so
+     the band above scrolls away over it and the band below rises into view
+     while it holds. Measured in svh - the viewport height *with* a phone's
+     address bar showing - so the panel does not shift as the bar hides and
+     returns. --loc-sticky-h is the panel's own height, handed over from JS
+     because it changes with the width. */
+  top: calc(var(--nav-height, 0px)
+            + (100svh - var(--nav-height, 0px) - var(--loc-sticky-h, 500px)) * var(--loc-bias, 0.5));
 }
 
 @media screen and (min-width: 920px) {
@@ -951,6 +1036,44 @@ textarea:hover {
   }
 }
 
+/* Three notes about the rooms themselves. Deliberately outside .location-track
+   - anything added to the pinned panel makes it taller than the screen it has
+   to hold still inside. */
+.room-notes {
+  background-color: var(--parchment);
+  padding: 0 0 var(--section-pad);
+}
+
+.room-notes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 3em;
+}
+
+.room-note h3 {
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--green-deep);
+  margin: 0 0 0.9em;
+  padding-bottom: 0.7em;
+  border-bottom: 1px solid rgba(38, 50, 48, 0.16);
+}
+
+.room-note p {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.7em;
+  color: var(--ink);
+}
+
+@media screen and (max-width: 920px) {
+  .room-notes-grid {
+    grid-template-columns: 1fr;
+    gap: 2.5em;
+  }
+}
+
 .location-list {
   list-style-type: none;
   padding: 0;
@@ -975,11 +1098,29 @@ textarea:hover {
 }
 
 @media screen and (max-width: 920px) {
+  /* The panel pins here too. It sits higher than dead centre so the heading is
+     not stranded down the screen, and the whole thing - heading, intro, three
+     names, photo - has to fit one phone screen with room to spare, or there is
+     nothing for the pin to hold still. */
+  .location-track {
+    height: calc(var(--loc-count, 3) * 60svh);
+    --loc-bias: 0.32;
+  }
+
+  .location-div {
+    padding: 2.5em 0;
+  }
+
+  .location-div .two-col-grid {
+    gap: 2em;
+  }
+
   .location-imgs-wrapper {
     position: relative;
-    width: 75%;
-    aspect-ratio: 5 / 4;
-    margin: 2em auto 0;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    max-height: 34svh;
+    margin: 0 auto;
   }
 
   .location-img {
