@@ -31,7 +31,6 @@ let nameDiv = elt(
   [
     elt("p", [], ["Soraya Chegini-Adams"]),
     elt("div", ["subscript-1", "quicksand"], ["Integrative Psychotherapy and Counselling for Adults"]),
-    elt("div", ["subscript-2", "quicksand"], ["UKCP Registered"]),
   ]
 );
 

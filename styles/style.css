@@ -13,7 +13,7 @@
                              the dark emerald scores 1.01 contrast on teal, so
                              it would vanish there */
   --accent-on-dark-hover: var(--sand);
-  --teal-deep: #14343d;   /* the curtain - the one dark hue */
+  --teal-deep: #074241;   /* the curtain - the one dark hue */
   --teal-deepest: #0f272e;/* footer, so it seats under the contact block */
   --ink: #26302f;         /* body text on light */
   --ink-soft: #5c665f;
@@ -300,7 +300,7 @@ nav {
    the name held in a card on the right so nothing sits over her face.      */
 .hero {
   position: relative;
-  background-image: url("../assets/images/Soraya-15.jpg");
+  background-image: url("../assets/images/Soraya-61.jpg");
   background-size: cover;
   background-position: 30% 12%;
   background-repeat: no-repeat;
@@ -308,6 +308,67 @@ nav {
   display: flex;
   align-items: center;
   padding: 4em 0;
+}
+
+/* --- My Approach ----------------------------------------------------------
+   The hand lithograph sits behind the copy rather than beside it. It is a
+   near-black drawing on cream, so at full strength no body text could survive
+   on top of it: it is laid in at low opacity and multiplied into the parchment
+   so it reads as a watermark in the paper, and a parchment veil lifts the
+   centre where the column of text actually falls.                          */
+.approach {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--parchment);
+  overflow: hidden;
+  min-height: 850px;
+}
+
+.approach::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("../assets/images/hand-desktop.jpg");
+  background-size: cover;
+  background-position: 50% 45%;
+  background-repeat: no-repeat;
+  opacity: 0.60;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: -2;
+}
+
+/* Veil: strongest through the middle third, where the narrow column sits, so
+   the drawing stays visible at the edges without crowding the words. */
+.approach::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg,
+      rgba(244, 239, 229, 0) 0%,
+      rgba(244, 239, 229, 0.36) 22%,
+      rgba(244, 239, 229, 0.46) 50%,
+      rgba(244, 239, 229, 0.36) 78%,
+      rgba(244, 239, 229, 0) 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.approach .section-div {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 800px) {
+  /* Narrower viewport, no clean margins left for the drawing - pull it back
+     further and centre the veil so the copy keeps its contrast. */
+  .approach::before {
+    opacity: 0.34;
+  }
+
+  .approach::after {
+    background: rgba(244, 239, 229, 0.50);
+  }
 }
 
 /* Gentle warm scrim, heavier on the right so the card text stays readable. */
@@ -392,6 +453,11 @@ nav {
 .strip-sand {
   background-color: var(--sand);
   color: var(--ink);
+}
+
+.strip-teal {
+    background-color: var(--teal-deep);
+    color: var(--cream);
 }
 
 .strip-sand .strip-body,
