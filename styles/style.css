@@ -13,14 +13,18 @@
                              the dark emerald scores 1.01 contrast on teal, so
                              it would vanish there */
   --accent-on-dark-hover: var(--sand);
-  --teal-deep: #074241;   /* the curtain - the one dark hue */
-  --teal-deepest: #0f272e;/* footer, so it seats under the contact block */
+  --green-deep: #074241;  /* the one dark hue - a deep pine green */
+  --green-deepest: #04302f;/* footer, so it seats under the contact block.
+                             Was #0f272e, a blue-black that read as a second
+                             hue next to the green; this is the same green,
+                             darker. */
   --ink: #26302f;         /* body text on light */
   --ink-soft: #5c665f;
   --cream: #fbf8f2;       /* text on dark surfaces */
   --cream-soft: rgba(251, 248, 242, 0.78);
   --line: rgba(38, 50, 48, 0.16);
-  --nav-box-shadow: rgba(20, 52, 61, 0.18) 0px 2px 12px;
+  --nav-box-shadow: rgba(7, 66, 65, 0.18) 0px 2px 12px;
+  --measure: 1040px;      /* one column width for every band */
   --section-pad: 6em;     /* every band's vertical padding - keep it one value */
   box-sizing: border-box;
   color: var(--ink);
@@ -33,6 +37,9 @@
 }
 
 html {
+  /* Everything on the page is sized in rem, so the whole site steps down from
+     this one number. */
+  font-size: 15px;
   scrollbar-width: none;
   scroll-behavior: smooth;
 }
@@ -77,22 +84,15 @@ img {
 }
 
 /* --- Layout Utilities --- */
-.container {
-  width: 80%;
-  margin: 0 auto;
-  max-width: 1200px;
-}
-
-.wide-container {
-  width: 88%;
-  margin: 0 auto;
-  max-width: 1400px;
-}
-
+/* One column width for every band. The three names are kept because the markup
+   uses all three, but they resolve to the same measure - bands are told apart
+   by their ground colour, not by how wide their text runs. */
+.container,
+.wide-container,
 .narrow-container {
-  width: 80%;
+  width: 86%;
   margin: 0 auto;
-  max-width: 820px;
+  max-width: var(--measure);
 }
 
 .col,
@@ -135,7 +135,7 @@ img {
 
 /* --- Navigation --- */
 nav {
-  background-color: var(--teal-deep);
+  background-color: var(--green-deep);
   padding: 1.8em 0;
   box-shadow: var(--nav-box-shadow);
   position: sticky;
@@ -218,9 +218,9 @@ nav {
    which is what lets those widths vary without looking accidental.        */
 .section-title,
 .strip-title {
-  font-size: 3.2rem;
+  font-size: 2.5rem;
   line-height: 1.1em;
-  color: var(--teal-deep);
+  color: var(--green-deep);
   text-align: left;
   margin: 0 0 0.7em;
 }
@@ -249,12 +249,12 @@ nav {
 }
 
 .sub-section-title {
-  font-size: 2.2rem;
+  font-size: 1.8rem;
 }
 
 .mini-section-title {
-  font-size: 1.5rem;
-  color: var(--teal-deep);
+  font-size: 1.3rem;
+  color: var(--green-deep);
 }
 
 .left-info {
@@ -437,7 +437,16 @@ nav {
 
 .hero-cta:hover {
   background-color: var(--accent-on-dark);
-  color: var(--teal-deep);
+  color: var(--green-deep);
+}
+
+.brandbar {
+  background-color: var(--sand);
+  color: var(--green-deep);
+  text-align: center;
+  font-size: 0.95rem;
+  letter-spacing: 0.14em;
+  padding: 0.9em 1em;
 }
 
 /* --- Wide strips ---------------------------------------------------------- */
@@ -446,7 +455,7 @@ nav {
 }
 
 .strip-deep {
-  background-color: var(--teal-deep);
+  background-color: var(--green-deep);
   color: var(--cream);
 }
 
@@ -455,18 +464,13 @@ nav {
   color: var(--ink);
 }
 
-.strip-teal {
-    background-color: var(--teal-deep);
-    color: var(--cream);
-}
-
 .strip-sand .strip-body,
 .strip-sand .strip-note {
   color: var(--ink);
 }
 
 .strip-body {
-  font-size: 1.2rem;
+  font-size: 1.05rem;
   line-height: 1.75em;
   color: var(--cream-soft);
   text-align: left;
@@ -531,6 +535,18 @@ nav {
   font-style: italic;
 }
 
+/* Soraya-27 is a 2:3 portrait, so at full column width it ran ~800px tall -
+   taller than the text beside it and than most viewports. The image column
+   takes less width and the height is capped. */
+.about-grid {
+  grid-template-columns: 1fr 0.62fr;
+  align-items: start;
+}
+
+.about-grid .content-img {
+  height: 400px;
+}
+
 /* --- Images --- */
 .portrait-img,
 .content-img {
@@ -573,7 +589,7 @@ nav {
 }
 
 .contact-div {
-  background-color: var(--teal-deep);
+  background-color: var(--green-deep);
   color: var(--cream);
 }
 
@@ -583,7 +599,7 @@ nav {
 }
 
 .footer-div {
-  background-color: var(--teal-deepest);
+  background-color: var(--green-deepest);
   padding: 2em 1em;
 }
 
@@ -628,11 +644,14 @@ nav {
   grid-gap: 4em;
 }
 
+/* Rows sized by their content: 1fr 1fr 4fr 1fr stretched the fields to fill
+   whatever height the grid took, which is what made the form tower over every
+   other band. */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 4fr 1fr;
-  gap: 16px;
+  grid-template-rows: auto auto auto auto;
+  gap: 0.75em;
 }
 
 .form-unit-1 {
@@ -658,51 +677,60 @@ nav {
 form label {
   display: block;
   width: 100%;
-  font-size: 1rem;
-  margin: 0.5em 0;
-  color: var(--cream);
+  font-size: 0.7rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  margin: 0 0 0.35em;
+  color: rgba(251, 248, 242, 0.6);
 }
 
 input,
 textarea {
   display: block;
   font-size: 1rem;
-  border-radius: 0;
+  border-radius: 3px;
   border: none;
   outline: none;
 }
 
+/* Faint tinted slots on the dark ground rather than a stack of white boxes. */
 form input:not([type="submit"]),
 textarea {
-  background-color: rgba(251, 248, 242, 0.88);
-  color: var(--ink);
-  padding: 0.6em 0.7em;
+  background-color: rgba(251, 248, 242, 0.07);
+  color: var(--cream);
+  font-size: 0.9rem;
+  padding: 0.45em 0.65em;
   width: 100%;
   transition: background-color 0.3s ease;
+}
+
+textarea {
+  resize: vertical;
 }
 
 form input:not([type="submit"]):focus,
 form input:not([type="submit"]):hover,
 textarea:focus,
 textarea:hover {
-  background-color: var(--cream);
+  background-color: rgba(251, 248, 242, 0.14);
 }
 
 #submit {
-  padding: 1em 1.8em;
-  font-size: 0.9rem;
-  letter-spacing: 0.06em;
+  padding: 0.65em 1.7em;
+  font-size: 0.72rem;
+  border-radius: 3px;
+  letter-spacing: 0.11em;
   text-transform: uppercase;
   border: none;
   background-color: var(--accent-on-dark);
-  color: var(--teal-deep);
+  color: var(--green-deep);
   transition: background-color 0.3s ease;
 }
 
 #submit:hover {
   cursor: pointer;
   background-color: var(--accent-on-dark-hover);
-  color: var(--teal-deep);
+  color: var(--green-deep);
 }
 
 /* --- Components --- */
@@ -724,7 +752,7 @@ textarea:hover {
 
 #scrollTopBtn:hover {
   background-color: var(--accent-on-dark);
-  color: var(--teal-deep);
+  color: var(--green-deep);
 }
 
 #scrollTopBtn svg {
@@ -931,7 +959,7 @@ textarea:hover {
 
 .location-item {
   font-size: 1.3rem;
-  color: var(--teal-deep);
+  color: var(--green-deep);
   opacity: 0.45;
   transition: opacity 0.2s ease;
   cursor: pointer;

@@ -62,6 +62,9 @@
 </head>
 
 <body>
+  <!-- Sits above the sticky nav in normal flow, so it scrolls away with the
+       page and the nav takes the top on its own. -->
+  <div class="brandbar cormorant">Psychotherapy &amp; Counselling &nbsp;·&nbsp; London &amp; Margate</div>
   <nav id="nav">
     <div class="container centered-div right-menu cormorant" id="inner-nav">
       <div class="desktop-nav">
@@ -170,7 +173,7 @@
 
     <!-- 4. Areas I Work With: wide strip -->
     <section id="areas" aria-label="Areas I Work With">
-      <div class="strip strip-teal">
+      <div class="strip strip-deep">
         <div class="container">
           <h2 class="strip-title cormorant">Areas I Work With</h2>
           <ul class="areas-list quicksand">
@@ -199,7 +202,7 @@
     <!-- 5. About Me -->
     <section id="about" aria-label="About Me">
       <div class="section-div quicksand">
-        <div class="container two-col-grid">
+        <div class="container two-col-grid about-grid">
           <div class="col-1 left-info">
             <h2 class="section-title cormorant">About Me</h2>
             <p>
@@ -224,7 +227,7 @@
             </p>
           </div>
           <div class="col-2">
-            <img src="./assets/images/Soraya-20.jpg" alt="Soraya Chegini-Adams" class="content-img" />
+            <img src="./assets/images/Soraya-27.jpg" alt="Soraya Chegini-Adams" class="content-img" />
           </div>
         </div>
       </div>
@@ -365,23 +368,23 @@
           <div class="form-div quicksand">
             <form action="https://formsubmit.co/info@sa-psychotherapy.com" method="POST" class="form-grid">
               <div class="form-unit form-unit-1">
-                <label for="first-name">First Name:</label>
+                <label for="first-name">First name</label>
                 <input type="text" id="first-name" name="first-name" required />
               </div>
               <div class="form-unit form-unit-2">
-                <label for="last-name">Last Name:</label>
+                <label for="last-name">Last name</label>
                 <input type="text" id="last-name" name="last-name" required />
               </div>
               <div class="form-unit form-unit-3">
-                <label for="email">Email:</label>
+                <label for="email">Email</label>
                 <input type="email" id="email" name="email" required />
               </div>
               <div class="form-unit form-unit-4">
-                <label for="message">Message:</label>
-                <textarea id="message" name="message" rows="10" required></textarea>
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="4" required></textarea>
               </div>
               <div class="form-unit form-unit-5">
-                <input type="submit" value="Submit" id="submit" />
+                <input type="submit" value="Send message" id="submit" />
               </div>
             </form>
           </div>
