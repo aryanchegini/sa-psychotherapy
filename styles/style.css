@@ -40,7 +40,7 @@ html {
   /* THE SITE'S TYPE SCALE. Everything on the page is sized in rem, so every
      word scales from this one number. 16px is the browser default; drop it to
      15px for a quieter page, push it to 17px for a larger one. */
-  font-size: 16px;
+  font-size: 15px;
   scrollbar-width: none;
   scroll-behavior: smooth;
 }
@@ -251,7 +251,7 @@ nav {
   left: 0;
   height: 100vh;
   width: 100vw;
-  background-color: rgba(20, 52, 61, 0.94);
+  background-color: rgba(7, 66, 65, 0.94);
   display: none;
 }
 
@@ -365,7 +365,7 @@ nav {
   isolation: isolate;
   background-color: var(--parchment);
   overflow: hidden;
-  min-height: 850px;
+  min-height: 700px;
 }
 
 .approach::before {
@@ -421,10 +421,10 @@ nav {
   position: absolute;
   inset: 0;
   background: linear-gradient(100deg,
-      rgba(20, 52, 61, 0.10) 0%,
-      rgba(20, 52, 61, 0.14) 42%,
-      rgba(20, 52, 61, 0.46) 72%,
-      rgba(20, 52, 61, 0.58) 100%);
+      rgba(7, 66, 65, 0.10) 0%,
+      rgba(7, 66, 65, 0.14) 42%,
+      rgba(7, 66, 65, 0.46) 72%,
+      rgba(7, 66, 65, 0.58) 100%);
   pointer-events: none;
 }
 
@@ -602,13 +602,17 @@ nav {
 /* Soraya-27 is a 2:3 portrait, so at full column width it ran ~800px tall -
    taller than the text beside it and than most viewports. The image column
    takes less width and the height is capped. */
-.about-grid {
-  grid-template-columns: 1fr 0.62fr;
-  align-items: start;
+@media screen and (min-width: 921px) {
+  .about-grid {
+    grid-template-columns: 1fr 0.62fr;
+    align-items: start;
+  }
 }
 
-.about-grid .content-img {
-  height: 600px;
+@media screen and (min-width: 921px) {
+  .about-grid .content-img {
+    height: 600px;
+  }
 }
 
 /* --- Images --- */
@@ -643,7 +647,7 @@ nav {
 }
 
 .location-div {
-  padding: var(--section-pad) 0;
+  padding: var(--section-pad) 0 calc(var(--section-pad) - 1.5em) 0;
   color: var(--ink);
 }
 
@@ -851,21 +855,29 @@ textarea:hover {
 
   .hero::after {
     background: linear-gradient(180deg,
-        rgba(20, 52, 61, 0.04) 0%,
-        rgba(20, 52, 61, 0.12) 38%,
-        rgba(20, 52, 61, 0.74) 68%,
-        rgba(20, 52, 61, 0.92) 100%);
+        rgba(7, 66, 65, 0.04) 0%,
+        rgba(7, 66, 65, 0.12) 38%,
+        rgba(7, 66, 65, 0.74) 68%,
+        rgba(7, 66, 65, 0.92) 100%);
   }
 
   .hero-grid {
     display: block;
   }
 
+  /* No rule here - on a phone the card is the full width of the screen, so the
+     border reads as a line drawn across her rather than as an edge to a card. */
   .hero-card {
     border-left: none;
-    border-top: 1px solid var(--accent-on-dark);
+    border-top: none;
     padding-left: 0;
-    padding-top: 1.5em;
+    padding-top: 0;
+  }
+
+  .hero-cta {
+    margin-top: 1.5em;
+    padding: 0.65em 1.4em;
+    font-size: 0.8rem;
   }
 
   .strip-title {
@@ -886,9 +898,9 @@ textarea:hover {
   }
 
   .content-img {
-    width: 60%;
+    width: 78%;
     height: auto;
-    margin: 0 auto 2em;
+    margin: 0 auto;
     display: block;
   }
 
@@ -899,6 +911,12 @@ textarea:hover {
 
   .container {
     width: 85%;
+  }
+
+  /* Before the name slides in, the only thing in here is the hamburger, so a
+     1.8em band was mostly empty. It grows on its own once the name arrives. */
+  nav {
+    padding: 0.9em 0;
   }
 
   .wide-container,
@@ -922,6 +940,18 @@ textarea:hover {
     display: flex;
     flex-direction: column;
     gap: 4em;
+  }
+
+  /* Heading, then her portrait, then the copy. Declared after .two-col-grid
+     because that sets flex-direction: column and would otherwise win on source
+     order. */
+  .about-grid {
+    flex-direction: column-reverse;
+    gap: 2.5em;
+  }
+
+  .about-head {
+    margin-bottom: 2em;
   }
 
   /* Navigation Mobile */
@@ -1038,36 +1068,54 @@ textarea:hover {
 
 /* Three notes about the rooms themselves. Deliberately outside .location-track
    - anything added to the pinned panel makes it taller than the screen it has
-   to hold still inside. */
+   to hold still inside. Given the sand ground so it reads as its own band
+   closing the location section, rather than three paragraphs adrift on the
+   same parchment as the panel above. */
 .room-notes {
-  background-color: var(--parchment);
-  padding: 0 0 var(--section-pad);
+  background-color: var(--sand);
+  padding: 0em 1em var(--section-pad) 1em;
 }
 
 .room-notes-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 3em;
+  gap: 3.5em;
+  align-items: start;
 }
 
 .room-note h3 {
-  font-size: 0.8rem;
-  letter-spacing: 0.16em;
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--green-deep);
-  margin: 0 0 0.9em;
-  padding-bottom: 0.7em;
-  border-bottom: 1px solid rgba(38, 50, 48, 0.16);
+  margin: 0 0 1.6em;
+}
+
+/* A short rule under the label rather than one spanning the column: the
+   paragraphs are different lengths, and a full-width rule over each made the
+   ragged bottoms look like a mistake. */
+.room-note h3::after {
+  content: "";
+  display: block;
+  width: 32px;
+  height: 1px;
+  margin-top: 0.8em;
+  background-color: var(--accent);
 }
 
 .room-note p {
   margin: 0;
   font-size: 0.95rem;
-  line-height: 1.7em;
+  line-height: 1.75em;
   color: var(--ink);
 }
 
 @media screen and (max-width: 920px) {
+  .room-notes {
+    padding: 0 1em 3.5em;
+  }
+
   .room-notes-grid {
     grid-template-columns: 1fr;
     gap: 2.5em;
