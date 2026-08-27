@@ -25,6 +25,13 @@
   --line: rgba(38, 50, 48, 0.16);
   --nav-box-shadow: rgba(7, 66, 65, 0.18) 0px 2px 12px;
   --measure: 1040px;      /* one column width for every band */
+  --hero-text-start: 62%; /* HOW FAR ACROSS THE HERO THE WORDS BEGIN. The left
+                             column is nothing but photograph; her name starts
+                             where it ends. Raise it to push the text further
+                             right, lower it to bring it back left. Below about
+                             48% it starts to sit over her face; above about
+                             72% the longest line runs out of room. Desktop
+                             only - on a phone the card is full width. */
   --section-pad: 6em;     /* every band's vertical padding - keep it one value */
   box-sizing: border-box;
   color: var(--ink);
@@ -369,7 +376,7 @@ nav {
   isolation: isolate;
   background-color: var(--parchment);
   overflow: hidden;
-  min-height: 700px;
+  min-height: 850px;
 }
 
 .approach::before {
@@ -440,11 +447,36 @@ nav {
   pointer-events: none;
 }
 
+/* Below ~1250px the band has stopped growing but the words have not, so the
+   role line starts to wrap. The text steps back left rather than breaking. */
+@media screen and (min-width: 921px) and (max-width: 1250px) {
+  :root {
+    --hero-text-start: 55%;
+  }
+}
+
+@media screen and (min-width: 921px) and (max-width: 1080px) {
+  :root {
+    --hero-text-start: 47%;
+  }
+}
+
+/* The hero band runs wider than the 1040px text column below it. The card is
+   an overlay on a photograph rather than a column of prose, and held to the
+   narrow measure it could not be moved right at all without the name wrapping
+   - there was simply no width left on that side of the grid. */
+@media screen and (min-width: 921px) {
+  .hero .wide-container {
+    width: 92%;
+    max-width: 1320px;
+  }
+}
+
 .hero-grid {
   position: relative;
   z-index: 1;
   display: grid;
-  grid-template-columns: 1.15fr 0.85fr;
+  grid-template-columns: var(--hero-text-start, 62%) 1fr;
 }
 
 .hero-card {
@@ -587,36 +619,37 @@ nav {
 
 /* Professional Training */
 /* The rules under each line ran the full width of the band while the entries
-   themselves are short, so they read as lines trailing off into nothing. The
-   list is capped to roughly the length of its longest entry. */
+   themselves are short, so they read as lines trailing off into nothing. Each
+   entry now shrink-wraps to its own text (display: table does this and still
+   takes padding), so its rule ends where its words do - the same relationship
+   the section headings have with the rule beneath them. */
 .training-list {
   list-style: none;
   padding: 0;
   margin: 0;
-  max-width: 640px;
   font-size: 1.1rem;
 }
 
 .training-list li {
+  display: table;
+  max-width: 100%;
   padding: 0.9em 0;
   border-bottom: 1px solid rgba(251, 248, 242, 0.16);
   color: var(--cream);
 }
 
-.training-list li:first-child {
-  border-top: 1px solid rgba(251, 248, 242, 0.16);
-}
-
-/* Boxed, and set at the same size as everything else, so it reads as a
-   deliberate closing statement rather than a stray italic paragraph. */
+/* Set as a quotation: a rule down the left edge and the serif at a size above
+   the list, so it reads as her own words closing the section rather than one
+   more line of it. */
 .strip-note {
   max-width: 640px;
-  margin-top: 2.5em;
-  padding: 1.6em 1.8em;
-  border: 1px solid rgba(251, 248, 242, 0.28);
-  border-radius: 3px;
-  font-size: 1.15rem;
-  line-height: 1.7em;
+  margin-top: 3em;
+  padding-left: 1.6em;
+  border-left: 2px solid var(--accent-on-dark);
+  font-family: "Cormorant", serif;
+  font-weight: 300;
+  font-size: 1.5rem;
+  line-height: 1.55em;
   color: var(--cream);
 }
 
@@ -1107,11 +1140,12 @@ textarea:hover {
 }
 
 .room-note h3 {
-  font-size: 1.15rem;
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-size: 1.6rem;
+  font-weight: 300;
+  line-height: 1.2em;
+  letter-spacing: 0.01em;
   color: var(--green-deep);
-  margin: 0 0 1.2em;
+  margin: 0 0 1em;
 }
 
 /* A short rule under the label rather than one spanning the column: the
