@@ -209,9 +209,10 @@ nav {
   }
 }
 
-/* Tighter still: below ~1080px the subscript only wraps, which drags the nav
-   to half again its height. The name alone carries it there. */
-@media screen and (min-width: 921px) and (max-width: 1080px) {
+/* Tighter still: at the very bottom of the desktop range the subscript wraps,
+   which drags the nav to half again its height. The name alone carries it
+   there. (Cut from 1080px once "for Adults" came off the line.) */
+@media screen and (min-width: 921px) and (max-width: 960px) {
   .subscript-1,
   .subscript-2 {
     display: none;
@@ -301,9 +302,12 @@ nav {
   color: var(--green-deep);
 }
 
+/* One body size and rhythm for every block of running copy on the page -
+   Welcome (.strip-body), My Approach and About Me (.left-info) read as the
+   same voice, so they are set from the same two numbers. */
 .left-info {
   font-size: 1.15rem;
-  line-height: 1.6em;
+  line-height: 1.7em;
   color: var(--ink);
 }
 
@@ -371,12 +375,16 @@ nav {
 .approach::before {
   content: "";
   position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   inset: 0;
   background-image: url("../assets/images/hand-desktop.jpg");
   background-size: cover;
   background-position: 50% 45%;
   background-repeat: no-repeat;
-  opacity: 0.30;
+  opacity: 0.42;
   mix-blend-mode: multiply;
   pointer-events: none;
   z-index: -2;
@@ -387,12 +395,16 @@ nav {
 .approach::after {
   content: "";
   position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   inset: 0;
   background: linear-gradient(90deg,
       rgba(244, 239, 229, 0) 0%,
-      rgba(244, 239, 229, 0.45) 22%,
-      rgba(244, 239, 229, 0.58) 50%,
-      rgba(244, 239, 229, 0.45) 78%,
+      rgba(244, 239, 229, 0.40) 22%,
+      rgba(244, 239, 229, 0.54) 50%,
+      rgba(244, 239, 229, 0.40) 78%,
       rgba(244, 239, 229, 0) 100%);
   pointer-events: none;
   z-index: -1;
@@ -407,11 +419,11 @@ nav {
   /* Narrower viewport, no clean margins left for the drawing - pull it back
      further and centre the veil so the copy keeps its contrast. */
   .approach::before {
-    opacity: 0.20;
+    opacity: 0.30;
   }
 
   .approach::after {
-    background: rgba(244, 239, 229, 0.50);
+    background: rgba(244, 239, 229, 0.46);
   }
 }
 
@@ -524,8 +536,8 @@ nav {
 }
 
 .strip-body {
-  font-size: 1.05rem;
-  line-height: 1.75em;
+  font-size: 1.15rem;
+  line-height: 1.7em;
   color: var(--cream-soft);
   text-align: left;
 }
@@ -574,10 +586,14 @@ nav {
 }
 
 /* Professional Training */
+/* The rules under each line ran the full width of the band while the entries
+   themselves are short, so they read as lines trailing off into nothing. The
+   list is capped to roughly the length of its longest entry. */
 .training-list {
   list-style: none;
   padding: 0;
   margin: 0;
+  max-width: 640px;
   font-size: 1.1rem;
 }
 
@@ -591,12 +607,17 @@ nav {
   border-top: 1px solid rgba(251, 248, 242, 0.16);
 }
 
+/* Boxed, and set at the same size as everything else, so it reads as a
+   deliberate closing statement rather than a stray italic paragraph. */
 .strip-note {
-  margin-top: 2em;
-  font-size: 1.05rem;
+  max-width: 640px;
+  margin-top: 2.5em;
+  padding: 1.6em 1.8em;
+  border: 1px solid rgba(251, 248, 242, 0.28);
+  border-radius: 3px;
+  font-size: 1.15rem;
   line-height: 1.7em;
-  color: var(--cream-soft);
-  font-style: italic;
+  color: var(--cream);
 }
 
 /* Soraya-27 is a 2:3 portrait, so at full column width it ran ~800px tall -
@@ -1030,6 +1051,8 @@ textarea:hover {
      returns. --loc-sticky-h is the panel's own height, handed over from JS
      because it changes with the width. */
   top: calc(var(--nav-height, 0px)
+            + (100vh - var(--nav-height, 0px) - var(--loc-sticky-h, 500px)) * var(--loc-bias, 0.5));
+  top: calc(var(--nav-height, 0px)
             + (100svh - var(--nav-height, 0px) - var(--loc-sticky-h, 500px)) * var(--loc-bias, 0.5));
 }
 
@@ -1078,18 +1101,17 @@ textarea:hover {
 
 .room-notes-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   gap: 3.5em;
   align-items: start;
 }
 
 .room-note h3 {
-  font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
   color: var(--green-deep);
-  margin: 0 0 1.6em;
+  margin: 0 0 1.2em;
 }
 
 /* A short rule under the label rather than one spanning the column: the
@@ -1106,7 +1128,7 @@ textarea:hover {
 
 .room-note p {
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   line-height: 1.75em;
   color: var(--ink);
 }
@@ -1151,6 +1173,7 @@ textarea:hover {
      names, photo - has to fit one phone screen with room to spare, or there is
      nothing for the pin to hold still. */
   .location-track {
+    height: calc(var(--loc-count, 3) * 60vh);
     height: calc(var(--loc-count, 3) * 60svh);
     --loc-bias: 0.32;
   }
@@ -1166,9 +1189,17 @@ textarea:hover {
   .location-imgs-wrapper {
     position: relative;
     width: 100%;
-    aspect-ratio: 4 / 3;
-    max-height: 34svh;
+    height: 34vh;
     margin: 0 auto;
+  }
+
+  @supports (aspect-ratio: 4 / 3) {
+    .location-imgs-wrapper {
+      height: auto;
+      aspect-ratio: 4 / 3;
+      max-height: 34vh;
+      max-height: 34svh;
+    }
   }
 
   .location-img {

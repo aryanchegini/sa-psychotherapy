@@ -30,7 +30,7 @@ let nameDiv = elt(
   ["nav-name"],
   [
     elt("p", [], ["Soraya Chegini-Adams"]),
-    elt("div", ["subscript-1", "quicksand"], ["Integrative Psychotherapy and Counselling for Adults"]),
+    elt("div", ["subscript-1", "quicksand"], ["Integrative Psychotherapy and Counselling"]),
   ]
 );
 
@@ -122,8 +122,12 @@ function switchLocationTo(index) {
   if (index === currentLocationIndex) return;
   document.querySelectorAll('.location-item').forEach(i => i.classList.remove('active-location'));
   locImgs.forEach(i => i.classList.remove('active-img'));
-  document.querySelector(`.location-item[data-index="${index}"]`)?.classList.add('active-location');
-  document.querySelector(`.location-img[data-index="${index}"]`)?.classList.add('active-img');
+  // Written out longhand rather than with ?. - optional chaining is a syntax
+  // error on older Safari, which would take the whole file down with it.
+  const item = document.querySelector(`.location-item[data-index="${index}"]`);
+  const img = document.querySelector(`.location-img[data-index="${index}"]`);
+  if (item) item.classList.add('active-location');
+  if (img) img.classList.add('active-img');
   currentLocationIndex = index;
 }
 
