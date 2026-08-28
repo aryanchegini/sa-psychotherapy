@@ -10,6 +10,20 @@ function elt(type, classNames, children) {
   return node;
 }
 
+// Older Safari (roughly 10-13) ignores the options-object form of
+// window.scrollTo entirely - and our nav clicks preventDefault first, so a
+// dropped call there would leave the links doing nothing at all. Feature-
+// detect once and fall back to the two-argument form (an instant jump).
+const supportsSmoothScroll = "scrollBehavior" in document.documentElement.style;
+
+function scrollWindowTo(top) {
+  if (supportsSmoothScroll) {
+    window.scrollTo({ top: top, behavior: "smooth" });
+  } else {
+    window.scrollTo(0, top);
+  }
+}
+
 const menuToggle = document.querySelector(".menu-toggle");
 const mobileNav = document.querySelector(".mobile-nav");
 
@@ -35,10 +49,7 @@ let nameDiv = elt(
 );
 
 nameDiv.addEventListener("click", () => {
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth",
-  });
+  scrollWindowTo(0);
 });
 
 const innerNav = document.getElementById("inner-nav");
@@ -94,7 +105,7 @@ document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
     if (!target) return;
     event.preventDefault();
     const top = target.getBoundingClientRect().top + window.scrollY - navEl.offsetHeight;
-    window.scroll({ top, left: 0, behavior: "smooth" });
+    scrollWindowTo(top);
   });
 });
 
@@ -104,7 +115,7 @@ window.addEventListener("resize", updateNavCramped);
 const scrollTopBtn = document.getElementById("scrollTopBtn");
 
 scrollTopBtn.addEventListener("click", () => {
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  scrollWindowTo(0);
 });
 
 // --- Location section: native sticky scrollytelling ---
@@ -178,6 +189,63 @@ document.querySelectorAll('.location-item').forEach(item => {
     if (!locTrack || !locSticky) return;
     const index = parseInt(item.getAttribute('data-index'), 10);
     const { startY, scrollable } = locationScrollRange();
-    window.scrollTo({ top: startY + scrollable * ((index + 0.5) / locImgCount), behavior: 'smooth' });
+    scrollWindowTo(startY + scrollable * ((index + 0.5) / locImgCount));
   });
 });
+
+// --- Room notes: scroll-linked reveal ---
+// These sit directly under the pinned location panel, and the band scrolls
+// into view roughly 200px BEFORE the panel unpins. A timed fade therefore ran
+// and finished while the panel was still stuck, so by the time you scrolled
+// past the last location the notes were already fully formed - which read as
+// them appearing instantly. Opacity is driven from scroll position instead:
+// the reveal advances only as far as you scroll, so it cannot outrun you.
+const roomNotes = document.querySelectorAll('.room-note');
+const roomNotesWrap = document.querySelector('.room-notes');
+
+if (roomNotes.length && roomNotesWrap) {
+  // Hidden state lives behind this class so a JS failure leaves the notes
+  // readable rather than permanently at opacity 0.
+  roomNotesWrap.classList.add('room-notes-reveal');
+
+  const noMotion = window.matchMedia
+    && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Measured as a fraction of viewport height, from the note's own top edge.
+  // START sits below where the note stands when the panel finally releases
+  // (~0.76), so nothing begins until the pin has let go; the span between the
+  // two is the scroll distance the fade takes - a little under half a screen.
+  const REVEAL_START = 0.92;
+  const REVEAL_END = 0.50;
+  const STAGGER = 0.06; // second column trails the first
+
+  function updateRoomNotes() {
+    const vh = window.innerHeight;
+
+    roomNotes.forEach((note, i) => {
+      const top = note.getBoundingClientRect().top / vh;
+      const from = REVEAL_START - i * STAGGER;
+      const to = REVEAL_END - i * STAGGER;
+      let p = (from - top) / (from - to);
+      p = Math.min(1, Math.max(0, p));
+      // Ease out, so the last stretch settles rather than stopping dead.
+      const eased = 1 - Math.pow(1 - p, 3);
+
+      note.style.opacity = eased;
+      note.style.transform = noMotion
+        ? ''
+        : 'translateY(' + ((1 - eased) * 28).toFixed(2) + 'px)';
+    });
+  }
+
+  let notesTicking = false;
+  window.addEventListener('scroll', () => {
+    if (notesTicking) return;
+    notesTicking = true;
+    requestAnimationFrame(() => { updateRoomNotes(); notesTicking = false; });
+  }, { passive: true });
+
+  window.addEventListener('resize', updateRoomNotes);
+  window.addEventListener('load', updateRoomNotes);
+  updateRoomNotes();
+}

@@ -163,9 +163,16 @@ nav {
 .nav-list {
   list-style-type: none;
   display: flex;
-  gap: 1.4em;
   font-size: 1.2em;
   color: var(--cream);
+}
+
+/* Spacing via margins rather than flex gap: Safari 14.0 and older ignore
+   gap in flexbox (while still parsing it, so @supports can't catch it) and
+   the links collapse together. Margins on the li read the ul's font-size
+   identically, so modern browsers look exactly the same. */
+.nav-list > li + li {
+  margin-left: 1.4em;
 }
 
 .desktop-nav-list {
@@ -174,6 +181,7 @@ nav {
 }
 
 .nav-item {
+  -webkit-user-select: none;
   user-select: none;
   flex: 0 0 auto;
 }
@@ -200,7 +208,10 @@ nav {
 
   .desktop-nav-list {
     font-size: 1.05em;
-    gap: 1em;
+  }
+
+  .desktop-nav-list > li + li {
+    margin-left: 1em;
   }
 
   .nav-name {
@@ -244,6 +255,7 @@ nav {
 
 .menu-toggle {
   display: none;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -444,6 +456,10 @@ nav {
 .hero::after {
   content: "";
   position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   inset: 0;
   background: linear-gradient(100deg,
       rgba(7, 66, 65, 0.10) 0%,
@@ -494,6 +510,7 @@ nav {
 }
 
 .hero-name {
+  font-size: 3.4rem; /* fallback for browsers without clamp() */
   font-size: clamp(2.6rem, 4.6vw, 4rem);
   line-height: 1.05em;
   font-weight: 300;
@@ -743,8 +760,13 @@ nav {
   align-items: center;
   justify-content: center;
   flex-wrap: wrap;
-  gap: 1.5em;
-  margin-top: 2em;
+  margin-top: 1.25em;
+}
+
+/* Half-gap margins instead of flex gap (ignored by Safari <= 14) - 1.5em
+   between neighbours in both axes once the row wraps. */
+.footer-logos > * {
+  margin: 0.75em;
 }
 
 .footer-logos img {
@@ -1042,10 +1064,16 @@ textarea:hover {
     text-align: center;
   }
 
+  .nav-list > li + li {
+    margin-left: 0;
+    margin-top: 1.2em;
+  }
+
   .menu-toggle {
     display: block;
     cursor: pointer;
-    user-select: none;
+    -webkit-user-select: none;
+  user-select: none;
   }
 
   /* Sections Mobile - one step down, applied to every band alike */
@@ -1142,7 +1170,19 @@ textarea:hover {
    same parchment as the panel above. */
 .room-notes {
   background-color: var(--sand);
-  padding: 0em 1em var(--section-pad) 1em;
+  padding: 1.5em 1em var(--section-pad) 1em;
+}
+
+/* The notes are revealed by scroll position, not by a timer - see the
+   room-note block in index.js. The band scrolls into view while the panel
+   above is still pinned, so any fixed-duration fade finished before the
+   panel released and the notes were simply there. Driving opacity from
+   scroll distance instead ties the arrival to how fast you actually scroll.
+   The hidden start state is applied by JS (.room-notes-reveal) so that with
+   no JS the notes are plainly visible rather than stuck at zero. */
+.room-notes-reveal .room-note {
+  opacity: 0;
+  will-change: opacity, transform;
 }
 
 .room-notes-grid {
