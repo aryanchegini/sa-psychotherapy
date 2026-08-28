@@ -1169,7 +1169,7 @@ textarea:hover {
   display: block;
   width: 32px;
   height: 1px;
-  margin-top: 0.8em;
+  margin-top: 0.35em;
   background-color: var(--accent);
 }
 
