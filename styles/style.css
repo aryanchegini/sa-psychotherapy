@@ -377,6 +377,12 @@ nav {
   background-color: var(--parchment);
   overflow: hidden;
   min-height: 850px;
+  /* The band is taller than the copy, so the copy is centred in it rather
+     than parked at the top. The two layers behind it are absolutely
+     positioned and stay out of the flex flow. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .approach::before {
@@ -648,7 +654,8 @@ nav {
   border-left: 2px solid var(--accent-on-dark);
   font-family: "Cormorant", serif;
   font-weight: 300;
-  font-size: 1.5rem;
+  font-style: italic;
+  font-size: 1.55rem;
   line-height: 1.55em;
   color: var(--cream);
 }
@@ -718,6 +725,12 @@ nav {
 .contact-div .section-title,
 .contact-div .left-info {
   color: var(--cream);
+}
+
+/* The rule under a heading is the accent green, which all but vanishes on the
+   dark contact ground - here it takes the heading's own colour. */
+.contact-div .section-title::after {
+  background-color: currentColor;
 }
 
 .footer-div {
