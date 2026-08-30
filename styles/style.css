@@ -342,6 +342,23 @@ nav {
   margin-top: 2em;
 }
 
+/* The questions carry weight and the answers drop a step, so the pair reads as
+   question and answer rather than as one undifferentiated column. Scoped to
+   .faq-item - .mini-section-title and .left-info are shared with other bands
+   that should keep the running-copy size. */
+.faq-item h3 {
+  font-weight: 600;
+  /* Cormorant sets tight by default, which was fine for the one-line questions
+     and crowded the two-line one once it wrapped on a phone. */
+  line-height: 1.35em;
+  margin-bottom: 0.85em;
+}
+
+.faq-item .left-info {
+  font-size: 1.05rem;
+  line-height: 1.75em;
+}
+
 .subscript {
   font-size: 0.9rem;
   margin-top: 0.5em;
@@ -1095,8 +1112,10 @@ textarea:hover {
 }
 
 /* Nothing this tall can pin without overflowing a short screen, so let it
-   scroll normally instead. */
-@media screen and (max-height: 620px) {
+   scroll normally instead. Raised from 620px once the room notes moved into
+   the panel: measured, it needs about 700px of viewport to clear the nav at
+   the narrow end of the desktop range. */
+@media screen and (max-height: 700px) {
   .location-track {
     height: auto;
   }
@@ -1128,11 +1147,29 @@ textarea:hover {
             + (100vh - var(--nav-height, 0px) - var(--loc-sticky-h, 500px)) * var(--loc-bias, 0.5));
   top: calc(var(--nav-height, 0px)
             + (100svh - var(--nav-height, 0px) - var(--loc-sticky-h, 500px)) * var(--loc-bias, 0.5));
+  /* Belt and braces for the odd window - narrow and short at once - that slips
+     past the unstick query above: the centring term goes negative there and
+     would park the panel's top above the nav. Never higher than the nav. */
+  top: max(var(--nav-height, 0px),
+           calc(var(--nav-height, 0px)
+                + (100svh - var(--nav-height, 0px) - var(--loc-sticky-h, 500px)) * var(--loc-bias, 0.5)));
 }
 
 @media screen and (min-width: 920px) {
+  /* The panel now carries the two room notes as well, and it only works pinned
+     if the whole thing clears the nav on a laptop screen. Everything below is
+     bought back from that height: a wider text column so the notes wrap less,
+     a shorter photo, and half the vertical padding - the track behind the panel
+     is the same sand, so trimming the panel's own padding changes the height
+     without changing what you see. Measured at 1280x720, the shortest common
+     laptop: the panel has to stay under about 640px there. */
+  .location-div {
+    padding: 3em 0;
+  }
+
   .location-div .two-col-grid {
     align-items: start;
+    grid-template-columns: 1.15fr 0.85fr;
   }
 
   .location-text-col {
@@ -1141,7 +1178,7 @@ textarea:hover {
 
   .location-imgs-wrapper {
     position: relative;
-    height: 450px;
+    height: 400px;
     width: 100%;
   }
 
@@ -1185,10 +1222,11 @@ textarea:hover {
   will-change: opacity, transform;
 }
 
+/* Phone layout only - see .room-notes-inline for the desktop copy. */
 .room-notes-grid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 3.5em;
+  grid-template-columns: 1fr;
+  gap: 2.5em;
   align-items: start;
 }
 
@@ -1224,10 +1262,38 @@ textarea:hover {
   .room-notes {
     padding: 0 1em 3.5em;
   }
+}
 
-  .room-notes-grid {
+/* The two notes sit under the location list, inside the pinned panel, so they
+   are there to read the whole time you scroll the three locations rather than
+   arriving as a band afterwards. Set a step down from the list and the section
+   title - they are supporting copy, and at the band's sizes they competed with
+   the names they sit beneath. Only one of the inline copy and the band below is
+   ever shown, so the notes are never on screen twice. */
+.room-notes-inline {
+  display: none;
+}
+
+@media screen and (min-width: 921px) {
+  .room-notes {
+    display: none;
+  }
+
+  .room-notes-inline {
+    display: grid;
     grid-template-columns: 1fr;
-    gap: 2.5em;
+    gap: 1.5em;
+    margin-top: 2em;
+  }
+
+  .room-notes-inline h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.45em;
+  }
+
+  .room-notes-inline p {
+    font-size: 0.95rem;
+    line-height: 1.65em;
   }
 }
 

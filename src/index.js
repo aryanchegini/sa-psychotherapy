@@ -193,14 +193,18 @@ document.querySelectorAll('.location-item').forEach(item => {
   });
 });
 
-// --- Room notes: scroll-linked reveal ---
+// --- Room notes: scroll-linked reveal (phone layout only) ---
+// The band below the panel is the phone copy of the notes - on desktop they sit
+// inside the panel and this whole block finds nothing to do.
 // These sit directly under the pinned location panel, and the band scrolls
 // into view roughly 200px BEFORE the panel unpins. A timed fade therefore ran
 // and finished while the panel was still stuck, so by the time you scrolled
 // past the last location the notes were already fully formed - which read as
 // them appearing instantly. Opacity is driven from scroll position instead:
 // the reveal advances only as far as you scroll, so it cannot outrun you.
-const roomNotes = document.querySelectorAll('.room-note');
+// Scoped to the band, not to .room-note generally: the desktop copy of these
+// notes lives inside the pinned panel and must never be faded out by this.
+const roomNotes = document.querySelectorAll('.room-notes .room-note');
 const roomNotesWrap = document.querySelector('.room-notes');
 
 if (roomNotes.length && roomNotesWrap) {
