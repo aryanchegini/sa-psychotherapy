@@ -577,6 +577,31 @@ nav {
   padding: 0.9em 1em;
 }
 
+.brandbar-line {
+  display: inline;
+}
+
+.brandbar-narrow {
+  display: none;
+}
+
+/* Two lines on mobile: the phrase and the locations each get their own row,
+   with the dot separator dropped and the locations spaced out instead. */
+@media screen and (max-width: 920px) {
+  .brandbar-line {
+    display: block;
+  }
+
+  .brandbar-sep,
+  .brandbar-wide {
+    display: none;
+  }
+
+  .brandbar-narrow {
+    display: inline;
+  }
+}
+
 /* --- Wide strips ---------------------------------------------------------- */
 .strip {
   padding: var(--section-pad) 1em;
@@ -692,6 +717,13 @@ nav {
   font-size: 1.55rem;
   line-height: 1.55em;
   color: var(--cream);
+}
+
+@media screen and (max-width: 920px) {
+  .strip-note {
+    font-size: 1.3rem;
+    line-height: 1.6em;
+  }
 }
 
 /* Soraya-27 is a 2:3 portrait, so at full column width it ran ~800px tall -
@@ -1231,7 +1263,7 @@ textarea:hover {
 }
 
 .room-note h3 {
-  font-size: 1.6rem;
+  font-size: 1.3rem;
   font-weight: 300;
   line-height: 1.2em;
   letter-spacing: 0.01em;
@@ -1287,13 +1319,21 @@ textarea:hover {
   }
 
   .room-notes-inline h3 {
-    font-size: 1.2rem;
+    font-size: 1.3rem;
     margin-bottom: 0.45em;
   }
 
-  .room-notes-inline p {
+  .room-notes-inline p,
+  .location-text-col .left-info {
     font-size: 0.95rem;
     line-height: 1.65em;
+  }
+}
+
+@media screen and (max-width: 920px) {
+  .location-text-col .left-info {
+    font-size: 1.05rem;
+    line-height: 1.75em;
   }
 }
 
