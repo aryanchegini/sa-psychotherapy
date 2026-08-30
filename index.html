@@ -1,327 +1,459 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="styles/reset.css" />
-    <link rel="stylesheet" href="styles/style.css" />
-    <title>SA Psychotherapy</title>
-    <link rel="preload" href="./assets/images/image00013.JPG" as="image" />
-  </head>
-  <body>
-    <nav id="nav">
-      <div class="container centered-div right-menu" id="inner-nav">
-        <div class="desktop-nav">
-          <ul class="nav-list">
-            <li class="nav-item">
-              <a href="#home" aria-current="page">Home</a>
-            </li>
-            <li class="nav-item"><a href="#approach">My Approach</a></li>
-            <li class="nav-item"><a href="#about">About Me</a></li>
-            <li class="nav-item"><a href="#fees">Fees & FAQs</a></li>
-            <li class="nav-item"><a href="#contact">Contact Me</a></li>
-          </ul>
-        </div>
-        <div class="mobile-nav">
-          <ul class="nav-list">
-            <li class="nav-item">
-              <a href="#home" aria-current="page">Home</a>
-            </li>
-            <li class="nav-item"><a href="#approach">My Approach</a></li>
-            <li class="nav-item"><a href="#about">About Me</a></li>
-            <li class="nav-item"><a href="#fees">Fees & FAQs</a></li>
-            <li class="nav-item"><a href="#contact">Contact Me</a></li>
-          </ul>
-        </div>
-        <div class="menu-toggle" id="menu-toggle">
-          <svg
-            style="fill: #424a3f; width: 35px; height: auto"
-            xmlns="http://www.w3.org/2000/svg"
-            x="0px"
-            y="0px"
-            width="100"
-            height="100"
-            viewBox="0 0 50 50"
-          >
-            <path
-              d="M 3 9 A 1.0001 1.0001 0 1 0 3 11 L 47 11 A 1.0001 1.0001 0 1 0 47 9 L 3 9 z M 3 24 A 1.0001 1.0001 0 1 0 3 26 L 47 26 A 1.0001 1.0001 0 1 0 47 24 L 3 24 z M 3 39 A 1.0001 1.0001 0 1 0 3 41 L 47 41 A 1.0001 1.0001 0 1 0 47 39 L 3 39 z"
-            ></path>
-          </svg>
-        </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Integrative psychotherapy and counselling in London (E1 & W2) and Margate. UKCP registered therapist specialising in trauma, anxiety, PTSD, depression and more. Online sessions available." />
+  <link rel="canonical" href="https://www.sa-psychotherapy.com" />
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://www.sa-psychotherapy.com" />
+  <meta property="og:title" content="Soraya Chegini-Adams | Integrative Psychotherapist London & Margate" />
+  <meta property="og:description" content="Integrative psychotherapy and counselling in London (E1 & W2) and Margate. UKCP registered. Online sessions available." />
+  <meta property="og:image" content="https://www.sa-psychotherapy.com/assets/images/Soraya-61.jpg" />
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Soraya Chegini-Adams | Integrative Psychotherapist London & Margate" />
+  <meta name="twitter:description" content="Integrative psychotherapy and counselling in London (E1 & W2) and Margate. UKCP registered. Online sessions available." />
+  <meta name="twitter:image" content="https://www.sa-psychotherapy.com/assets/images/Soraya-61.jpg" />
+
+  <link rel="icon" type="image/svg+xml" href="./assets/favicon.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32.png" />
+  <link rel="apple-touch-icon" href="./assets/apple-touch-icon.png" />
+  <link rel="stylesheet" href="styles/reset.css" />
+  <link rel="stylesheet" href="styles/style.css" />
+  <title>Soraya Chegini-Adams | Integrative Psychotherapist London & Margate</title>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Soraya Chegini-Adams Psychotherapy",
+    "description": "Integrative psychotherapy and counselling in London and Margate. UKCP registered therapist specialising in trauma, anxiety, PTSD, depression and more.",
+    "url": "https://www.sa-psychotherapy.com",
+    "email": "info@sa-psychotherapy.com",
+    "image": "https://www.sa-psychotherapy.com/assets/images/Soraya-61.jpg",
+    "priceRange": "££",
+    "areaServed": [
+      { "@type": "City", "name": "London" },
+      { "@type": "City", "name": "Margate" }
+    ],
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Psychotherapy Services",
+      "itemListElement": [
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Individual Psychotherapy" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Online Therapy" } },
+        { "@type": "Offer", "itemOffered": { "@type": "Service", "name": "Trauma Therapy" } }
+      ]
+    },
+    "founder": {
+      "@type": "Person",
+      "name": "Soraya Chegini-Adams",
+      "jobTitle": "Integrative Psychotherapist",
+      "memberOf": {
+        "@type": "Organization",
+        "name": "UK Council for Psychotherapy (UKCP)"
+      }
+    }
+  }
+  </script>
+</head>
+
+<body>
+  <!-- Sits above the sticky nav in normal flow, so it scrolls away with the
+       page and the nav takes the top on its own. -->
+  <div class="brandbar cormorant"><span class="brandbar-line">Psychotherapy &amp; Counselling</span><span class="brandbar-sep">&nbsp;·&nbsp;</span><span class="brandbar-line"><span class="brandbar-wide">London, Margate &amp; Online</span><span class="brandbar-narrow">London &nbsp;·&nbsp; Margate &nbsp;·&nbsp; Online</span></span></div>
+  <nav id="nav">
+    <div class="container centered-div right-menu cormorant" id="inner-nav">
+      <div class="desktop-nav">
+        <ul class="nav-list desktop-nav-list">
+          <li class="nav-item"><a href="#approach">My Approach</a></li>
+          <li class="nav-item"><a href="#areas">Areas I Work With</a></li>
+          <li class="nav-item"><a href="#about">About Me</a></li>
+          <li class="nav-item"><a href="#fees">Fees &amp; Location</a></li>
+          <li class="nav-item"><a href="#faq">FAQs</a></li>
+          <li class="nav-item"><a href="#contact">Contact Me</a></li>
+        </ul>
       </div>
-    </nav>
-    <main>
-      <div id="home">
-        <div class="section-div intro-div" id="inner-home">
-          <div class="container">
-            <div class="intro-content">
-              <h1 class="intro-name">Soraya Chegini-Adams</h1>
-              <p class="info intro-info">
-                Integrative Psychotherapy and Counselling for Adults <br />
-                UKCP Registered
-              </p>
-              <p class="intro-location">London E1 & W2 | Margate | Virtual</p>
-            </div>
-          </div>
-        </div>
-        <div class="section-div home-info-div">
-          <div class="container col">
-            <div class="info-div col">
-              <p class="home-info">
-                In a world that's always on the move, it can feel like we're
-                just about keeping up. The everyday grind pulls our attention
-                and it's no surprise we feel disconnected or stuck in a loop.
-                Life has a way of throwing us around, whilst not being totally
-                sure where we're headed. We forget ourselves and lose connection
-                to what's true and important.
-                <br /><br />
-                I offer sanctuary—a place to pause, exhale and take the weight
-                off. A space to reset and gather yourself. To sit back and gently untangle what is in front of us and
-                reclaim your inner compass.
-                <br /><br />
-                Connecting back to ourselves is essential in uncovering what
-                truly needs tending to. From here potential can be found, opening up to fresh possibility and a new direction.
-              </p>
-            </div>
-          </div>
-        </div>
+      <div class="mobile-nav">
+        <ul class="nav-list">
+          <li class="nav-item"><a href="#approach">My Approach</a></li>
+          <li class="nav-item"><a href="#areas">Areas I Work With</a></li>
+          <li class="nav-item"><a href="#about">About Me</a></li>
+          <li class="nav-item"><a href="#fees">Fees &amp; Location</a></li>
+          <li class="nav-item"><a href="#faq">FAQs</a></li>
+          <li class="nav-item"><a href="#contact">Contact Me</a></li>
+        </ul>
       </div>
-      <div id="approach">
-        <div class="section-div approach-div">
-          <div class="approach container">
-            <h2 class="section-title">My Approach</h2>
-            <div class="info-div">
-              <p class="info">
-                As an integrative psychotherapist I have trained in different
-                approaches such as transpersonal, psychodynamic, humanistic and
-                existential methods. This allows me to work intuitively and
-                adapt to meet your unique needs, enabling us to work with
-                whatever arises.
-                <br /><br />
-                Transpersonal means that my methods are holistic; bringing the
-                body, mind and soul in harmony to accomplish healing and growth.
-                If sometimes language evades us, we can work with creative
-                expression, dreams and mindfulness to create breakthroughs. This
-                can mean listening to the body or checking in with the senses
-                whilst we work, connecting with what is true and authentic.
-                <br /><br />
-                I believe therapy is relational and I encourage a collaborative
-                process of careful listening and supportive dialogue. By
-                creating a secure foundation of trust and safety, we can allow
-                unconscious patterns and self-limiting beliefs to move into the
-                light to be witnessed and released. Our work together will help
-                cultivate an inner guidance for you to take out into your life
-                and relationships.
-                <br /><br />
-                Whatever the issue, I aim to walk alongside you to uncover your
-                concerns, untangle what is stuck and be there to witness and
-                celebrate your progress.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="section-div examples-div">
-          <div class="container">
-            <h2 class="sub-section-title">
-              Specialties and Expertise
-            </h2>
-            <div class="info-div two-col-grid">
-              <div class="examples-col examples-col-1">
-                <ul class="examples examples-1">
-                  <li class="list-item">Childhood Trauma</li>
-                  <li class="list-item">Domestic Abuse</li>
-                  <li class="list-item">PTSD and Complex PTSD</li>
-                  <li class="list-item">Identity and Cultural Issues</li>
-                  <li class="list-item">
-                    Co-dependency and Relationship Issues
-                  </li>
-                  <li class="list-item">Depression</li>
-                  <li class="list-item">Psychedelic Integration</li>
-                </ul>
-              </div>
-              <div class="examples-col examples-col-2">
-                <ul class="examples examples-2">
-                  <li class="list-item">Mixed and Multi-Heritage Issues</li>
-                  <li class="list-item">Low Self-esteem</li>
-                  <li class="list-item">Anxiety and Social Anxiety</li>
-                  <li class="list-item">Bereavement and Loss</li>
-                  <li class="list-item">
-                    Corporate Disillusionment and Burnout
-                  </li>
-                  <li class="list-item">Midlife Transition / Depression</li>
-                  <li class="list-item">Spiritual Crisis</li>
-                </ul>
-              </div>
-            </div>
+      <div class="menu-toggle" id="menu-toggle">
+        <svg class="menu-toggle-icon" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="100" height="100"
+          viewBox="0 0 50 50">
+          <path
+            d="M 3 9 A 1.0001 1.0001 0 1 0 3 11 L 47 11 A 1.0001 1.0001 0 1 0 47 9 L 3 9 z M 3 24 A 1.0001 1.0001 0 1 0 3 26 L 47 26 A 1.0001 1.0001 0 1 0 47 24 L 3 24 z M 3 39 A 1.0001 1.0001 0 1 0 3 41 L 47 41 A 1.0001 1.0001 0 1 0 47 39 L 3 39 z">
+          </path>
+        </svg>
+      </div>
+    </div>
+  </nav>
+  <main>
+    <!-- 1. Hero: portrait, with name/title held to the right, clear of her face -->
+    <section id="home" aria-label="Home">
+      <div class="hero" id="inner-home">
+        <div class="wide-container hero-grid">
+          <div class="hero-card cormorant">
+            <h1 class="hero-name">Soraya<br />Chegini-Adams</h1>
+            <p class="hero-role quicksand">Integrative Psychotherapy &amp; Counselling for Adults</p>
+            <p class="hero-meta quicksand">UKCP Registered</p>
+            <p class="hero-meta quicksand">London E1 &amp; W2 &nbsp;·&nbsp; Margate &nbsp;·&nbsp; Online</p>
+            <a class="hero-cta quicksand" href="#contact">Get in touch</a>
           </div>
         </div>
       </div>
-      <div id="about">
-        <div class="section-div less-padding-div">
-          <div class="profile-div container">
-            <h2 class="section-title">About Me</h2>
-            <div class="img-res-div">
-              <img
-                class="img-res"
-                src="./assets/images/image00013.JPG"
-                alt=""
-              />
-            </div>
-          </div>
-        </div>
-        <div class="section-div about-text-div">
-          <div class="container">
-            <div class="info-div">
-              <p class="flex-info">
-                After studying Psychology at Leeds University, I spent 20+ years
-                in the fashion retail industry, leading large teams in creative
-                and project management. The corporate world delivered success
-                but also chronic exhaustion and disillusionment. My path up to
-                that point had always brought personal struggle and inner
-                turmoil and I continued to chase answers in the wrong places.
-                <br /><br />
-                I eventually embarked on a journey of discovery through a blend
-                of therapy, deep shamanic work, meditation, Buddhist and tantra
-                practice. These methods have supported me to turn inward and
-                heal, becoming sacred practices to integrate into my work as a
-                therapist.
-                <br /><br />
-                My formal training is in integrative and transpersonal
-                psychotherapy and counselling; receiving a Post-Graduate diploma
-                at the Centre of Counselling and Psychotherapy Education (CCPE).
-                I am an accredited member of the UKCP.
-                <br /><br />
-                Additionally, I possess specialised training in trauma support,
-                particularly for individuals who have endured emotional,
-                physical, or sexual abuse during childhood.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div id="fees">
-        <div class="section-div session-div">
-          <div class="container col">
-            <h2 class="section-title">Fees & Session Info</h2>
-            <div class="info-div">
-              <p class="info">
-                Session fee is £85 for face to face in all locations and
-                virtual.
-                <br /><br />
-                I offer a free initial 20 minute exploratory session. A limited
-                amount of low cost slots are available.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="section-div faq-div">
-          <div class="container">
-            <h2 class="section-title">FAQs</h2>
-            <div class="info-div">
-              <br /><br />
-              <h3 class="mini-section-title underline">
-                I want to get in touch, so what happens next?
-              </h3>
-              <p class="left-info">
-                Send me an email and let me know if you are seeking online, or face to face sessions - along with the preferred location. We can then organise a 20-minute introductory Zoom session.  This  serves as an opportunity for us to explore why you are seeking therapy, how it would be helpful and to gauge if I am a good fit for you.
-              </p>
-              <br /><br />
-              <h3 class="mini-section-title underline">
-                How long is a typical therapy session, and how often should
-                sessions occur?
-              </h3>
-              <p class="left-info">
-                Therapy sessions typically last 50 minutes and are ideally
-                scheduled once a week.
-              </p>
-              <br /><br />
-              <h3 class="mini-section-title underline">
-                How is the progress of therapy reviewed?
-              </h3>
-              <p class="left-info">
-                We will regularly review the progress of therapy sessions
-                together. It's entirely up to you to decide the number of
-                sessions you feel you need. Therapy can last anywhere from a few
-                weeks to several years based on individual requirements.
-              </p>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="section-div contact-div" id="contact">
-        <div class="container contact-grid">
-          <div class="contact-info">
-            <h2 class="section-title contact-title">Feel free to contact me</h2>
-            <p class="left-info">
-              To explore more about therapy, inquire about sessions, or schedule
-              a consultation, feel free to reach out via the contact form.
-              <br /><br />
-              My in person practice locations include Margate (CT9) and
-              Paddington, London (E1 & W2). For those preferring online therapy,
-              sessions are conducted securely through Zoom.
+    </section>
+
+    <!-- 2. Welcome: wide strip -->
+    <section id="welcome" aria-label="Welcome">
+      <div class="strip strip-sand">
+        <div class="narrow-container">
+          <h2 class="strip-title cormorant">Welcome</h2>
+          <div class="strip-body quicksand">
+            <p>
+              In a world that's always on the move, it feels like we're just about keeping up. The everyday 
+              pulls our attention and it's no surprise we feel disconnected or stuck in a loop. Life has
+              a way of throwing us around, whilst not being sure where we're headed. We can lose
+              connection to what's true and important.
+            </p>
+            <p>
+              I offer sanctuary. A place to pause, exhale and take the weight off, to gently untangle what is
+              in front of us and reclaim your inner compass.
+            </p>
+            <p>
+              Connecting back to ourselves is essential in uncovering what truly needs tending to. From here
+              potential can be found, opening up to fresh possibility and a new direction.
             </p>
           </div>
-          <div class="form-div">
-            <form
-              action="https://formsubmit.co/info@sa-psychotherapy.com"
-              method="POST"
-              class="form-grid"
-            >
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. My Approach -->
+    <section id="approach" class="approach" aria-label="My Approach">
+      <div class="section-div">
+        <div class="narrow-container">
+          <h2 class="section-title cormorant">My Approach</h2>
+          <div class="info-div left-info quicksand">
+            <p>
+              As an integrative psychotherapist I have trained in different approaches such as transpersonal,
+              psychodynamic, humanistic and existential methods. This allows me to work intuitively and adapt
+              to meet your unique needs, enabling us to work with whatever arises.
+            </p>
+            <p>
+              I believe therapy is relational and I encourage a collaborative process of careful listening
+              and supportive dialogue. By working towards a secure foundation of trust and safety,
+              unconscious patterns and self-limiting beliefs can move into the light to be witnessed and
+              processed. Our work together will help cultivate an inner guidance for you to take out into
+              your life and relationships.
+            </p>
+            <p>
+              Transpersonal means that my approach is holistic; bringing the body, mind and soul in harmony
+              to accomplish healing and growth. If sometimes language evades us, we can work with creative
+              expression, dreams and mindfulness to create breakthroughs. This can mean listening to the body
+              or checking in with the senses whilst we work, connecting with what is true and authentic.
+            </p>
+            <p>
+              Whatever the issue, I aim to walk alongside you to uncover your concerns, untangle what is
+              stuck and be there to witness and celebrate your progress.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. Areas I Work With: wide strip -->
+    <section id="areas" aria-label="Areas I Work With">
+      <div class="strip strip-deep">
+        <div class="container">
+          <h2 class="strip-title cormorant">Areas I Work With</h2>
+          <ul class="areas-list quicksand">
+            <li class="list-item">Childhood Trauma</li>
+            <li class="list-item">Attachment Trauma and Emotional Neglect</li>
+            <li class="list-item">PTSD and Complex PTSD (C-PTSD)</li>
+            <li class="list-item">Domestic Abuse and Coercive Relationships</li>
+            <li class="list-item">Anxiety and Social Anxiety</li>
+            <li class="list-item">Depression</li>
+            <li class="list-item">Low Self-Esteem and Self-Worth</li>
+            <li class="list-item">Relationship Difficulties and Co-dependency</li>
+            <li class="list-item">Bereavement, Grief and Loss</li>
+            <li class="list-item">Identity, Culture and Belonging</li>
+            <li class="list-item">Mixed and Multi-Heritage Identity</li>
+            <li class="list-item">Neurodivergence (ADHD and Autism)</li>
+            <li class="list-item">Workplace Stress, Burnout and Corporate Disillusionment</li>
+            <li class="list-item">Midlife Transition and Life Changes</li>
+            <li class="list-item">Perimenopause and Menopause</li>
+            <li class="list-item">Spiritual Crisis and Spiritual Emergence</li>
+            <li class="list-item">Psychedelic Integration</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. About Me -->
+    <section id="about" aria-label="About Me">
+      <div class="section-div quicksand">
+        <!-- The heading sits outside the grid so that when the columns stack on a
+             phone it stays on top, with her portrait between it and the copy. -->
+        <div class="container about-head">
+          <h2 class="section-title cormorant">About Me</h2>
+        </div>
+        <div class="container two-col-grid about-grid">
+          <div class="col-1 left-info">
+            <p>
+              After studying Psychology at Leeds University, I spent 20+ years in the fashion retail industry,
+              leading large teams in creative and project management. The corporate world delivered success but
+              also chronic exhaustion and disillusionment. My path up to that point had always brought personal
+              struggle and inner turmoil and I continued to chase answers in the wrong places.
+            </p>
+            <p>
+              I eventually embarked on a journey of discovery through a blend of therapy, deep shamanic work,
+              meditation, Buddhist and tantra practice. These methods have supported me to turn inward and
+              heal, becoming sacred practices to integrate into my work as a therapist.
+            </p>
+            <p>
+              My formal training is in integrative and transpersonal psychotherapy and counselling; receiving a
+              Post-Graduate diploma at the Centre of Counselling and Psychotherapy Education (CCPE). I am an
+              accredited member of the UKCP.
+            </p>
+            <p>
+              Additionally, I have specialised training in trauma support, particularly for individuals who
+              have endured emotional, physical, or sexual abuse during childhood.
+            </p>
+          </div>
+          <div class="col-2">
+            <img loading="lazy" decoding="async" src="./assets/images/Soraya-27.jpg" alt="Soraya Chegini-Adams" class="content-img" />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. Professional Training: wide strip -->
+    <section id="training" aria-label="Professional Training">
+      <div class="strip strip-deep">
+        <div class="narrow-container">
+          <h2 class="strip-title cormorant">Professional Training</h2>
+          <ul class="training-list quicksand">
+            <li>Five-Year Postgraduate Diploma (Dip Psych) in Counselling and Psychotherapy</li>
+            <li>UKCP Accredited Psychotherapist</li>
+            <li>Registered member of BACP (MBACP)</li>
+            <li>Certificate in Embodied Psychotherapy (currently undertaking)</li>
+            <li>Certificate in the Foundations of Counselling and Psychotherapy</li>
+            <li>B.A. (Hons) Psychology, Leeds</li>
+          </ul>
+          <p class="strip-note quicksand">
+            I believe that personal development is a lifelong process. Alongside supervision and professional
+            training, I continue to engage in my own therapeutic and reflective work, which deepens my
+            self-awareness and informs my practice as a psychotherapist.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="fees" aria-label="Fees and Availability">
+      <div class="section-div fees-div">
+        <div class="container two-col-grid">
+          <div class="col-1">
+            <img loading="lazy" decoding="async" src="./assets/images/Soraya-29.jpg" alt="Soraya Chegini-Adams" class="portrait-img" />
+          </div>
+          <div class="col-2">
+            <h2 class="section-title cormorant">Fees &amp; availability</h2>
+            <div class="left-info quicksand dark-text">
+              <p>
+                Sessions are offered on a sliding scale of <strong>&pound;80&ndash;&pound;100</strong>,
+                depending on income and location. This applies to both face to face and virtual sessions.
+              </p>
+              <p>
+                I offer a free initial 20 minute exploratory session. A limited amount of low cost slots are
+                available.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="location" aria-label="My Location">
+      <div class="location-track">
+        <div class="location-sticky section-div location-div">
+          <div class="container two-col-grid">
+            <div class="col-1 location-text-col">
+              <h2 class="section-title cormorant">My location</h2>
+              <div class="left-info quicksand dark-text">
+                <p>In addition to virtual sessions, my in person practice locations include:</p>
+                <ul class="location-list">
+                  <li class="location-item cormorant active-location" data-index="0">London, Brick Lane E1</li>
+                  <li class="location-item cormorant" data-index="1">London, Paddington W2</li>
+                  <li class="location-item cormorant" data-index="2">Margate</li>
+                </ul>
+              </div>
+              <!-- Desktop copy of the two room notes. They belong under the list
+                   and have to be readable the whole time the panel is pinned, so
+                   they live inside the panel here rather than in the band below.
+                   The band below is the phone copy - a pinned panel that also
+                   carried these two paragraphs would be taller than a phone
+                   screen and could not hold still. Only one of the two is ever
+                   displayed, so screen readers never meet both. -->
+              <div class="room-notes-inline quicksand">
+                <div class="room-note">
+                  <h3 class="cormorant">Confidential</h3>
+                  <p>My consulting rooms offer quiet, private and confidential spaces, away from the hustle and
+                    bustle of everyday life. A calm environment where you can feel comfortable, safe and at ease.</p>
+                </div>
+                <div class="room-note">
+                  <h3 class="cormorant">Accessible</h3>
+                  <p>All consulting rooms are located within a five-minute walk of a tube or train station, making
+                    them easy to reach by public transport. Disabled access is available at the Paddington location.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-2">
+              <div class="location-imgs-wrapper">
+                <img loading="lazy" decoding="async" src="./assets/images/brick-lane-loc.jpeg" alt="Therapy practice in London Brick Lane E1"
+                  class="portrait-img location-img active-img" data-index="0" />
+                <img loading="lazy" decoding="async" src="./assets/images/paddington-loc.jpg" alt="Therapy practice in London Paddington W2" class="portrait-img location-img"
+                  data-index="1" />
+                <img loading="lazy" decoding="async" src="./assets/images/margs-loc.jpg" alt="Therapy practice in Margate" class="portrait-img location-img"
+                  data-index="2" />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    
+      <div class="room-notes">
+        <div class="container room-notes-grid quicksand">
+          <div class="room-note">
+            <h3 class="cormorant">Confidential</h3>
+            <p>My consulting rooms offer quiet, private and confidential spaces, away from the hustle and
+              bustle of everyday life. A calm environment where you can feel comfortable, safe and at ease.</p>
+          </div>
+          <div class="room-note">
+            <h3 class="cormorant">Accessible</h3>
+            <p>All consulting rooms are located within a five-minute walk of a tube or train station, making
+              them easy to reach by public transport. Disabled access is available at the Paddington location.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="faq" aria-label="Frequently Asked Questions">
+      <div class="section-div faq-div">
+        <div class="container">
+          <div class="col-2">
+            <h2 class="section-title cormorant">FAQs</h2>
+            <div class="info-div">
+              <div class="faq-item">
+                <h3 class="mini-section-title cormorant">
+                  I want to get in touch, so what happens next?
+                </h3>
+                <p class="left-info quicksand">
+                  Send me an email and let me know if you are seeking online, or
+                  face to face sessions - along with the preferred location. We can
+                  then organise a 20-minute introductory Zoom session. This serves
+                  as an opportunity for us to explore why you are seeking therapy,
+                  how it would be helpful and to gauge if I am a good fit for you.
+                </p>
+              </div>
+              <div class="faq-item">
+                <h3 class="mini-section-title cormorant">
+                  How long is a typical therapy session, and how often should
+                  sessions occur?
+                </h3>
+                <p class="left-info quicksand">
+                  Therapy sessions typically last 50 minutes and are ideally
+                  scheduled once a week.
+                </p>
+              </div>
+              <div class="faq-item">
+                <h3 class="mini-section-title cormorant">
+                  How is the progress of therapy reviewed?
+                </h3>
+                <p class="left-info quicksand">
+                  We will regularly review the progress of therapy sessions
+                  together. It's entirely up to you to decide the number of
+                  sessions you feel you need. Therapy can last anywhere from a few
+                  weeks to several years based on individual requirements.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" aria-label="Contact">
+      <div class="section-div contact-div">
+        <div class="container contact-grid">
+          <div class="contact-info">
+            <h2 class="section-title contact-title cormorant">
+              Feel free to contact me
+            </h2>
+            <p class="left-info quicksand">
+              To explore more about therapy, inquire about sessions, or schedule
+              a consultation, feel free to reach out via the contact form.
+            </p>
+          </div>
+          <div class="form-div quicksand">
+            <form action="https://formsubmit.co/info@sa-psychotherapy.com" method="POST" class="form-grid">
               <div class="form-unit form-unit-1">
-                <label for="first-name">First Name:</label>
+                <label for="first-name">First name</label>
                 <input type="text" id="first-name" name="first-name" required />
               </div>
-
               <div class="form-unit form-unit-2">
-                <label for="last-name">Last Name:</label>
+                <label for="last-name">Last name</label>
                 <input type="text" id="last-name" name="last-name" required />
               </div>
-
               <div class="form-unit form-unit-3">
-                <label for="email">Email:</label>
+                <label for="email">Email</label>
                 <input type="email" id="email" name="email" required />
               </div>
-
               <div class="form-unit form-unit-4">
-                <label for="message">Message:</label>
-                <textarea
-                  id="message"
-                  name="message"
-                  rows="10"
-                  required
-                ></textarea>
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="8" required></textarea>
               </div>
-
               <div class="form-unit form-unit-5">
-                <input type="submit" value="Submit" id="submit" />
+                <input type="submit" value="Send message" id="submit" />
               </div>
             </form>
           </div>
         </div>
       </div>
-    </main>
-    <footer>
-      <div class="section-div footer-div" id="footer">
-        <div class="container">
-          <div class="col cert-col">
-            <a
-              class="img-link"
-              href="https://www.psychotherapy.org.uk/therapist/Soraya-Adams-93fO3IAI"
-              target="_blank"
-              ><img
-                src="./assets/images/UKCP logo.png"
-                alt=""
-                class="img-in-link"
-            /></a>
-            <img
-              style="width: 100%"
-              src="./assets/images/BACP Logo - 405641.png"
-              alt="BACP Accreditation - 405641"
-            />
-          </div>
-        </div>
+    </section>
+  </main>
+  <footer class="footer-div">
+    <div class="container col cormorant">
+      <button id="scrollTopBtn" title="Go to top">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+          <path fill="none" d="M0 0h24v24H0z" />
+          <path d="M13 7.828V20h-2V7.828l-5.364 5.364-1.414-1.414L12 4l7.778 7.778-1.414 1.414L13 7.828z"
+            fill="currentColor" />
+        </svg>
+      </button>
+      <div class="footer-logos">
+        <a class="footer-logo-link" href="https://www.psychotherapy.org.uk/therapist/Soraya-Adams-93fO3IAI"
+          target="_blank" rel="noopener">
+          <img loading="lazy" decoding="async" src="./assets/images/UKCP logo.png" alt="UKCP registered psychotherapist" />
+        </a>
+        <img loading="lazy" decoding="async" src="./assets/images/BACP Logo - 405641.png" alt="BACP Accreditation - 405641" />
       </div>
-    </footer>
-    <script src="src/index.js"></script>
-  </body>
+      <p class="subscript footer-text">
+        &copy; Soraya Chegini-Adams Psychotherapy
+      </p>
+    </div>
+  </footer>
+  <script src="src/index.js"></script>
+</body>
+
 </html>

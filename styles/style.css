@@ -1,28 +1,40 @@
-@font-face {
-  font-family: TripSans;
-  src: url(../assets/fonts/trip-sans-variable.ttf);
-}
+@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300..700;1,300..700&family=Quicksand:wght@300..700&display=swap');
 
-@font-face {
-  font-family: PlayfairLight;
-  src: url(../assets/fonts/Playfair_144pt-Light.ttf);
-}
-
-@font-face {
-  font-family: PlayfairItalic;
-  src: url(../assets/fonts/PlayfairDisplay-Italic.ttf);
-}
-
+/* --- Palette ---------------------------------------------------------------
+   Drawn from the photography on the site: the oat/parchment walls and rattan
+   screen, the tan leather, and the deep teal curtain behind her. One dark hue
+   only - two competing darks read as a mismatch rather than a contrast - and
+   the dark is spent sparingly, on the contact block and footer.             */
 :root {
-  --primary-color: #424a3f;
-  --secondary-color: #fffce2;
-  --tertiary-color: #f7e6c4;
-  --highlight-color: #f1c376;
-  --multiply-color: rgb(129, 129, 129);
-  --hand-multiply-color: rgb(123, 123, 123);
+  --parchment: #f4efe5;   /* page ground - warm oat */
+  --sand: #e5dccd;        /* wide strips, soft blocks */
+  --accent: #03382e;      /* the pendant, sampled from its dark body */
+  --accent-on-dark: var(--parchment); /* the accent inverts on dark surfaces -
+                             the dark emerald scores 1.01 contrast on teal, so
+                             it would vanish there */
+  --accent-on-dark-hover: var(--sand);
+  --green-deep: #074241;  /* the one dark hue - a deep pine green */
+  --green-deepest: #04302f;/* footer, so it seats under the contact block.
+                             Was #0f272e, a blue-black that read as a second
+                             hue next to the green; this is the same green,
+                             darker. */
+  --ink: #26302f;         /* body text on light */
+  --ink-soft: #5c665f;
+  --cream: #fbf8f2;       /* text on dark surfaces */
+  --cream-soft: rgba(251, 248, 242, 0.78);
+  --line: rgba(38, 50, 48, 0.16);
+  --nav-box-shadow: rgba(7, 66, 65, 0.18) 0px 2px 12px;
+  --measure: 1040px;      /* one column width for every band */
+  --hero-text-start: 62%; /* HOW FAR ACROSS THE HERO THE WORDS BEGIN. The left
+                             column is nothing but photograph; her name starts
+                             where it ends. Raise it to push the text further
+                             right, lower it to bring it back left. Below about
+                             48% it starts to sit over her face; above about
+                             72% the longest line runs out of room. Desktop
+                             only - on a phone the card is full width. */
+  --section-pad: 6em;     /* every band's vertical padding - keep it one value */
   box-sizing: border-box;
-  color: var(--highlight-color);
-  --nav-box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  color: var(--ink);
 }
 
 *,
@@ -31,21 +43,39 @@
   box-sizing: inherit;
 }
 
+html {
+  /* THE SITE'S TYPE SCALE. Everything on the page is sized in rem, so every
+     word scales from this one number. 16px is the browser default; drop it to
+     15px for a quieter page, push it to 17px for a larger one. */
+  font-size: 15px;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+html::-webkit-scrollbar {
+  display: none;
+}
+
 body {
   padding: 0;
   margin: 0;
+  background-color: var(--parchment);
+  color: var(--ink);
 }
 
-nav {
-  background-color: var(--secondary-color);
-  padding: 1.8em 0;
-  box-shadow: var(--nav-box-shadow);
-  position: sticky;
-  top: 0;
+/* --- Typography & Global Inputs --- */
+.cormorant {
+  font-family: "Cormorant", serif;
+  font-weight: 300;
 }
 
-ul {
-  width: 100%;
+.quicksand,
+input,
+textarea,
+button,
+select {
+  font-family: "Quicksand", sans-serif;
+  font-weight: 300;
 }
 
 li a {
@@ -53,213 +83,186 @@ li a {
   color: inherit;
 }
 
-input,
-textarea {
-  border-radius: 0;
-  border: 1px solid var(--primary-color);
+ul {
+  width: 100%;
 }
 
-.test-container {
-  width: 80%;
-  height: 80%;
-  margin: auto;
-  max-width: 1000px;
-  background-image: rgba(255, 252, 226, 0.5);
+img {
+  border-radius: 8px !important;
 }
 
+/* --- Layout Utilities --- */
+/* One column width for every band. The three names are kept because the markup
+   uses all three, but they resolve to the same measure - bands are told apart
+   by their ground colour, not by how wide their text runs. */
 .container,
+.wide-container,
 .narrow-container {
-  width: 80%;
+  width: 86%;
   margin: 0 auto;
-  max-width: 1000px;
+  max-width: var(--measure);
 }
 
-.narrow-container {
-  width: 70%;
+.col,
+.centered-div,
+.row,
+.row-aligned {
+  display: flex;
 }
 
 .col {
-  display: flex;
   flex-direction: column;
   align-items: center;
 }
 
-.col > * + * {
+.col>*+* {
   margin-top: 1em;
 }
 
-.row,
-.row-aligned,
 .centered-div {
-  display: flex;
-  justify-content: space-between;
+  align-items: center;
+  justify-content: center;
+  gap: 1em;
 }
 
+.row,
 .row-aligned {
   align-items: center;
 }
 
-.centered-div {
-  align-items: center;
-  justify-content: center;
-}
-
-.bold-text {
-  font-style: PlayfairLight;
-}
-
-.img-res {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-bottom: 3em;
+.row-aligned {
+  justify-content: space-between;
   gap: 2em;
-}
-
-.img-res-footer {
-  width: 35%;
-}
-
-.img-in-link {
-  height: 100%;
-  width: 100%;
-}
-
-.img-res-div {
-  width: 100%;
-  margin: 0 auto;
-  gap: 5em;
-}
-
-.cert-col {
-  width: 40%;
-  margin: 0 auto;
-  gap: 1.2em;
-}
-
-.underline,
-.active {
-  text-decoration-line: underline;
-  text-decoration-style: solid;
-  text-decoration-color: currentColor;
-  text-decoration-thickness: 0.5px;
-  text-underline-offset: 0.3em;
-  text-decoration-skip: auto;
-  text-decoration-skip-ink: auto;
-}
-
-.subscript {
-  margin-top: 0.5em;
-  font-size: 1.1rem;
 }
 
 .two-col-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  gap: 4em;
 }
 
-/*********************SECTION DIVS*********************/
-
-.section-div {
-  padding: 4em 1em;
-  color: var(--primary-color);
+/* The nav band is wider than the 1040px text column: her name plus six links
+   need more room than a column of prose does, and held to --measure the
+   scrolled row overflowed as soon as the window came in. */
+#inner-nav {
+  width: 92%;
+  max-width: 1280px;
+  margin: 0 auto;
 }
 
-.intro-div {
-  background-color: var(--hand-multiply-color);
-  background-image: url(../assets/images/hand-desktop.jpg);
-  padding: calc(5em + 10vw) 0;
-  background-size: cover;
-  background-position: right 75% bottom 80%;
-  color: white;
-  background-repeat: no-repeat;
-  background-blend-mode: multiply;
+/* --- Navigation --- */
+nav {
+  background-color: var(--green-deep);
+  padding: 1.8em 0;
+  box-shadow: var(--nav-box-shadow);
+  position: sticky;
+  top: 0;
+  z-index: 100;
 }
-
-.examples-div {
-  background-color: var(--primary-color);
-  color: var(--secondary-color);
-}
-
-.home-info-div {
-  color: var(--primary-color);
-}
-
-.approach-div {
-  background-color: var(--hand-multiply-color);
-  background-image: url(../assets/images/staircase.jpg);
-  background-size: cover;
-  background-position: center;
-  color: white;
-  background-repeat: no-repeat;
-  background-blend-mode: multiply;
-}
-
-.session-div {
-  background-color: var(--multiply-color);
-  background-image: url(../assets/images/leaf-landscape.jpg);
-  padding: 11em 0;
-  background-size: cover;
-  color: white;
-  background-repeat: no-repeat;
-  background-blend-mode: multiply;
-}
-
-.profile-div {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-}
-
-.about-text-div {
-  padding: 1.5em 1em;
-  background-color: var(--secondary-color);
-  color: var(--primary-color);
-}
-
-.less-padding-div {
-  padding: 1.5em 1em;
-  color: var(--primary-color);
-}
-
-.contact-div {
-  background-color: var(--primary-color);
-  color: var(--secondary-color);
-  background-blend-mode: multiply;
-}
-
-.footer-div {
-  background-color: var(--primary-color);
-  padding: 2em 1em;
-}
-
-/********************NAV STYLING********************/
 
 .nav-list {
-  font-family: PlayfairLight;
   list-style-type: none;
   display: flex;
-  font-size: 1.2rem;
-  color: var(--primary-color);
+  font-size: 1.2em;
+  color: var(--cream);
 }
 
-.nav-list > * + * {
-  margin-left: 0.7em;
+/* Spacing via margins rather than flex gap: Safari 14.0 and older ignore
+   gap in flexbox (while still parsing it, so @supports can't catch it) and
+   the links collapse together. Margins on the li read the ul's font-size
+   identically, so modern browsers look exactly the same. */
+.nav-list > li + li {
+  margin-left: 1.4em;
+}
+
+.desktop-nav-list {
+  font-size: 1.35em;
+  font-weight: 100;
 }
 
 .nav-item {
+  -webkit-user-select: none;
   user-select: none;
+  flex: 0 0 auto;
+}
+
+/* Desktop nav: JS adds .nav-cramped to the nav only when the name + buttons
+   actually overflow the row at the current width. Labels stay on one line and
+   step down in size instead of wrapping, which reads far cleaner with six
+   items sitting next to the name. */
+.nav-item {
+  white-space: nowrap;
+}
+
+/* Between the hamburger breakpoint and a roomy desktop, the name beside six
+   links is the tightest fit on the page. Everything steps down together rather
+   than the name wrapping and dragging the nav to twice its height. */
+@media screen and (min-width: 921px) and (max-width: 1250px) {
+  #inner-nav {
+    width: 95%;
+  }
+
+  .row-aligned {
+    gap: 1.2em;
+  }
+
+  .desktop-nav-list {
+    font-size: 1.05em;
+  }
+
+  .desktop-nav-list > li + li {
+    margin-left: 1em;
+  }
+
+  .nav-name {
+    font-size: 1.7rem;
+  }
+
+  .subscript-1 {
+    font-size: 0.85rem;
+  }
+
+  .subscript-2 {
+    font-size: 0.75rem;
+  }
+}
+
+/* Tighter still: at the very bottom of the desktop range the subscript wraps,
+   which drags the nav to half again its height. The name alone carries it
+   there. (Cut from 1080px once "for Adults" came off the line.) */
+@media screen and (min-width: 921px) and (max-width: 960px) {
+  .subscript-1,
+  .subscript-2 {
+    display: none;
+  }
 }
 
 .nav-item:hover {
-  opacity: 0.8;
+  opacity: 0.75;
+  cursor: pointer;
 }
 
 .nav-name {
-  font-family: PlayfairLight;
-  font-size: 2rem;
-  color: var(--primary-color);
+  font-size: 2.2rem;
+  color: var(--cream);
+  transition: opacity 0.3s ease;
+}
+
+.nav-name:hover {
+  cursor: pointer;
+  opacity: 0.8;
+}
+
+.menu-toggle {
+  display: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.menu-toggle-icon {
+  fill: var(--cream);
+  width: 35px;
+  height: auto;
 }
 
 .mobile-nav {
@@ -268,153 +271,601 @@ textarea {
   left: 0;
   height: 100vh;
   width: 100vw;
-  background-color: rgba(0, 0, 0, 0.85);
+  background-color: rgba(7, 66, 65, 0.94);
   display: none;
 }
 
-.menu-toggle {
-  display: none;
-  user-select: none;
-}
-
-/*******************************************/
-
-.intro-name {
-  font-size: 5rem;
-  font-family: PlayfairLight;
-}
-.intro-info {
-  font-family: PlayfairLight;
-  line-height: 1.3;
-}
-
-.intro-location {
-  font-size: 1.1rem;
-  font-family: PlayfairLight;
-}
-
-.intro-image {
-  width: min(80%, 400px);
-}
-
-.intro-content {
-  display: flex;
-  flex-direction: column;
-  align-self: center;
-  text-align: center;
-}
-
-.intro-content > * + * {
-  margin-top: 1em;
-}
-
-/**************QUOTE STYLING**************/
-
-.quote {
-  display: flex;
-  flex-direction: column;
-  padding: 2.5em 0;
-  color: white;
-  max-width: 600px;
-}
-
-.quote > * + * {
-  margin-top: 1em;
-}
-
-.quote-text {
-  font-size: 2.3rem;
-  font-family: PlayfairItalic;
-  font-style: italic;
-}
-
-.quote-text:hover {
-  opacity: 0.8;
-}
-
-.quote-credit {
-  font-size: 1.2rem;
-  font-family: TripSans;
-  color: var(--highlight-color);
-}
-
-/****************************************/
-
+/* --- Text & Headings ------------------------------------------------------
+   One heading system across the page: every section h2 is left-aligned, the
+   same size, with the same clay rule beneath it. Bands stay distinguishable
+   by background colour and container width instead of by heading alignment,
+   which is what lets those widths vary without looking accidental.        */
 .section-title,
+.strip-title {
+  font-size: 2.5rem;
+  line-height: 1.1em;
+  color: var(--green-deep);
+  text-align: left;
+  margin: 0 0 0.7em;
+}
+
+.section-title::after,
+.strip-title::after {
+  content: "";
+  display: block;
+  width: 60px;
+  height: 1px;
+  margin-top: 0.35em;
+  background-color: var(--accent);
+}
+
+.strip-deep .strip-title {
+  color: var(--cream);
+}
+
+.strip-deep .strip-title::after {
+  background-color: var(--accent-on-dark);
+}
+
 .sub-section-title,
 .mini-section-title {
-  font-size: 4rem;
-  font-family: PlayfairLight;
   margin-bottom: 0.7em;
 }
 
 .sub-section-title {
-  font-size: 2.8rem;
-}
-
-.mini-section-title {
   font-size: 1.8rem;
 }
 
-.approach {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+.mini-section-title {
+  font-size: 1.3rem;
+  color: var(--green-deep);
 }
 
-.info,
-.flex-info,
-.home-info,
+/* One body size and rhythm for every block of running copy on the page -
+   Welcome (.strip-body), My Approach and About Me (.left-info) read as the
+   same voice, so they are set from the same two numbers. */
 .left-info {
-  font-size: 1.5rem;
-  text-align: center;
-  /* text-justify: inter-word; */
-  font-family: PlayfairLight;
-  line-height: 1.3em;
-}
-
-.home-info {
-  width: 90%;
-  color: var(--primary-color);
-  text-align: center;
+  font-size: 1.15rem;
+  line-height: 1.7em;
+  color: var(--ink);
 }
 
 .left-info {
   text-align: left;
 }
 
-.examples {
-  font-size: 1.5rem;
-  font-family: PlayfairLight;
-  line-height: 2em;
+.left-info p + p {
+  margin-top: 1em;
+}
+
+.faq-item + .faq-item {
+  margin-top: 2em;
+}
+
+/* The questions carry weight and the answers drop a step, so the pair reads as
+   question and answer rather than as one undifferentiated column. Scoped to
+   .faq-item - .mini-section-title and .left-info are shared with other bands
+   that should keep the running-copy size. */
+.faq-item h3 {
+  font-weight: 600;
+  /* Cormorant sets tight by default, which was fine for the one-line questions
+     and crowded the two-line one once it wrapped on a phone. */
+  line-height: 1.35em;
+  margin-bottom: 0.85em;
+}
+
+.faq-item .left-info {
+  font-size: 1.05rem;
+  line-height: 1.75em;
 }
 
 .subscript {
+  font-size: 0.9rem;
   margin-top: 0.5em;
+}
+
+.subscript-1 {
+  font-size: 1rem;
+  margin-top: 0.2em;
+}
+
+.subscript-2 {
+  font-size: 0.85rem;
+  margin-top: 0.2em;
+}
+
+.underline {
+  text-decoration: underline solid var(--accent) 1px;
+  text-underline-offset: 0.35em;
+}
+
+/* --- Hero -----------------------------------------------------------------
+   Contained height, the portrait framed rather than filling the screen, and
+   the name held in a card on the right so nothing sits over her face.      */
+.hero {
+  position: relative;
+  background-image: url("../assets/images/Soraya-61.jpg");
+  background-size: cover;
+  background-position: 30% 12%;
+  background-repeat: no-repeat;
+  min-height: min(78vh, 720px);
+  display: flex;
+  align-items: center;
+  padding: 4em 0;
+}
+
+/* --- My Approach ----------------------------------------------------------
+   The hand lithograph sits behind the copy rather than beside it. It is a
+   near-black drawing on cream, so at full strength no body text could survive
+   on top of it: it is laid in at low opacity and multiplied into the parchment
+   so it reads as a watermark in the paper, and a parchment veil lifts the
+   centre where the column of text actually falls.                          */
+.approach {
+  position: relative;
+  isolation: isolate;
+  background-color: var(--parchment);
+  overflow: hidden;
+  min-height: 850px;
+  /* The band is taller than the copy, so the copy is centred in it rather
+     than parked at the top. The two layers behind it are absolutely
+     positioned and stay out of the flex flow. */
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.approach::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  inset: 0;
+  background-image: url("../assets/images/hand-desktop.jpg");
+  background-size: cover;
+  background-position: 50% 45%;
+  background-repeat: no-repeat;
+  opacity: 0.42;
+  mix-blend-mode: multiply;
+  pointer-events: none;
+  z-index: -2;
+}
+
+/* Veil: strongest through the middle third, where the narrow column sits, so
+   the drawing stays visible at the edges without crowding the words. */
+.approach::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  inset: 0;
+  background: linear-gradient(90deg,
+      rgba(244, 239, 229, 0) 0%,
+      rgba(244, 239, 229, 0.40) 22%,
+      rgba(244, 239, 229, 0.54) 50%,
+      rgba(244, 239, 229, 0.40) 78%,
+      rgba(244, 239, 229, 0) 100%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+.approach .section-div {
+  position: relative;
+  z-index: 1;
+}
+
+@media (max-width: 800px) {
+  /* Narrower viewport, no clean margins left for the drawing - pull it back
+     further and centre the veil so the copy keeps its contrast. */
+  .approach::before {
+    opacity: 0.30;
+  }
+
+  .approach::after {
+    background: rgba(244, 239, 229, 0.46);
+  }
+}
+
+/* Gentle warm scrim, heavier on the right so the card text stays readable. */
+.hero::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  inset: 0;
+  background: linear-gradient(100deg,
+      rgba(7, 66, 65, 0.10) 0%,
+      rgba(7, 66, 65, 0.14) 42%,
+      rgba(7, 66, 65, 0.46) 72%,
+      rgba(7, 66, 65, 0.58) 100%);
+  pointer-events: none;
+}
+
+/* Below ~1250px the band has stopped growing but the words have not, so the
+   role line starts to wrap. The text steps back left rather than breaking. */
+@media screen and (min-width: 921px) and (max-width: 1250px) {
+  :root {
+    --hero-text-start: 55%;
+  }
+}
+
+@media screen and (min-width: 921px) and (max-width: 1080px) {
+  :root {
+    --hero-text-start: 47%;
+  }
+}
+
+/* The hero band runs wider than the 1040px text column below it. The card is
+   an overlay on a photograph rather than a column of prose, and held to the
+   narrow measure it could not be moved right at all without the name wrapping
+   - there was simply no width left on that side of the grid. */
+@media screen and (min-width: 921px) {
+  .hero .wide-container {
+    width: 92%;
+    max-width: 1320px;
+  }
+}
+
+.hero-grid {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: var(--hero-text-start, 62%) 1fr;
+}
+
+.hero-card {
+  grid-column: 2;
+  text-align: left;
+  color: var(--cream);
+  border-left: 1px solid var(--accent-on-dark);
+  padding-left: 2em;
+}
+
+.hero-name {
+  font-size: 3.4rem; /* fallback for browsers without clamp() */
+  font-size: clamp(2.6rem, 4.6vw, 4rem);
+  line-height: 1.05em;
+  font-weight: 300;
+  margin: 0;
+  letter-spacing: 0.01em;
+}
+
+.hero-role {
+  font-size: 1.15rem;
+  line-height: 1.5em;
+  margin: 1em 0 0;
+  color: var(--cream);
+}
+
+.hero-meta {
+  font-size: 0.95rem;
+  margin: 0.5em 0 0;
+  color: rgba(251, 248, 242, 0.86);
+  letter-spacing: 0.02em;
+}
+
+.hero-cta {
+  display: inline-block;
+  margin-top: 1.5em;
+  padding: 0.75em 1.6em;
+  font-size: 0.85rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--cream);
+  border: 1px solid var(--accent-on-dark);
+  border-radius: 2px;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.hero-cta:hover {
+  background-color: var(--accent-on-dark);
+  color: var(--green-deep);
+}
+
+.brandbar {
+  background-color: var(--sand);
+  color: var(--green-deep);
+  text-align: center;
+  font-size: 0.95rem;
+  letter-spacing: 0.14em;
+  padding: 0.9em 1em;
+}
+
+.brandbar-line {
+  display: inline;
+}
+
+.brandbar-narrow {
+  display: none;
+}
+
+/* Two lines on mobile: the phrase and the locations each get their own row,
+   with the dot separator dropped and the locations spaced out instead. */
+@media screen and (max-width: 920px) {
+  .brandbar-line {
+    display: block;
+  }
+
+  .brandbar-sep,
+  .brandbar-wide {
+    display: none;
+  }
+
+  .brandbar-narrow {
+    display: inline;
+  }
+}
+
+/* --- Wide strips ---------------------------------------------------------- */
+.strip {
+  padding: var(--section-pad) 1em;
+}
+
+.strip-deep {
+  background-color: var(--green-deep);
+  color: var(--cream);
+}
+
+.strip-sand {
+  background-color: var(--sand);
+  color: var(--ink);
+}
+
+.strip-parchment {
+  background-color: var(--parchment);
+  color: var(--ink);
+}
+
+.strip-parchment .strip-body,
+.strip-parchment .strip-note {
+  color: var(--ink);
+}
+
+.strip-sand .strip-body,
+.strip-sand .strip-note {
+  color: var(--ink);
+}
+
+.strip-body {
+  font-size: 1.15rem;
+  line-height: 1.7em;
+  color: var(--cream-soft);
+  text-align: left;
+}
+
+.strip-body p + p {
+  margin-top: 1.2em;
+}
+
+/* Areas I Work With */
+.areas-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  columns: 3;
+  column-gap: 3em;
+  font-size: 1.05rem;
+}
+
+.areas-list .list-item {
+  break-inside: avoid;
+  padding: 0.55em 0 0.55em 1.4em;
+  position: relative;
+  line-height: 1.45em;
+  border-bottom: 1px solid rgba(38, 50, 48, 0.10);
+}
+
+/* The bullet and the hairline are ink-dark by default, which disappears on the
+   dark strip - they invert with the text. */
+.strip-deep .areas-list .list-item::before {
+  background-color: var(--cream);
+}
+
+.strip-deep .areas-list .list-item {
+  border-bottom-color: rgba(251, 248, 242, 0.16);
+}
+
+.areas-list .list-item::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 1.05em;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--accent);
+}
+
+/* Professional Training */
+/* The rules under each line ran the full width of the band while the entries
+   themselves are short, so they read as lines trailing off into nothing. Each
+   entry now shrink-wraps to its own text (display: table does this and still
+   takes padding), so its rule ends where its words do - the same relationship
+   the section headings have with the rule beneath them. */
+.training-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
   font-size: 1.1rem;
 }
 
-/*******************CONTACT PAGE STYLING*******************/
+.training-list li {
+  display: table;
+  max-width: 100%;
+  padding: 0.9em 0;
+  border-bottom: 1px solid rgba(251, 248, 242, 0.16);
+  color: var(--cream);
+}
 
+/* Set as a quotation: a rule down the left edge and the serif at a size above
+   the list, so it reads as her own words closing the section rather than one
+   more line of it. */
+.strip-note {
+  max-width: 640px;
+  margin-top: 3em;
+  padding-left: 1.6em;
+  border-left: 2px solid var(--accent-on-dark);
+  font-family: "Cormorant", serif;
+  font-weight: 300;
+  font-style: italic;
+  font-size: 1.55rem;
+  line-height: 1.55em;
+  color: var(--cream);
+}
+
+@media screen and (max-width: 920px) {
+  .strip-note {
+    font-size: 1.3rem;
+    line-height: 1.6em;
+  }
+}
+
+/* Soraya-27 is a 2:3 portrait, so at full column width it ran ~800px tall -
+   taller than the text beside it and than most viewports. The image column
+   takes less width and the height is capped. */
+@media screen and (min-width: 921px) {
+  .about-grid {
+    grid-template-columns: 1fr 0.62fr;
+    align-items: start;
+  }
+}
+
+@media screen and (min-width: 921px) {
+  .about-grid .content-img {
+    height: 600px;
+  }
+}
+
+/* --- Images --- */
+.portrait-img,
+.content-img {
+  width: 100%;
+  object-fit: cover;
+}
+
+.portrait-img {
+  height: 450px;
+}
+
+/* --- Sections --- */
+.section-div {
+  padding: var(--section-pad) 1em;
+  color: var(--ink);
+}
+
+.fees-div {
+  background-color: var(--parchment);
+  padding: var(--section-pad) 0;
+  color: var(--ink);
+}
+
+/* The location panel gets its own band. It is a full-viewport pinned panel with
+   vertically centred content, so without a background of its own it read as a
+   void inside the fees section rather than as a section in its own right. */
+.location-track,
+.location-div {
+  background-color: var(--sand);
+}
+
+.location-div {
+  padding: var(--section-pad) 0 calc(var(--section-pad) - 1.5em) 0;
+  color: var(--ink);
+}
+
+.faq-div {
+  background-color: var(--parchment);
+  padding: var(--section-pad) 0;
+}
+
+.contact-div {
+  background-color: var(--green-deep);
+  color: var(--cream);
+}
+
+.contact-div .section-title,
+.contact-div .left-info {
+  color: var(--cream);
+}
+
+/* The rule under a heading is the accent green, which all but vanishes on the
+   dark contact ground - here it takes the heading's own colour. */
+.contact-div .section-title::after {
+  background-color: currentColor;
+}
+
+.footer-div {
+  background-color: var(--green-deepest);
+  padding: 2em 1em;
+}
+
+.footer-logos {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1.25em;
+}
+
+/* Half-gap margins instead of flex gap (ignored by Safari <= 14) - 1.5em
+   between neighbours in both axes once the row wraps. */
+.footer-logos > * {
+  margin: 0.75em;
+}
+
+.footer-logos img {
+  height: 100px;
+  width: auto;
+  background-color: var(--cream);
+  padding: 8px 12px;
+}
+
+.footer-logo-link {
+  display: inline-flex;
+  transition: opacity 0.3s ease;
+}
+
+.footer-logo-link:hover {
+  opacity: 0.8;
+}
+
+.footer-text {
+  margin-top: 2em;
+  color: var(--cream-soft);
+}
+
+.dark-text {
+  color: var(--ink);
+}
+
+/* --- Forms --- */
 .contact-grid {
   display: grid;
   grid-template-columns: 2fr 3fr;
   grid-gap: 4em;
 }
 
+/* Rows sized by their content: 1fr 1fr 4fr 1fr stretched the fields to fill
+   whatever height the grid took, which is what made the form tower over every
+   other band. */
 .form-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 1fr 4fr 1fr;
-  grid-gap: 16px;
+  grid-template-rows: auto auto auto auto;
+  gap: 0.75em;
 }
 
 .form-unit-1 {
-  grid-area: 1 / 1/ 2/ 2;
+  grid-area: 1 / 1 / 2 / 2;
 }
 
 .form-unit-2 {
-  grid-area: 1 / 2 / 2 /3;
+  grid-area: 1 / 2 / 2 / 3;
 }
 
 .form-unit-3 {
@@ -429,51 +880,187 @@ textarea {
   grid-area: 4 / 1 / 5 / 3;
 }
 
-form label,
-input:not([type="submit"]),
-textarea {
+form label {
   display: block;
   width: 100%;
-  font-family: PlayfairLight;
-  font-size: 1.25rem;
-  border: none;
+  font-size: 0.7rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  margin: 0 0 0.35em;
+  color: rgba(251, 248, 242, 0.6);
 }
 
-form label {
-  margin: 0.5em 0;
-}
-
-form input:not([type="submit"]),
+input,
 textarea {
-  background-color: rgba(255, 252, 226, 0.5);
+  display: block;
+  font-size: 1rem;
+  border-radius: 3px;
+  border: none;
   outline: none;
 }
 
-form input:not([type="submit"]):focus,
-textarea:focus {
-  background-color: rgba(255, 252, 226, 0.4);
+/* Faint tinted slots on the dark ground rather than a stack of white boxes. */
+form input:not([type="submit"]),
+textarea {
+  background-color: rgba(251, 248, 242, 0.07);
+  color: var(--cream);
+  font-size: 0.9rem;
+  padding: 0.45em 0.65em;
+  width: 100%;
+  transition: background-color 0.3s ease;
 }
 
-/* rgba(255, 252, 226, 1) */
+textarea {
+  resize: vertical;
+}
+
+form input:not([type="submit"]):focus,
+form input:not([type="submit"]):hover,
+textarea:focus,
+textarea:hover {
+  background-color: rgba(251, 248, 242, 0.14);
+}
 
 #submit {
-  padding: 1em 1.5em;
-  font-family: PlayfairLight;
-  color: black;
-  font-size: 1.1rem;
+  padding: 0.65em 1.7em;
+  font-size: 0.72rem;
+  border-radius: 3px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
   border: none;
-  background-color: rgba(255, 252, 226, 0.9);
-  color: var(--primary-color);
+  background-color: var(--accent-on-dark);
+  color: var(--green-deep);
+  transition: background-color 0.3s ease;
 }
 
 #submit:hover {
   cursor: pointer;
-  background-color: rgba(66, 74, 63, 0.8);
+  background-color: var(--accent-on-dark-hover);
+  color: var(--green-deep);
+}
+
+/* --- Components --- */
+#scrollTopBtn {
+  display: flex;
+  background-color: transparent;
+  color: var(--accent-on-dark);
+  border: 1px solid var(--accent-on-dark);
+  cursor: pointer;
+  padding: 7px;
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  transition: background-color 0.3s, color 0.3s;
+  justify-content: center;
+  align-items: center;
+  margin-top: 2em;
+}
+
+#scrollTopBtn:hover {
+  background-color: var(--accent-on-dark);
+  color: var(--green-deep);
+}
+
+#scrollTopBtn svg {
+  fill: currentColor;
+  width: 17px;
+  height: 17px;
+}
+
+/* --- Media Queries --- */
+@media screen and (min-width: 920px) {
+  /* Last resort once the step-downs above have run: the name wraps rather than
+     pushing the row wider than the window. */
+  .nav-name {
+    flex-shrink: 1;
+    min-width: 0;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .areas-list {
+    columns: 2;
+  }
 }
 
 @media screen and (max-width: 920px) {
+  .hero {
+    background-position: 40% 10%;
+    min-height: 78vh;
+    align-items: flex-end;
+    padding: 3em 0 3em;
+  }
+
+  .hero::after {
+    background: linear-gradient(180deg,
+        rgba(7, 66, 65, 0.04) 0%,
+        rgba(7, 66, 65, 0.12) 38%,
+        rgba(7, 66, 65, 0.74) 68%,
+        rgba(7, 66, 65, 0.92) 100%);
+  }
+
+  .hero-grid {
+    display: block;
+  }
+
+  /* No rule here - on a phone the card is the full width of the screen, so the
+     border reads as a line drawn across her rather than as an edge to a card. */
+  .hero-card {
+    border-left: none;
+    border-top: none;
+    padding-left: 0;
+    padding-top: 0;
+  }
+
+  .hero-cta {
+    margin-top: 1.5em;
+    padding: 0.65em 1.4em;
+    font-size: 0.8rem;
+  }
+
+  .strip-title {
+    font-size: 2.4rem;
+  }
+
+  .areas-list {
+    columns: 1;
+  }
+
+  .portrait-img {
+    width: 75%;
+    aspect-ratio: 5 / 4;
+    height: auto;
+    object-fit: cover;
+    margin: 0 auto 2em;
+    display: block;
+  }
+
+  .content-img {
+    width: 78%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+  }
+
+  .col-2 {
+    display: flex;
+    flex-direction: column;
+  }
+
   .container {
     width: 85%;
+  }
+
+  /* Before the name slides in, the only thing in here is the hamburger, so a
+     1.8em band was mostly empty. It grows on its own once the name arrives. */
+  nav {
+    padding: 0.9em 0;
+  }
+
+  .wide-container,
+  .narrow-container {
+    width: 85%;
+    margin: 0 auto;
   }
 
   .row {
@@ -481,20 +1068,31 @@ textarea:focus {
     align-items: center;
   }
 
-  .row > * + * {
+  .row>*+* {
     margin-top: 4em;
   }
 
-  .info,
-  .flex-info {
-    width: 100%;
-    margin-top: 1em;
+  /* Switch Grid to Flex Column for better vertical flow on mobile */
+  .contact-grid,
+  .two-col-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 4em;
   }
 
-  .contact-grid {
-    grid-template-columns: 1fr;
+  /* Heading, then her portrait, then the copy. Declared after .two-col-grid
+     because that sets flex-direction: column and would otherwise win on source
+     order. */
+  .about-grid {
+    flex-direction: column-reverse;
+    gap: 2.5em;
   }
 
+  .about-head {
+    margin-bottom: 2em;
+  }
+
+  /* Navigation Mobile */
   .desktop-nav {
     display: none;
   }
@@ -506,8 +1104,8 @@ textarea:focus {
   }
 
   .mobile-nav li {
-    font-size: 1.3rem;
-    color: white;
+    font-size: 1.4rem;
+    color: var(--cream);
   }
 
   .nav-list {
@@ -515,51 +1113,303 @@ textarea:focus {
     text-align: center;
   }
 
-  .nav-list > * + * {
+  .nav-list > li + li {
     margin-left: 0;
-    margin-top: 0.7em;
+    margin-top: 1.2em;
   }
 
   .menu-toggle {
     display: block;
     cursor: pointer;
+    -webkit-user-select: none;
+  user-select: none;
   }
 
-  .session-div {
-    background-image: url(../assets/images/leaf-portrait.jpg);
+  /* Sections Mobile - one step down, applied to every band alike */
+  :root {
+    --section-pad: 4em;
   }
 
-  .intro-div {
-    background-position: right 60% bottom 80%;
-  }
-
-  .two-col-grid {
-    grid-template-columns: 1fr;
+  .section-div,
+  .strip,
+  .fees-div,
+  .location-div,
+  .faq-div {
+    padding: var(--section-pad) 0;
   }
 
   .right-menu {
     justify-content: flex-end;
   }
+}
 
-  .img-res {
-    width: 95%;
+/* Nothing this tall can pin without overflowing a short screen, so let it
+   scroll normally instead. Raised from 620px once the room notes moved into
+   the panel: measured, it needs about 700px of viewport to clear the nav at
+   the narrow end of the desktop range. */
+@media screen and (max-height: 700px) {
+  .location-track {
+    height: auto;
   }
 
-  .img-res-footer {
-    width: 70%;
+  .location-sticky {
+    position: static;
   }
 }
 
+/* Location Sticky Scroll */
+.location-track {
+  position: relative;
+  height: calc(var(--loc-count, 3) * 100vh);
+}
+
+/* Sized by its own content, not by the viewport. A viewport-tall box centred
+   its content and produced a top/bottom gap that changed with screen height -
+   symmetric, but never equal to the --section-pad every other band uses. The
+   track behind it carries the same sand, so the panel still reads full-bleed. */
+.location-sticky {
+  position: sticky;
+  /* Locked in the middle of the space below the nav, not flush against it, so
+     the band above scrolls away over it and the band below rises into view
+     while it holds. Measured in svh - the viewport height *with* a phone's
+     address bar showing - so the panel does not shift as the bar hides and
+     returns. --loc-sticky-h is the panel's own height, handed over from JS
+     because it changes with the width. */
+  top: calc(var(--nav-height, 0px)
+            + (100vh - var(--nav-height, 0px) - var(--loc-sticky-h, 500px)) * var(--loc-bias, 0.5));
+  top: calc(var(--nav-height, 0px)
+            + (100svh - var(--nav-height, 0px) - var(--loc-sticky-h, 500px)) * var(--loc-bias, 0.5));
+  /* Belt and braces for the odd window - narrow and short at once - that slips
+     past the unstick query above: the centring term goes negative there and
+     would park the panel's top above the nav. Never higher than the nav. */
+  top: max(var(--nav-height, 0px),
+           calc(var(--nav-height, 0px)
+                + (100svh - var(--nav-height, 0px) - var(--loc-sticky-h, 500px)) * var(--loc-bias, 0.5)));
+}
+
 @media screen and (min-width: 920px) {
-  .intro-div {
-    background-attachment: fixed;
+  /* The panel now carries the two room notes as well, and it only works pinned
+     if the whole thing clears the nav on a laptop screen. Everything below is
+     bought back from that height: a wider text column so the notes wrap less,
+     a shorter photo, and half the vertical padding - the track behind the panel
+     is the same sand, so trimming the panel's own padding changes the height
+     without changing what you see. Measured at 1280x720, the shortest common
+     laptop: the panel has to stay under about 640px there. */
+  .location-div {
+    padding: 3em 0;
   }
 
-  .approach-div {
-    background-attachment: fixed;
+  .location-div .two-col-grid {
+    align-items: start;
+    grid-template-columns: 1.15fr 0.85fr;
   }
 
-  .session-div {
-    background-attachment: fixed;
+  .location-text-col {
+    padding-bottom: 0;
+  }
+
+  .location-imgs-wrapper {
+    position: relative;
+    height: 400px;
+    width: 100%;
+  }
+
+  .location-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out, visibility 0.2s ease-in-out;
+    margin-bottom: 0 !important;
+  }
+
+  .location-img.active-img {
+    opacity: 1;
+    visibility: visible;
+  }
+}
+
+/* Three notes about the rooms themselves. Deliberately outside .location-track
+   - anything added to the pinned panel makes it taller than the screen it has
+   to hold still inside. Given the sand ground so it reads as its own band
+   closing the location section, rather than three paragraphs adrift on the
+   same parchment as the panel above. */
+.room-notes {
+  background-color: var(--sand);
+  padding: 1.5em 1em var(--section-pad) 1em;
+}
+
+/* The notes are revealed by scroll position, not by a timer - see the
+   room-note block in index.js. The band scrolls into view while the panel
+   above is still pinned, so any fixed-duration fade finished before the
+   panel released and the notes were simply there. Driving opacity from
+   scroll distance instead ties the arrival to how fast you actually scroll.
+   The hidden start state is applied by JS (.room-notes-reveal) so that with
+   no JS the notes are plainly visible rather than stuck at zero. */
+.room-notes-reveal .room-note {
+  opacity: 0;
+  will-change: opacity, transform;
+}
+
+/* Phone layout only - see .room-notes-inline for the desktop copy. */
+.room-notes-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5em;
+  align-items: start;
+}
+
+.room-note h3 {
+  font-size: 1.3rem;
+  font-weight: 300;
+  line-height: 1.2em;
+  letter-spacing: 0.01em;
+  color: var(--green-deep);
+  margin: 0 0 1em;
+}
+
+/* A short rule under the label rather than one spanning the column: the
+   paragraphs are different lengths, and a full-width rule over each made the
+   ragged bottoms look like a mistake. */
+.room-note h3::after {
+  content: "";
+  display: block;
+  width: 32px;
+  height: 1px;
+  margin-top: 0.35em;
+  background-color: var(--accent);
+}
+
+.room-note p {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.75em;
+  color: var(--ink);
+}
+
+@media screen and (max-width: 920px) {
+  .room-notes {
+    padding: 0 1em 3.5em;
+  }
+}
+
+/* The two notes sit under the location list, inside the pinned panel, so they
+   are there to read the whole time you scroll the three locations rather than
+   arriving as a band afterwards. Set a step down from the list and the section
+   title - they are supporting copy, and at the band's sizes they competed with
+   the names they sit beneath. Only one of the inline copy and the band below is
+   ever shown, so the notes are never on screen twice. */
+.room-notes-inline {
+  display: none;
+}
+
+@media screen and (min-width: 921px) {
+  .room-notes {
+    display: none;
+  }
+
+  .room-notes-inline {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5em;
+    margin-top: 2em;
+  }
+
+  .room-notes-inline h3 {
+    font-size: 1.3rem;
+    margin-bottom: 0.45em;
+  }
+
+  .room-notes-inline p,
+  .location-text-col .left-info {
+    font-size: 0.95rem;
+    line-height: 1.65em;
+  }
+}
+
+@media screen and (max-width: 920px) {
+  .location-text-col .left-info {
+    font-size: 1.05rem;
+    line-height: 1.75em;
+  }
+}
+
+.location-list {
+  list-style-type: none;
+  padding: 0;
+  margin-top: 2em;
+}
+
+.location-item {
+  font-size: 1.3rem;
+  color: var(--green-deep);
+  opacity: 0.45;
+  transition: opacity 0.2s ease;
+  cursor: pointer;
+}
+
+.location-item:hover {
+  opacity: 0.75;
+}
+
+.location-item.active-location {
+  opacity: 1;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 920px) {
+  /* The panel pins here too. It sits higher than dead centre so the heading is
+     not stranded down the screen, and the whole thing - heading, intro, three
+     names, photo - has to fit one phone screen with room to spare, or there is
+     nothing for the pin to hold still. */
+  .location-track {
+    height: calc(var(--loc-count, 3) * 60vh);
+    height: calc(var(--loc-count, 3) * 60svh);
+    --loc-bias: 0.32;
+  }
+
+  .location-div {
+    padding: 2.5em 0;
+  }
+
+  .location-div .two-col-grid {
+    gap: 2em;
+  }
+
+  .location-imgs-wrapper {
+    position: relative;
+    width: 100%;
+    height: 34vh;
+    margin: 0 auto;
+  }
+
+  @supports (aspect-ratio: 4 / 3) {
+    .location-imgs-wrapper {
+      height: auto;
+      aspect-ratio: 4 / 3;
+      max-height: 34vh;
+      max-height: 34svh;
+    }
+  }
+
+  .location-img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
+    margin-bottom: 0 !important;
+  }
+
+  .location-img.active-img {
+    opacity: 1;
+    visibility: visible;
   }
 }

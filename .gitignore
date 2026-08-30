@@ -5,3 +5,4 @@
 .RData
 node_modules
 .idea
+.vercel
